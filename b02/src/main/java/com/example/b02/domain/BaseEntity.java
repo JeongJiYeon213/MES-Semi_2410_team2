@@ -11,15 +11,18 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@EntityListeners(value = { AuditingEntityListener.class })
+@EntityListeners(value = {AuditingEntityListener.class})    // Auditing된 것에 대해서만 listener로 설정
 @Getter
-abstract class BaseEntity {
+public class BaseEntity {
 
-    @CreatedDate
-    @Column(name = "regDate", updatable = false)
+    @CreatedDate    // insert 할 경우 기본값으로 생성시간을 주입하는 어노테이션
+    @Column(name = "regdate", updatable = false)    // 실제 테이블의 컬럼 이름을 regdate이고 update문에는 컬럼이 들어가지 않도록 설정
     private LocalDateTime regDate;
 
-    @LastModifiedDate
-    @Column(name ="modDate")
+    @LastModifiedDate   // update 할 경우 마지막으로 update하는 시간으로 세팅
+    @Column(name = "moddate")
     private LocalDateTime modDate;
+
 }
+
+
