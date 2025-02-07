@@ -46,6 +46,8 @@ public class SupplierSearchImpl implements SupplierSearch {
             }
             jpql.append(")");
         }
+        // ORDER BY bno DESC 추가 (내림차순 정렬)
+        jpql.append(" ORDER BY b.bno DESC");
 
         // JPQL로 쿼리 생성
         TypedQuery<Supplier> query = entityManager.createQuery(jpql.toString(), Supplier.class);

@@ -19,7 +19,7 @@ public class CustomerSearchImpl implements CustomerSearch {
     @Override
     public Page<Customer> searchAll(String[] types, String keyword, Pageable pageable) {
         // JPQL로 작성
-        StringBuilder jpql = new StringBuilder("SELECT c FROM Customer c WHERE c.bno > 0");
+        StringBuilder jpql = new StringBuilder("SELECT c FROM Customer c WHERE c.bno> 0");
 
         // 동적 검색 조건 추가
         if ((types != null && types.length > 0) && keyword != null) {
@@ -46,6 +46,8 @@ public class CustomerSearchImpl implements CustomerSearch {
             }
             jpql.append(")");
         }
+        // ORDER BY bno DESC 추가 (내림차순 정렬)
+        jpql.append(" ORDER BY c.bno DESC");
 
         // JPQL로 쿼리 생성
         TypedQuery<Customer> query = entityManager.createQuery(jpql.toString(), Customer.class);
