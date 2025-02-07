@@ -3,7 +3,6 @@ package com.example.b02.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

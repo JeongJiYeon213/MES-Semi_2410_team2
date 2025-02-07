@@ -13,9 +13,9 @@
                     <div class="input-group-prepend">
                         <select class="form-select" name="type">
                             <option value="">검색</option>
-                            <option value="t" th:selected="${pageRequestDTO.type =='i'}">ID</option>
-                            <option value="c" th:selected="${pageRequestDTO.type =='n'}">회사명</option>
-                            <option value="w" th:selected="${pageRequestDTO.type =='f'}">전화번호</option>
+                            <option value="i" th:selected="${pageRequestDTO.type =='i'}">ID</option>
+                            <option value="n" th:selected="${pageRequestDTO.type =='n'}">고객명</option>
+                            <option value="f" th:selected="${pageRequestDTO.type =='f'}">전화번호</option>
                         </select>
                     </div>
                     <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
@@ -42,7 +42,7 @@
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">ID</th>
-                            <th scope="col">회사명</th>
+                            <th scope="col">거래처명</th>
                             <th scope="col">전화번호</th>
                             <th scope="col">등록날짜</th>
                         </tr>
@@ -50,7 +50,9 @@
                         <tbody th:with="link = ${pageRequestDTO.getLink()}">
                         <tr th:each="dto:${responseDTO.dtoList}">
                             <th scope="row">[[${dto.bno}]]</th>
-                            <td>[[${dto.supplierId}]]</td>
+                            <td>
+                                <a th:href="|@{/supplier/read(bno =${dto.bno})}&${link}|">[[${dto.supplierId}]]</a>
+                            </td>
                             <td>[[${dto.supplierName}]]</td>
                             <td>[[${dto.supplierInfo}]]</td>
                             <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>
@@ -73,6 +75,24 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" >Save changes</button>
                 </div>
             </div>
         </div>
