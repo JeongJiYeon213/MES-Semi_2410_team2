@@ -14,16 +14,7 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long>, CustomerSearch {
 
-    @Query("SELECT c FROM Customer c ORDER BY c.bno DESC")
-    List<Customer> findAllByCreatedAtDesc();
-
-    @Query("select c from Customer c where c.customerId = :customerId and c.customerName = :customerName")
-    List<Customer> findFromCustomerIdAndName(@Param("customerId") String customerId, @Param("customerName") String customerName);
-
-    @Query("select c from Customer c where c.customerName in :customerNames")
-    List<Customer> findFromCustomerNames(@Param("customerNames") List<String> customerNames);
-
-    @Query("select c from Customer c where c.customerId like concat('%', :keyword, '%')")
-    Page<Customer> findCustomerByKeyword(@Param("keyword") String keyword, Pageable pageable);
+    @Override
+    Page<Customer> searchAll(String[] types, String keyword, Pageable pageable);
 
 }

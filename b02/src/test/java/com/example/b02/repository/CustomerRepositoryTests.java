@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -32,6 +33,18 @@ public class CustomerRepositoryTests {
             Customer result = customerRepository.save(customer);
             log.info("BNO: " + result.getBno());
         });
+    }
+
+    @Test
+    public void testSelect(){
+        Long bno = 100L;
+
+        Optional<Customer> result = customerRepository.findById(bno);
+
+        Customer customer = result.orElseThrow();
+
+        log.info(customer);
+
     }
 
     @Test

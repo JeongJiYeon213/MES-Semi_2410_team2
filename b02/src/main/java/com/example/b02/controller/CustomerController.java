@@ -62,7 +62,7 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
-    @GetMapping("/read")
+    @GetMapping({"/read", "/modify"})
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
 
         CustomerDTO customerDTO = customerService.readOne(bno);
@@ -72,5 +72,44 @@ public class CustomerController {
         model.addAttribute("dto",customerDTO);
     }
 
+    @PostMapping("/modify")
+    public String modify(PageRequestDTO pageRequestDTO,
+                         @Valid CustomerDTO customerDTO,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes){
 
+        log.info("customer modify post..." + customerDTO);
+
+        if(bindingResult.hasErrors()){
+            log.info("has errors...");
+
+            String link = pageRequestDTO.getLink();
+
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+
+            redirectAttributes.addAttribute("bno",customerDTO.getBno());
+
+            return "redirect:/customer/modify?"+link;
+        }
+
+        customerService.modify(customerDTO);
+
+        redirectAttributes.addFlashAttribute("result", "modified");
+
+        redirectAttributes.addAttribute("bno", customerDTO.getBno());
+
+        return "redirect:/customer/read";
+    }
+
+    @PostMapping("/remove")
+    public String remove(Long bno, RedirectAttributes redirectAttributes){
+
+        log.info("romove post.." + bno);
+
+        customerService.remove(bno);
+
+        redirectAttributes.addFlashAttribute("result", "removed");
+
+        return "redirect:/customer/list";
+    }
 }
