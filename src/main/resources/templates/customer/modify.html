@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <title>Customer Modify</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Customer Modify
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/customer/modify}" method="post" id="f1">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">No</span>
+                        <input type="text" class="form-control" th:value="${dto.bno}" name="bno" readonly aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">ID</span>
+                        <input type="text" class="form-control" th:value="${dto.customerId}" name="customerId" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">고객명</span>
+                        <input type="text" class="form-control" th:value="${dto.customerName}" name="customerName" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">전화번호</span>
+                        <input type="text" class="form-control" th:value="${dto.customerInfo}" name="customerInfo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">등록날짜</span>
+                        <input type="text" class="form-control" th:value="${#temporals.format(dto.regDate, 'yyyy-MM-dd')}" readonly aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <!-- 버튼 틀 -->
+                    <div class="my-4">
+                        <div class="float-end">
+                                <button type="button" class="btn btn-outline-dark listBtn">List</button>
+                                <button type="button" class="btn btn-outline-dark modBtn">Modify</button>
+                                <button type="button" class="btn btn-outline-dark removeBtn">Remove</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    // 에러 메세지 처리
+    const errors = [[${errors}]]
+    console.log(errors)
+
+    let errorMsg = ''
+
+    if(errors){
+        for (let i = 0; i < errors.length; i++){
+            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+        }
+        history.replaceState({}, null, null)
+        alert(errorMsg)
+    }
+
+    //수정버튼 이벤트 처리
+    const link = [[${pageRequestDTO.getLink()}]]
+    const formObj = document.querySelector("#f1")
+
+    document.querySelector(".modBtn").addEventListener("click", function(e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/customer/modify?${link}`
+        formObj.method = 'post'
+        formObj.submit()
+
+    }, false)
+
+    //삭제버튼 이벤트 처리
+    document.querySelector(".removeBtn").addEventListener("click", function(e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/customer/remove`
+        formObj.method = 'post'
+        formObj.submit()
+
+    }, false)
+
+
+    //리스트버튼 이벤트 처리
+    document.querySelector(".listBtn").addEventListener("click", function(e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.reset()
+        self.location = `/customer/list?${link}`
+
+    }, false)
+
+</script>
