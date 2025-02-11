@@ -30,37 +30,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row gx-3 gy-2 align-items-center">
+                        <div class="row gx-3 gy-2 align-items-center" th:with="link = ${pageRequestDTO.getLink()}">
                             <div class="col-sm-3">
                                 <label>조회기간</label>
-                                <input type="date" name="from" class="form-control" >
-                                <input type="date" name="to" class="form-control" >
+                                <input type="date" name="from" class="form-control" value="${pageRequestDTO.from}">
+                                <input type="date" name="to" class="form-control" value="${pageRequestDTO.to}">
                             </div>
+                            <!-- 드롭다운 리스트-->
                             <div class="col-sm-3">
-                                <label>재고유무</label>
-                                <select class="form-select" id="autoSizingSelect1">
-                                    <option selected>--</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <label>공급업체</label>
-                                <select class="form-select" id="autoSizingSelect2">
-                                    <option selected>--</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <label>제품위치</label>
-                                <select class="form-select" id="autoSizingSelect3">
-                                    <option selected>--</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <label for="drop-customerId">ID</label>
+                                <select class="form-select" id="drop-customerId">
+                                    <option value="">--</option>
+                                    <!-- customers 변수에 저장된 데이터로 드롭다운 채우기-->
+                                    <th:block th:each="customer : ${distinctCustomers}">
+                                    <option th:value="${customer.bno}" th:text="${customer.customerId}+ ' '+ ${customer.customerName} + ' ' + ${customer.customerInfo}"></option>
+                                    </th:block>
                                 </select>
                             </div>
                         </div>
@@ -148,19 +132,16 @@
         <ul class="pagination flex-wrap">
             <li class="page-item" th:if="${responseDTO.prev}" style="cursor: pointer;">
                 <a th:class="page-link" th:data-num="${responseDTO.start - 1}"
-                   style="background-color: black !important; color: white !important;">Previous</a>
+                   style="background-color: black !important; color: white !important;">이전</a>
             </li>
             <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'"
-                    style="cursor: pointer;
-               background-color: ${responseDTO.page == i ? 'black' : 'white'} !important;
-               color: ${responseDTO.page == i ? 'white' : 'black'} !important;">
+                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'" style="cursor: pointer;">
                     <a th:class="page-link" th:data-num="${i}">[[${i}]]</a>
                 </li>
             </th:block>
             <li class="page-item" th:if="${responseDTO.next}" style="cursor: pointer;">
                 <a th:class="page-link" th:data-num="${responseDTO.end + 1}"
-                   style="background-color: black !important; color: white !important;">Next</a>
+                   style="background-color: black !important; color: white !important;">다음</a>
             </li>
         </ul>
     </div>
@@ -211,5 +192,6 @@
 
         self.location = '/customer/register';
     }, false);
+
 
 </script>

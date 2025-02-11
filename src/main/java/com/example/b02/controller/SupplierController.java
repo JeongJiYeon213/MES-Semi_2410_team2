@@ -1,6 +1,5 @@
 package com.example.b02.controller;
 
-import com.example.b02.dto.CustomerDTO;
 import com.example.b02.dto.PageRequestDTO;
 import com.example.b02.dto.PageResponseDTO;
 import com.example.b02.dto.SupplierDTO;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/customer")
@@ -25,8 +26,8 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @GetMapping("/dashboard")
-    public void dashboardGET(){
+    @GetMapping("/main")
+    public void mainGET(){
 
     }
 
@@ -38,8 +39,11 @@ public class CustomerController {
 
         log.info(responseDTO);
 
+        List<CustomerDTO> distinctCustomers = customerService.getDistinctCustomers();
+
         model.addAttribute("responseDTO", responseDTO);
         model.addAttribute("pageRequestDTO", pageRequestDTO);
+        model.addAttribute("distinctCustomers", distinctCustomers);
 
         if(selectedBno != null){
             CustomerDTO selectedCustomer = customerService.readOne(selectedBno);
@@ -115,4 +119,5 @@ public class CustomerController {
 
         return "redirect:/customer/list";
     }
+
 }

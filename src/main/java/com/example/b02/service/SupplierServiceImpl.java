@@ -1,6 +1,8 @@
 package com.example.b02.service;
 
+import com.example.b02.domain.Customer;
 import com.example.b02.domain.Supplier;
+import com.example.b02.dto.CustomerDTO;
 import com.example.b02.dto.PageRequestDTO;
 import com.example.b02.dto.PageResponseDTO;
 import com.example.b02.dto.SupplierDTO;
@@ -87,5 +89,18 @@ public class SupplierServiceImpl implements SupplierService{
                 .total((int)result.getTotalElements())
                 .build();
     }
+
+    @Override
+    public List<SupplierDTO> getAllSuppliers(){
+        List<Supplier> suppliers = supplierRepository.findAll();
+
+        log.info("data" + suppliers.size());
+
+        return suppliers.stream()
+                .map(supplier -> modelMapper.map(supplier, SupplierDTO.class))
+                .collect(Collectors.toList());
+
+    }
+
 }
 

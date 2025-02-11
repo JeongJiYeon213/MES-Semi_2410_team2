@@ -4,6 +4,8 @@ import com.example.b02.dto.PageRequestDTO;
 import com.example.b02.dto.PageResponseDTO;
 import com.example.b02.dto.SupplierDTO;
 
+import java.util.List;
+
 public interface SupplierService {
 
     Long register(SupplierDTO supplierDTO);
@@ -15,4 +17,6 @@ public interface SupplierService {
     void remove(Long bno);
 
     PageResponseDTO list(PageRequestDTO pageRequestDTO);
+
+    List<SupplierDTO> getAllSuppliers();
 }

@@ -23,7 +23,7 @@ public class CustomerServiceTests {
         log.info(customerService.getClass().getName());
 
         CustomerDTO customerDTO = CustomerDTO.builder()
-                .customerId("oh12345")
+                .customerId("a3")
                 .customerName("test")
                 .customerInfo("test")
                 .build();

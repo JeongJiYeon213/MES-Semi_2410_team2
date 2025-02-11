@@ -27,4 +27,5 @@ public class Customer extends BaseEntity {
         this.customerName = customerName;
         this.customerInfo = customerInfo;
     }
+
 }

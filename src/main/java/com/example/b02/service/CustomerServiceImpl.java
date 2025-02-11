@@ -8,6 +8,7 @@ import com.example.b02.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     private final ModelMapper modelMapper;
 
+    @Autowired
     private final CustomerRepository customerRepository;
 
     @Override
@@ -87,4 +89,28 @@ public class CustomerServiceImpl implements CustomerService{
                 .total((int)result.getTotalElements())
                 .build();
     }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers(){
+        List<Customer> customers = customerRepository.findAll();
+
+        log.info("data" + customers.size());
+
+        return customers.stream()
+                .map(customer -> modelMapper.map(customer, CustomerDTO.class))
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<CustomerDTO> getDistinctCustomers() {
+        // 중복 제거된 데이터 조회
+        List<Customer> distinctCustomers = customerRepository
+                .findDistinctByCustomerIdAndCustomerNameAndCustomerInfo();
+        return distinctCustomers.stream()
+                .map(customer -> modelMapper.map(customer, CustomerDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
 }
