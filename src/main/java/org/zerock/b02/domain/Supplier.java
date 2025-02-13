@@ -12,8 +12,6 @@ import javax.persistence.*;
 @ToString
 public class Supplier extends BaseEntity {
 
-    private Long bno;
-
     @Id
     @Column(length = 50, nullable = false)
     private String supplierId;

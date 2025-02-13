@@ -1,5 +1,6 @@
 package org.zerock.b02.service;
 
+import org.zerock.b02.domain.Customer;
 import org.zerock.b02.dto.CustomerDTO;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
@@ -19,4 +20,7 @@ public interface CustomerService {
     PageResponseDTO list(PageRequestDTO pageRequestDTO);
 
     List<CustomerDTO> getAllCustomers();
+
+    //
+    List<Customer> getCustomersByKeyword(String keyword);
 }

@@ -1,11 +1,13 @@
 package org.zerock.b02.repository;
 
+import org.zerock.b02.domain.Customer;
 import org.zerock.b02.domain.Supplier;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -17,7 +19,7 @@ public class SupplierRepositoryTests {
 
     @Test
     public void testInsert(){
-        IntStream.rangeClosed(1,5).forEach(i->{
+        IntStream.rangeClosed(1,100).forEach(i->{
             Supplier supplier = Supplier.builder()
                     .supplierId("b"+i)
                     .supplierName("철강"+i)
@@ -27,5 +29,13 @@ public class SupplierRepositoryTests {
             Supplier result = supplierRepository.save(supplier);
             log.info("SupplierId: " + result.getSupplierId());
         });
+    }
+
+    @Test
+    public void testFindById() {
+
+        List<Supplier> suppliers = supplierRepository.findBySupplierId("b1");
+
+        log.info(suppliers.toString());
     }
 }

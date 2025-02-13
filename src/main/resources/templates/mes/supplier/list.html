@@ -6,100 +6,134 @@
 <div layout:fragment="content">
     <!-- 검색 화면 ui -->
     <div class="row mt-3">
-        <form action="/mes/supplier/list" method="get">
-            <div class="col">
-                <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <select class="form-select" name="type">
-                            <option value="">검색</option>
-                            <option value="i" th:selected="${pageRequestDTO.type =='i'}">ID</option>
-                            <option value="n" th:selected="${pageRequestDTO.type =='n'}">고객명</option>
-                            <option value="f" th:selected="${pageRequestDTO.type =='f'}">전화번호</option>
-                        </select>
-                    </div>
-                    <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
-                        <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
-                    </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/mes/supplier/list" method="get">
+                        <div class="row gx-3 gy-2 align-items-center">
+                            <div class="col">
+                                <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select class="form-select" name="type">
+                                            <option value="">검색</option>
+                                            <option value="i" th:selected="${pageRequestDTO.type =='i'}">ID</option>
+                                            <option value="n" th:selected="${pageRequestDTO.type =='n'}">거래처명</option>
+                                            <option value="f" th:selected="${pageRequestDTO.type =='f'}">전화번호</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
+                                        <button class="btn btn-outline-secondary clearBtn" type="button">초기화</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gx-3 gy-2 align-items-center" th:with="link = ${pageRequestDTO.getLink()}">
+                            <div class="col-sm-3">
+                                <label>조회기간:</label>
+                                <input type="date" name="from" class="form-control" value="${pageRequestDTO.from}">
+                                <input type="date" name="to" class="form-control" value="${pageRequestDTO.to}">
+                            </div>
+                            <!-- 드롭다운 리스트-->
+                            <div class="col-sm-3">
+                                <label for="supplierId">거래처 선택:</label>
+                                <select class="form-select" name="supplierId" id="supplierId">
+                                    <option value="">선택하세요</option> <!-- 기본값으로 "선택하세요" 옵션을 표시 -->
+                                    <th:block th:each="supplier : ${distinctSuppliers}">
+                                        <option th:value="${supplier.supplierId}" th:text="${supplier.supplierName}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-outline-secondary searchBtn" type="submit">조회</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 
     <div class="row mt-3">
-        <div class="col">
+        <div class="col-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">거래처관리</h5>
+                    거래처관리
                 </div>
                 <div class="card-body">
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="/supplier/register">
-                            <button class="btn btn-outline-secondary regBtn" type="button">Register</button>
-                        </a>
-                    </div>
                     <!-- 게시물 목록 데이터 -->
-                    <table class="table">
-                        <thead class="table-dark">
+                    <table class="table table-bordered">
+                        <thead class="table">
                         <tr>
-                            <th scope="col">No</th>
                             <th scope="col">ID</th>
                             <th scope="col">거래처명</th>
                             <th scope="col">전화번호</th>
                             <th scope="col">등록날짜</th>
                         </tr>
                         </thead>
+
                         <tbody th:with="link = ${pageRequestDTO.getLink()}">
                         <tr th:each="dto:${responseDTO.dtoList}">
-                            <th scope="row">[[${dto.bno}]]</th>
                             <td>
-                                <a th:href="|@{/mes/supplier/read(bno =${dto.bno})}&${link}|">[[${dto.supplierId}]]</a>
+                                <a th:href="|@{/mes/supplier/list(selectedSupplierId =${dto.SupplierId})}&${link}|"
+                                   style="text-decoration: none">[[${dto.supplierId}]]</a>
                             </td>
                             <td>[[${dto.supplierName}]]</td>
                             <td>[[${dto.supplierInfo}]]</td>
                             <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>
                         </tr>
                         </tbody>
+
                     </table>
-                    <!-- 게시물 페이징 ui -->
-                    <div class="float-end">
-                        <ul class="pagination flex-wrap">
-                            <li class="page-item" th:if="${responseDTO.prev}">
-                                <a class="page-link" th:data-num="${responseDTO.start -1}">Previous</a>
-                            </li>
-                            <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'" >
-                                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
-                                </li>
-                            </th:block>
-                            <li class="page-item" th:if="${responseDTO.next}">
-                                <a class="page-link"  th:data-num="${responseDTO.end + 1}">Next</a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- 선택한 제품 상세 정보 -->
+
+        <div class="col-6" th:if="${selectedSupplier}">
+            <div th:if="${modifyMode}">
+                <div th:insert="~{mes/supplier/modify :: selectedSupplier}"></div>
+            </div>
+            <div th:unless="${modifyMode}">
+                <div th:insert="~{mes/supplier/read :: selectedSupplier}"></div>
+            </div>
+        </div>
+
+        <!-- 등록 폼 -->
+        <div class="col-6" th:if="${registerMode}">
+            <div th:insert="~{mes/supplier/register :: register}"></div>
+        </div>
+
     </div>
-    <div class="modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Modal body text goes here.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" >Save changes</button>
-                </div>
-            </div>
-        </div>
+
+    <br>
+    <div class="float-start">
+        <button class="btn btn-dark register" type="button"
+                onclick="location.href='/mes/supplier/list?registerMode=true'">등록</button>
+
+        <a href="/excel/supplier/download" class="btn btn-success">엑셀다운로드</a>
+    </div>
+
+    <div class="float-end">
+        <ul class="pagination flex-wrap">
+            <li class="page-item" th:if="${responseDTO.prev}" style="cursor: pointer;">
+                <a th:class="page-link" th:data-num="${responseDTO.start - 1}"
+                   style="background-color: black !important; color: white !important;">이전</a>
+            </li>
+            <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'" style="cursor: pointer;">
+                    <a th:class="page-link" th:data-num="${i}">[[${i}]]</a>
+                </li>
+            </th:block>
+            <li class="page-item" th:if="${responseDTO.next}" style="cursor: pointer;">
+                <a th:class="page-link" th:data-num="${responseDTO.end + 1}"
+                   style="background-color: black !important; color: white !important;">다음</a>
+            </li>
+        </ul>
     </div>
 </div>
 
@@ -138,16 +172,14 @@
        e.preventDefault()
        e.stopPropagation()
 
-       self.location ='/customer/list'
+       self.location ='/mes/supplier/list'
     },false);
 
-    // show modal
-    const result = [[${result}]]
+    // register버튼 클릭 처리
+    document.querySelector(".register").addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
 
-    const modal = new bootstrap.Modal(document.querySelector(".modal"))
-
-    if(result){
-        modal.show()
-    }
-
+        self.location = '/mes/supplier/list?registerMode=true';
+    }, false);
 </script>

@@ -35,7 +35,7 @@ public class SupplierServiceTests {
     public void testModify(){
 
         SupplierDTO supplierDTO = SupplierDTO.builder()
-                .supplierId("updateId3")
+                .supplierId("b1")
                 .supplierName("updateName1")
                 .supplierInfo("00000000")
                 .build();

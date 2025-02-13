@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SupplierDTO {
 
-    private Long bno;
-
     @Id
     @Size(min = 1, max = 100)
     @NotNull(message = "ID cannot be null")

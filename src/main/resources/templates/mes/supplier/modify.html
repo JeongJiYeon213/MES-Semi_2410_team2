@@ -1,105 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Supplier Modify</title>
 </head>
-
-<div layout:fragment="content">
-    <div class="row mt-3">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    Supplier Modify
+<body>
+<div th:fragment="selectedSupplier">
+    <div class="card">
+        <div class="card-header">
+            정보변경
+        </div>
+        <div class="card-body">
+            <form th:action="@{/mes/supplier/modify}" method="post" id="modifyForm">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">ID</span>
+                    <input type="text" class="form-control" name=SupplierId th:value="${selectedSupplier.supplierId}">
                 </div>
-                <div class="card-body">
-                    <form th:action="@{/supplier/modify}" method="post" id="f1">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">No</span>
-                        <input type="text" class="form-control" th:value="${dto.bno}" name="bno" readonly aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">ID</span>
-                        <input type="text" class="form-control" th:value="${dto.supplierId}" name="supplierId" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">거래처명</span>
-                        <input type="text" class="form-control" th:value="${dto.supplierName}" name="supplierName" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">전화번호</span>
-                        <input type="text" class="form-control" th:value="${dto.supplierInfo}" name="supplierInfo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">등록날짜</span>
-                        <input type="text" class="form-control" th:value="${#temporals.format(dto.regDate, 'yyyy-MM-dd')}" readonly aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <!-- 버튼 틀 -->
-                    <div class="my-4">
-                        <div class="float-end">
-                                <button type="button" class="btn btn-outline-dark listBtn">List</button>
-                                <button type="button" class="btn btn-outline-dark modBtn">Modify</button>
-                                <button type="button" class="btn btn-outline-dark removeBtn">Remove</button>
-                        </div>
-                    </div>
-                    </form>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">거래처명</span>
+                    <input type="text" class="form-control" name=SupplierName th:value="${selectedSupplier.supplierName}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">전화번호</span>
+                    <input type="text" class="form-control" name=SupplierInfo th:value="${selectedSupplier.supplierInfo}">
+                </div>
+            </form>
+
+            <div class="my-4">
+                <div class="float-end">
+                    <button type="button" class="btn btn-outline-dark listBtn">목록</button>
+                    <button type="submit" class="btn btn-outline-dark">수정</button>
+                    <button type="button" class="btn btn-outline-dark removeBtn">삭제</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script layout:fragment="script" th:inline="javascript">
-
-    // 에러 메세지 처리
-    const errors = [[${errors}]]
-    console.log(errors)
-
-    let errorMsg = ''
-
-    if(errors){
-        for (let i = 0; i < errors.length; i++){
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-        }
-        history.replaceState({}, null, null)
-        alert(errorMsg)
-    }
-
-    //수정버튼 이벤트 처리
-    const link = [[${pageRequestDTO.getLink()}]]
-    const formObj = document.querySelector("#f1")
-
-    document.querySelector(".modBtn").addEventListener("click", function(e){
-        e.preventDefault()
-        e.stopPropagation()
-
-        formObj.action = `/supplier/modify?${link}`
-        formObj.method = 'post'
-        formObj.submit()
-
-    }, false)
-
-    //삭제버튼 이벤트 처리
-    document.querySelector(".removeBtn").addEventListener("click", function(e){
-        e.preventDefault()
-        e.stopPropagation()
-
-        formObj.action = `/supplier/remove`
-        formObj.method = 'post'
-        formObj.submit()
-
-    }, false)
-
-
-    //리스트버튼 이벤트 처리
-    document.querySelector(".listBtn").addEventListener("click", function(e){
-        e.preventDefault()
-        e.stopPropagation()
-
-        formObj.reset()
-        self.location = `/supplier/list?${link}`
-
-    }, false)
-
-</script>
+</body>
+</html>

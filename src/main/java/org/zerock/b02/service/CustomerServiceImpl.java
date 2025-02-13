@@ -91,4 +91,10 @@ public class CustomerServiceImpl implements CustomerService{
                 .map(customer -> modelMapper.map(customer, CustomerDTO.class))
                 .collect(Collectors.toList());
     }
+
+    //
+    @Override
+    public List<Customer> getCustomersByKeyword(String keyword){
+        return customerRepository.findByCustomerNameContaining(keyword);
+    }
 }

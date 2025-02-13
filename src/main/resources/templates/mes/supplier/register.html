@@ -1,41 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<div layout:fragment="content">
+<div th:fragment="register">
     <div class="row mt-3">
         <div class="col">
-            <div class="card-header">
-                Supplier Register
-            </div>
-            <div class="card-body">
-                <form action="/supplier/register" method="post">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">ID</span>
-                        <input type="text" class="form-control" name="supplierId" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">거래처명</span>
-                        <input type="text" class="form-control" name="supplierName" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">전화번호</span>
-                        <input type="text" class="form-control" name="supplierInfo" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="my-4">
-                        <div class="float-end">
-                            <button type="submit" class="btn btn-outline-dark">Submit</button>
-                            <button type="reset" class="btn btn-outline-dark">Reset</button>
+            <div class="card">
+                <div class="card-header">
+                    거래처 등록
+                </div>
+                <div class="card-body">
+                    <form action="/mes/supplier/register" method="post">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">ID</span>
+                            <input type="text" class="form-control" name="supplierId">
                         </div>
-                    </div>
-                </form>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">거래처명</span>
+                            <input type="text" class="form-control" name="supplierName">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">전화번호</span>
+                            <input type="text" class="form-control" name="supplierInfo">
+                        </div>
+                        <div class="my-4">
+                            <div class="float-end">
+                                <button type="submit" class="btn btn-outline-dark">등록</button>
+                                <button type="reset" class="btn btn-outline-dark">취소</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script layout:fragment="script" th:inline="javascript">
+<script>
     // Toggle the side navigation
         window.addEventListener('DOMContentLoaded', event => {
         const sidebarToggle = document.body.querySelector('#sidebarToggle');
@@ -47,17 +47,4 @@
             });
             }
             });
-
-    // 에러 메세지 처리
-    const errors = [[${errors}]]
-    console.log(errors)
-
-    let errorMsg = ''
-
-    if(errors){
-        for (let i = 0; i < errors.length; i++){
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-        }
-        alert(errorMsg)
-    }
 </script>
