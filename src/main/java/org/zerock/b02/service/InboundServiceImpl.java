@@ -122,11 +122,11 @@ public class InboundServiceImpl implements InboundService{
         List<InboundDTO> dtoList = result.getContent().stream().map(inbound -> {
             InboundDTO inboundDTO = modelMapper.map(inbound, InboundDTO.class);
 
-            // ✅ Product 엔티티에서 productCode 설정
+            // Product 엔티티에서 productCode 설정
             if (inbound.getProduct() != null) {
                 inboundDTO.setProductCode(inbound.getProduct().getProductCode());
             }
-            // ✅ Product 엔티티에서 supplierId 설정
+            // Product 엔티티에서 supplierId 설정
             if (inbound.getSupplier() != null) {
                 inboundDTO.setSupplierId(inbound.getSupplier().getSupplierId());
             }
