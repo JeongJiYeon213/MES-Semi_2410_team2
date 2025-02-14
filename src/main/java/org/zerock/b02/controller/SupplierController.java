@@ -1,7 +1,6 @@
 package org.zerock.b02.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.zerock.b02.dto.CustomerDTO;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
 import lombok.RequiredArgsConstructor;

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>출고 등록</title>
+</head>
+<body>
+<div th:fragment="register">
+  <div class="card">
+    <div class="card-header">
+      출고 등록
+    </div>
+    <div class="card-body">
+      <form th:action="@{/mes/outbound/register}" method="post">
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">제품코드</span>
+          <select id="productCode" name="productCode" required>
+            <option value="">선택</option>
+            <option th:each="product : ${productList}"
+                    th:value="${product.productCode}"
+                    th:text="${product.productCode}">
+            </option>
+          </select>
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">출고수량</span>
+          <input type="number" id="minus" name="minus" class="form-control" required min="1">
+        </div>
+
+        <div class="my-4">
+          <div class="float-end">
+            <button type="submit" class="btn btn-dark">등록</button>
+            <button type="button" onclick="location.href='/mes/stock/list'" class="btn btn-secondary">목록</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

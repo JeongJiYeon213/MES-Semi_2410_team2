@@ -1,6 +1,5 @@
 package org.zerock.b02.controller;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.b02.dto.CustomerDTO;
 import org.zerock.b02.dto.PageRequestDTO;
@@ -14,11 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-
 @RequestMapping("/mes/customer")
 @Log4j2
 @RequiredArgsConstructor
@@ -41,6 +38,7 @@ public class CustomerController {
 
         // 필터링된 데이터 조회
         PageResponseDTO<CustomerDTO> responseDTO = customerService.list(pageRequestDTO);
+
         model.addAttribute("responseDTO", responseDTO);
         model.addAttribute("pageRequestDTO", pageRequestDTO);
 

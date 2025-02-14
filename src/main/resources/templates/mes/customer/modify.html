@@ -23,17 +23,40 @@
                     <span class="input-group-text">전화번호</span>
                     <input type="text" class="form-control" name=CustomerInfo th:value="${selectedCustomer.customerInfo}">
                 </div>
-            </form>
-
-            <div class="my-4">
-                <div class="float-end">
-                    <button type="button" class="btn btn-outline-dark listBtn">목록</button>
-                    <button type="submit" class="btn btn-outline-dark">수정</button>
-                    <button type="button" class="btn btn-outline-dark removeBtn">삭제</button>
+                <div class="my-4">
+                    <div class="float-end">
+                        <button type="button" class="btn btn-outline-dark listBtn">목록</button>
+                        <button type="submit" class="btn btn-outline-dark">수정</button>
+                        <button type="button" class="btn btn-outline-dark removeBtn">삭제</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+            // 삭제 버튼 클릭 시 POST 요청 보내기
+            document.querySelector(".removeBtn").addEventListener("click", function() {
+                if (!confirm("정말 삭제하시겠습니까?")) {
+                    return;
+                }
+
+                // 폼 생성 후 제출 (POST 요청)
+                const form = document.createElement("form");
+                form.method = "post";
+                form.action = "/mes/customer/remove";
+
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "customerId";
+                input.value = document.querySelector("[name='customerId']").value;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            });
+        });
+</script>
 </html>

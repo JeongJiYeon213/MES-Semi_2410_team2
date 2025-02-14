@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -77,7 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
         Pageable pageable = pageRequestDTO.getPageable("customerId");
 
         // 날짜 범위나 고객 ID가 주어졌을 경우, 필터링된 검색
-        if (customerId != null) {
+        if (customerId != null && !customerId.isEmpty()) {
             Page<Customer> result = customerRepository.searchWithFilters(keyword, customerId, pageable);
             List<CustomerDTO> dtoList = result.getContent().stream()
                     .map(customer -> modelMapper.map(customer, CustomerDTO.class))
