@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - BoardServiceTests</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>BoardServiceTests</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/org.zerock.b02.service.html">org.zerock.b02.service</a> &gt; BoardServiceTests</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.297s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testList()</td>
+<td class="success">0.297s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>11:28:21.180 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+11:28:21.193 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+11:28:21.241 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [org.zerock.b02.service.BoardServiceTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+11:28:21.257 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [org.zerock.b02.service.BoardServiceTests], using SpringBootContextLoader
+11:28:21.263 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [org.zerock.b02.service.BoardServiceTests]: class path resource [org/zerock/b02/service/BoardServiceTests-context.xml] does not exist
+11:28:21.263 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [org.zerock.b02.service.BoardServiceTests]: class path resource [org/zerock/b02/service/BoardServiceTestsContext.groovy] does not exist
+11:28:21.264 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [org.zerock.b02.service.BoardServiceTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+11:28:21.265 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [org.zerock.b02.service.BoardServiceTests]: BoardServiceTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+11:28:21.312 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [org.zerock.b02.service.BoardServiceTests]
+11:28:21.375 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\Users\24\eclipse-workspace\b02\build\classes\java\main\org\zerock\b02\B02Application.class]
+11:28:21.376 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration org.zerock.b02.B02Application for test class org.zerock.b02.service.BoardServiceTests
+11:28:21.482 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [org.zerock.b02.service.BoardServiceTests]: using defaults.
+11:28:21.483 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+11:28:21.499 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@7561db12, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@3301500b, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@24b52d3e, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@15deb1dc, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6e9c413e, org.springframework.test.context.support.DirtiesContextTestExecutionListener@57a4d5ee, org.springframework.test.context.transaction.TransactionalTestExecutionListener@5af5def9, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@3a45c42a, org.springframework.test.context.event.EventPublishingTestExecutionListener@36dce7ed, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@47a64f7d, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@33d05366, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@27a0a5a2, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@7692cd34, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@33aa93c, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@32c0915e]
+11:28:21.503 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@5f577419 testClass = BoardServiceTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@28fa700e testClass = BoardServiceTests, locations = '{}', classes = '{class org.zerock.b02.B02Application}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@58359ebd, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@27305e6, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@7446d8d5, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@306851c7, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@75ed9710, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@cd1e646], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.3)
+
+2025-02-07 11:28:21.897  INFO 11980 --- [    Test worker] o.zerock.b02.service.BoardServiceTests   : Starting BoardServiceTests using Java 11.0.2 on DESKTOP-E0O2EOA with PID 11980 (started by 24 in C:\Users\24\eclipse-workspace\b02)
+2025-02-07 11:28:21.898 DEBUG 11980 --- [    Test worker] o.zerock.b02.service.BoardServiceTests   : Running with Spring Boot v2.7.3, Spring v5.3.22
+2025-02-07 11:28:21.899  INFO 11980 --- [    Test worker] o.zerock.b02.service.BoardServiceTests   : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2025-02-07 11:28:23.024  INFO 11980 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-07 11:28:23.088  INFO 11980 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 56 ms. Found 1 JPA repository interfaces.
+2025-02-07 11:28:23.733  INFO 11980 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-07 11:28:23.803  INFO 11980 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.10.Final
+2025-02-07 11:28:24.033  INFO 11980 --- [    Test worker] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2025-02-07 11:28:24.167  INFO 11980 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-02-07 11:28:24.261  INFO 11980 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-02-07 11:28:24.301  INFO 11980 --- [    Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MariaDB103Dialect
+2025-02-07 11:28:25.009  INFO 11980 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2025-02-07 11:28:25.018  INFO 11980 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-07 11:28:25.883  WARN 11980 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-07 11:28:26.187  INFO 11980 --- [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2025-02-07 11:28:26.793  INFO 11980 --- [    Test worker] o.zerock.b02.service.BoardServiceTests   : Started BoardServiceTests in 5.221 seconds (JVM running for 6.566)
+Hibernate: 
+    select
+        admin0_.bno as bno1_0_,
+        admin0_.moddate as moddate2_0_,
+        admin0_.regdate as regdate3_0_,
+        admin0_.admin_id as admin_id4_0_,
+        admin0_.admin_name as admin_na5_0_,
+        admin0_.admin_password as admin_pa6_0_,
+        admin0_.phone_num as phone_nu7_0_,
+        admin0_.position as position8_0_ 
+    from
+        admin admin0_ 
+    where
+        admin0_.bno&gt;0 
+        and (
+            admin0_.admin_name like ?
+        ) 
+    order by
+        admin0_.bno DESC limit ?
+Hibernate: 
+    select
+        count(admin0_.bno) as col_0_0_ 
+    from
+        admin admin0_ 
+    where
+        admin0_.bno&gt;0 
+        and (
+            admin0_.admin_name like ?
+        ) 
+    order by
+        admin0_.bno DESC
+2025-02-07 11:28:27.105  INFO 11980 --- [    Test worker] o.zerock.b02.service.BoardServiceTests   : PageResponseDTO(page=1, size=10, total=12, start=1, end=2, prev=false, next=false, dtolist=[BoardDTO(bno=106, adminName=MetalForge, adminId=45651083, adminPassword=5837, position=사원, phoneNum=101-9929-5923, regDate=2025-02-07T10:40:24.073156, modDate=2025-02-07T10:40:24.073156), BoardDTO(bno=103, adminName=ForgeIron, adminId=79527361, adminPassword=6039, position=사원, phoneNum=101-8636-4078, regDate=2025-02-07T10:40:24.063160, modDate=2025-02-07T10:40:24.063160), BoardDTO(bno=98, adminName=ForgeFalcon, adminId=39077107, adminPassword=6795, position=사원, phoneNum=101-4679-6725, regDate=2025-02-07T10:40:24.043705, modDate=2025-02-07T10:40:24.043705), BoardDTO(bno=91, adminName=JaguarForge, adminId=37038086, adminPassword=2136, position=사원, phoneNum=101-5559-2299, regDate=2025-02-07T10:40:24.016720, modDate=2025-02-07T10:40:24.016720), BoardDTO(bno=75, adminName=BoltForge, adminId=69817887, adminPassword=1544, position=사원, phoneNum=101-6708-7443, regDate=2025-02-07T10:40:23.951757, modDate=2025-02-07T10:40:23.951757), BoardDTO(bno=72, adminName=ForgeJaguar, adminId=58293035, adminPassword=3685, position=사원, phoneNum=101-1797-9770, regDate=2025-02-07T10:40:23.936766, modDate=2025-02-07T10:40:23.936766), BoardDTO(bno=64, adminName=JaguarForge, adminId=20358700, adminPassword=2595, position=사원, phoneNum=101-3499-1703, regDate=2025-02-07T10:40:23.850817, modDate=2025-02-07T10:40:23.850817), BoardDTO(bno=62, adminName=GriffinForge, adminId=55549965, adminPassword=7662, position=사원, phoneNum=101-9378-9930, regDate=2025-02-07T10:40:23.840824, modDate=2025-02-07T10:40:23.840824), BoardDTO(bno=54, adminName=GammaForge, adminId=71440318, adminPassword=8862, position=사원, phoneNum=101-6740-7061, regDate=2025-02-07T10:40:23.807837, modDate=2025-02-07T10:40:23.807837), BoardDTO(bno=33, adminName=ForgeJaguar, adminId=56050707, adminPassword=5998, position=사원, phoneNum=101-6421-5545, regDate=2025-02-07T10:40:23.725409, modDate=2025-02-07T10:40:23.725409)])
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.4</a> at 2025. 2. 7. 오전 11:28:27</p>
+</div>
+</div>
+</body>
+</html>
