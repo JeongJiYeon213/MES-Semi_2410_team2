@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer Modify</title>
+</head>
+<body>
+<div th:fragment="selectedCustomer">
+    <div class="card">
+        <div class="card-header">
+            정보변경
+        </div>
+        <div class="card-body">
+            <form th:action="@{/mes/customer/modify}" method="post" id="modifyForm">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">ID</span>
+                    <input type="text" class="form-control" name=CustomerId th:value="${selectedCustomer.customerId}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">고객명</span>
+                    <input type="text" class="form-control" name=CustomerName th:value="${selectedCustomer.customerName}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">전화번호</span>
+                    <input type="text" class="form-control" name=CustomerInfo th:value="${selectedCustomer.customerInfo}">
+                </div>
+            </form>
+
+            <div class="my-4">
+                <div class="float-end">
+                    <button type="button" class="btn btn-outline-dark listBtn">목록</button>
+                    <button type="submit" class="btn btn-outline-dark">수정</button>
+                    <button type="button" class="btn btn-outline-dark removeBtn">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

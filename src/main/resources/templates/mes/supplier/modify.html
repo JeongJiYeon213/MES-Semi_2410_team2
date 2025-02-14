@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Supplier Modify</title>
+</head>
+<body>
+<div th:fragment="selectedSupplier">
+    <div class="card">
+        <div class="card-header">
+            정보변경
+        </div>
+        <div class="card-body">
+            <form th:action="@{/mes/supplier/modify}" method="post" id="modifyForm">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">ID</span>
+                    <input type="text" class="form-control" name=SupplierId th:value="${selectedSupplier.supplierId}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">거래처명</span>
+                    <input type="text" class="form-control" name=SupplierName th:value="${selectedSupplier.supplierName}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">전화번호</span>
+                    <input type="text" class="form-control" name=SupplierInfo th:value="${selectedSupplier.supplierInfo}">
+                </div>
+            </form>
+
+            <div class="my-4">
+                <div class="float-end">
+                    <button type="button" class="btn btn-outline-dark listBtn">목록</button>
+                    <button type="submit" class="btn btn-outline-dark">수정</button>
+                    <button type="button" class="btn btn-outline-dark removeBtn">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
