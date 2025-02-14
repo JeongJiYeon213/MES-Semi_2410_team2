@@ -4,7 +4,7 @@
       layout:decorate="~{layout/basic.html}">
 
 <head>
-    <title>Board Register</title>
+    <title>Register</title>
 </head>
 
 <div layout:fragment="content">
@@ -15,12 +15,12 @@
                     <h2>행 추가하기</h2>
                     <button class="btn btn-primary mb-3" id="addRowBtn">행 추가</button>
                     <div class="row mb-2">
-                        <div class="col-2">첫 번째 열</div>
-                        <div class="col-2">두 번째 열</div>
-                        <div class="col-2">세 번째 열</div>
-                        <div class="col-2">세 번째 열</div>
-                        <div class="col-2">세 번째 열</div>
-                        <div class="col-2">세 번째 열</div>
+                        <div class="col-2">제품번호</div>
+                        <div class="col-2">거래처</div>
+                        <div class="col-2">수량</div>
+                        <div class="col-2">입고일</div>
+                        <div class="col-2">상태</div>
+                        <div class="col-2">비고</div>
                     </div>
                 </div>
                     <!-- 행을 추가할 영역 -->
@@ -47,12 +47,25 @@
       var newRow = document.createElement('div');
       newRow.classList.add('row', 'mb-2');
       newRow.innerHTML = `
-        <div class="col-2">새로운 열 1</div>
-        <div class="col-2">새로운 열 2</div>
-        <div class="col-2">새로운 열 3</div>
-        <div class="col-2">새로운 열 3</div>
-        <div class="col-2">새로운 열 3</div>
-        <div class="col-2">새로운 열 3</div>
+         <div class="col-2">
+            <input type="text" id="productCode" name="productCode" class="form-control" readonly>
+            <button type="button" class="btn btn-outline-secondary" onclick="openProductPopup();">Search</button>
+        </div>
+        <div class="col-2">
+            <input type="text" id="supplierId" name="supplierId" class="form-control" required readonly>
+            <button type="button" class="btn btn-outline-primary" onclick="openSupplierPopup();">Search</button>
+        </div>
+        <div class="col-2"><input type="text" name="quantity" class="form-control" required placeholder=""></div>
+        <div class="col-2"><input type="datetime-local" name="outboundDate" class="form-control" required></div>
+        <div class="col-2"><select id="inboundStatus" name="inboundStatus">
+                                <option value="PENDING">PENDING</option>
+                                <option value="COMPLETED">COMPLETED</option>
+                                <option value="CANCELED">CANCELED</option>
+                            </select>
+        </div>
+        <div class="col-2">
+            <input type="text" name="description" class="form-control" placeholder="Write here" required>
+        </div>
       `;
       rowContainer.appendChild(newRow);
     });
