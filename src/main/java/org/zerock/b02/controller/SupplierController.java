@@ -97,7 +97,7 @@ public class SupplierController {
             String link = pageRequestDTO.getLink();
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             redirectAttributes.addAttribute("selectedCustomerId",supplierDTO.getSupplierId());
-            return "redirect:/mes/supplier/modify?"+link;
+            return "redirect:/mes/supplier/list?"+link;
         }
 
         supplierService.modify(supplierDTO);

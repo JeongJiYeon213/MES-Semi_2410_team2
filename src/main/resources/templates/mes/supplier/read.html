@@ -28,7 +28,7 @@
                     <a th:href="|@{/mes/supplier/list}?${link}|" class="text-decoration-none">
                         <button type="button" class="btn btn-outline-dark">목록</button>
                     </a>
-                    <a th:href="|@{/mes/supplier/modify(selectedSupplierId=${selectedSupplier.supplierId}, modifyMode=true)}&${pageRequestDTO.getLink()}|" class="text-decoration-none">
+                    <a th:href="|@{/mes/supplier/list(selectedSupplierId=${selectedSupplier.supplierId}, modifyMode=true)}&${pageRequestDTO.getLink()}|" class="text-decoration-none">
                         <button type="button" class="btn btn-outline-dark">수정/삭제</button>
                     </a>
                 </div>

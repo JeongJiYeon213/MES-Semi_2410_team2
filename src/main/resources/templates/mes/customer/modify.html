@@ -11,6 +11,7 @@
         </div>
         <div class="card-body">
             <form th:action="@{/mes/customer/modify}" method="post" id="modifyForm">
+                <input type="hidden" name="customerId" th:value="${selectedCustomer.customerId}">
                 <div class="input-group mb-3">
                     <span class="input-group-text">ID</span>
                     <input type="text" class="form-control" name=CustomerId th:value="${selectedCustomer.customerId}">
@@ -35,28 +36,4 @@
     </div>
 </div>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-            // 삭제 버튼 클릭 시 POST 요청 보내기
-            document.querySelector(".removeBtn").addEventListener("click", function() {
-                if (!confirm("정말 삭제하시겠습니까?")) {
-                    return;
-                }
-
-                // 폼 생성 후 제출 (POST 요청)
-                const form = document.createElement("form");
-                form.method = "post";
-                form.action = "/mes/customer/remove";
-
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "customerId";
-                input.value = document.querySelector("[name='customerId']").value;
-
-                form.appendChild(input);
-                document.body.appendChild(form);
-                form.submit();
-            });
-        });
-</script>
 </html>

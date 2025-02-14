@@ -129,7 +129,20 @@
         }
         });
 
-    // pagination 버튼 클릭 처리
+    document.querySelector(".clearBtn").addEventListener("click", function (e){
+       e.preventDefault()
+       e.stopPropagation()
+
+       self.location ='/mes/supplier/list'
+    },false);
+
+    document.querySelector(".register").addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        self.location = '/mes/supplier/list?registerMode=true';
+    }, false);
+
     document.querySelector(".pagination").addEventListener("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -140,25 +153,15 @@
         }
         const num = target.getAttribute("data-num");
 
-        const formObj = document.querySelector("form");
-        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
-        formObj.submit();
+        const params = new URLSearchParams(window.location.search);
 
-    },false);
+        params.set("page", num)
 
-    // clear버튼 클릭 처리
-    document.querySelector(".clearBtn").addEventListener("click", function (e){
-       e.preventDefault()
-       e.stopPropagation()
+        const selectedSupplierId = params.get("selectedSupplierId");
+        if (selectedSupplierId) {
+            params.set("selectedSupplierId", selectedSupplierId);
+        }
 
-       self.location ='/mes/supplier/list'
-    },false);
-
-    // register버튼 클릭 처리
-    document.querySelector(".register").addEventListener("click", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        self.location = '/mes/supplier/list?registerMode=true';
-    }, false);
+        window.location.href = `/mes/supplier/list?${params.toString()}`;
+    });
 </script>

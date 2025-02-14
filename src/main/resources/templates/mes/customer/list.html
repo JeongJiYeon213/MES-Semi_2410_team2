@@ -62,14 +62,14 @@
                         </thead>
 
                         <tbody th:with="link = ${pageRequestDTO.getLink()}">
-                        <tr th:each="dto:${responseDTO.dtoList}">
+                        <tr th:each="selectedCustomer:${responseDTO.dtoList}">
                             <td>
-                                <a th:href="|@{/mes/customer/list(selectedCustomerId =${dto.CustomerId})}&${link}|"
-                                style="text-decoration: none">[[${dto.customerId}]]</a>
+                                <a th:href="|@{/mes/customer/list(selectedCustomerId =${selectedCustomer.customerId})}&${link}|"
+                                style="text-decoration: none">[[${selectedCustomer.customerId}]]</a>
                             </td>
-                            <td>[[${dto.customerName}]]</td>
-                            <td>[[${dto.customerInfo}]]</td>
-                            <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd HH:mm')}]]</td>
+                            <td>[[${selectedCustomer.customerName}]]</td>
+                            <td>[[${selectedCustomer.customerInfo}]]</td>
+                            <td>[[${#temporals.format(selectedCustomer.regDate, 'yyyy-MM-dd')}]]</td>
                         </tr>
                         </tbody>
 
@@ -78,8 +78,7 @@
             </div>
         </div>
 
-        <!-- 선택한 제품 상세 정보 -->
-
+        <!-- 선택한 고객 상세 정보 -->
         <div class="col-6" th:if="${selectedCustomer}">
             <div th:if="${modifyMode}">
                 <div th:insert="~{mes/customer/modify :: selectedCustomer}"></div>
@@ -136,7 +135,21 @@
         }
         });
 
-    // pagination 버튼 클릭 처리
+    document.querySelector(".clearBtn").addEventListener("click", function (e){
+       e.preventDefault()
+       e.stopPropagation()
+
+       self.location ='/mes/customer/list'
+    },false);
+
+
+    document.querySelector(".register").addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        self.location = '/mes/customer/list?registerMode=true';
+    }, false);
+
     document.querySelector(".pagination").addEventListener("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -147,25 +160,15 @@
         }
         const num = target.getAttribute("data-num");
 
-        const formObj = document.querySelector("form");
-        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
-        formObj.submit();
+        const params = new URLSearchParams(window.location.search);
 
-    },false);
+        params.set("page", num)
 
-    // clear버튼 클릭 처리
-    document.querySelector(".clearBtn").addEventListener("click", function (e){
-       e.preventDefault()
-       e.stopPropagation()
+        const selectedCustomerId = params.get("selectedCustomerId");
+        if (selectedCustomerId) {
+            params.set("selectedCustomerId", selectedCustomerId);
+        }
 
-       self.location ='/mes/customer/list'
-    },false);
-
-    // register버튼 클릭 처리
-    document.querySelector(".register").addEventListener("click", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        self.location = '/mes/customer/list?registerMode=true';
-    }, false);
+        window.location.href = `/mes/customer/list?${params.toString()}`;
+    });
 </script>

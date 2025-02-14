@@ -111,7 +111,7 @@ public class CustomerController {
             String link = pageRequestDTO.getLink();
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             redirectAttributes.addAttribute("selectedCustomerId",customerDTO.getCustomerId());
-            return "redirect:/mes/customer/modify?"+link;
+            return "redirect:/mes/customer/list?"+link;
         }
 
         customerService.modify(customerDTO);
