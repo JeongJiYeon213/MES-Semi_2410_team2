@@ -22,7 +22,6 @@
          <div class="input-group-prepend">
           <select class="form-select" name="type">
            <option value="t" th:selected="${pageRequestDTO.type == 't'}">사원이름</option>
-
           </select>
          </div>
          <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
@@ -52,12 +51,9 @@
        <td>[[${dto.position}]]</td>
       </tr>
       </tbody>
-
      </table>
-
     </div>
    </div>
-
   </div>
 
   <!-- 선택한 제품 상세 정보 -->
@@ -107,44 +103,78 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
- document.querySelector(".register").addEventListener("click", function(e){
-     e.preventDefault();
-     self.location = '/board/adminpage?registerMode=true';
- }, false);
+ // DOMContentLoaded 이벤트로 모든 스크립트가 로드된 후 실행
+ document.addEventListener("DOMContentLoaded", function() {
 
- document.querySelector(".clearBtn").addEventListener("click", function(e){
-     e.preventDefault();
-     e.stopPropagation();
-     self.location = '/board/adminpage';
- }, false);
+     // 삭제 버튼 클릭 시 POST 요청 보내기
+     document.querySelector(".removeBtn")?.addEventListener("click", function() {
+         if (!confirm("정말 삭제하시겠습니까?")) {
+             return;
+         }
 
- document.querySelector(".pagination").addEventListener("click", function(e) {
-     e.preventDefault();
-     e.stopPropagation();
+         // 폼 생성 후 제출 (POST 요청)
+         const form = document.createElement("form");
+         form.method = "post";
+         form.action = "/board/remove";
 
-     const target = e.target;
-     if (target.tagName !== 'A') {
-         return;
-     }
+         const input = document.createElement("input");
+         input.type = "hidden";
+         input.name = "bno";
+         input.value = document.querySelector("[name='bno']").value;
 
-     const num = target.getAttribute("data-num");
+         form.appendChild(input);
+         document.body.appendChild(form);
+         form.submit();
+     });
 
-     // 현재 URL의 쿼리스트링 가져오기
-     const params = new URLSearchParams(window.location.search);
+     // 등록 버튼 클릭 시 '등록' 페이지로 이동
+     document.querySelector(".register").addEventListener("click", function(e) {
+         e.preventDefault();
+         self.location = '/board/adminpage?registerMode=true';
+     }, false);
 
-     // 페이지 번호 업데이트
-     params.set("page", num);
+     // 초기화 버튼 클릭 시 페이지 리로드
+     document.querySelector(".clearBtn").addEventListener("click", function(e) {
+         e.preventDefault();
+         e.stopPropagation();
+         self.location = '/board/adminpage';
+     }, false);
 
-     // 현재 선택된 제품 ID 유지
-     const selectedAdminBno = params.get("selectedAdminBno");
-     if (selectedAdminBno) {
-         params.set("selectedAdminBno", selectedAdminBno);
-     }
+     // 페이지네이션 클릭 이벤트 처리
+     document.querySelector(".pagination").addEventListener("click", function(e) {
+         e.preventDefault();
+         e.stopPropagation();
 
-     // 새로운 URL로 이동
-     window.location.href = `/board/adminpage?${params.toString()}`;
+         const target = e.target;
+         if (target.tagName !== 'A') {
+             return;
+         }
+
+         const num = target.getAttribute("data-num");
+
+         // 현재 URL의 쿼리스트링 가져오기
+         const params = new URLSearchParams(window.location.search);
+
+         // 페이지 번호 업데이트
+         params.set("page", num);
+
+         // 현재 선택된 제품 ID 유지
+         const selectedAdminBno = params.get("selectedAdminBno");
+         if (selectedAdminBno) {
+             params.set("selectedAdminBno", selectedAdminBno);
+         }
+
+         // 새로운 URL로 이동
+         window.location.href = `/board/adminpage?${params.toString()}`;
+     });
+
+     // 리스트 버튼 클릭 시 'adminpage'로 이동
+     document.querySelector(".listBtn")?.addEventListener("click", function(e) {
+         e.preventDefault();
+         self.location = '/board/adminpage';
+     });
+
  });
 </script>
-
 
 </html>

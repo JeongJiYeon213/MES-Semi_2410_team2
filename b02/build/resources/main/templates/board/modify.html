@@ -61,41 +61,7 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-        // 삭제 버튼 클릭 시 POST 요청 보내기
-        document.querySelector(".removeBtn").addEventListener("click", function() {
-            if (!confirm("정말 삭제하시겠습니까?")) {
-                return;
-            }
 
-            // 폼 생성 후 제출 (POST 요청)
-            const form = document.createElement("form");
-            form.method = "post";
-            form.action = "/board/remove";
-
-            const input = document.createElement("input");
-            input.type = "hidden";
-            input.name = "bno";
-            input.value = document.querySelector("[name='bno']").value;
-
-            form.appendChild(input);
-            document.body.appendChild(form);
-            form.submit();
-        });
-
-        // 수정 버튼 클릭 시 폼 제출
-        document.querySelector(".modBtn").addEventListener("click", function(e) {
-            e.preventDefault();
-            const formObj = document.querySelector("#modifyForm");
-            formObj.submit();
-        });
-
-        // 목록 버튼 클릭 시 페이지 이동
-        document.querySelector(".listBtn").addEventListener("click", function(e) {
-            e.preventDefault();
-            self.location = `/board/adminpage`;
-        });
-    });
 </script>
 
 </body>
