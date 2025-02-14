@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Board Register</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h2>행 추가하기</h2>
+                    <button class="btn btn-primary mb-3" id="addRowBtn">행 추가</button>
+                    <div class="row mb-2">
+                        <div class="col-2">첫 번째 열</div>
+                        <div class="col-2">두 번째 열</div>
+                        <div class="col-2">세 번째 열</div>
+                        <div class="col-2">세 번째 열</div>
+                        <div class="col-2">세 번째 열</div>
+                        <div class="col-2">세 번째 열</div>
+                    </div>
+                </div>
+                    <!-- 행을 추가할 영역 -->
+                    <div id="rowContainer">
+                        <div class="row mb-2">
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+
+
+    // 버튼 클릭 시 새로운 행을 추가하는 JavaScript
+    document.getElementById('addRowBtn').addEventListener('click', function() {
+      var rowContainer = document.getElementById('rowContainer');
+
+      // 새로운 행을 추가
+      var newRow = document.createElement('div');
+      newRow.classList.add('row', 'mb-2');
+      newRow.innerHTML = `
+        <div class="col-2">새로운 열 1</div>
+        <div class="col-2">새로운 열 2</div>
+        <div class="col-2">새로운 열 3</div>
+        <div class="col-2">새로운 열 3</div>
+        <div class="col-2">새로운 열 3</div>
+        <div class="col-2">새로운 열 3</div>
+      `;
+      rowContainer.appendChild(newRow);
+    });
+
+
+</script>
