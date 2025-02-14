@@ -27,7 +27,7 @@ public class CustomerController {
     public void list(PageRequestDTO pageRequestDTO,
                      Model model,
                      @RequestParam(value = "selectedCustomerId", required = false) String selectedCustomerId,
-                     @RequestParam(value = "registerMode", required = false) Boolean registerMode,
+                     @RequestParam(defaultValue = "false") Boolean registerMode,
                      @RequestParam(value = "modifyMode", required = false) Boolean modifyMode,
                      @RequestParam(value = "customerId", required = false) String customerId) {
 
@@ -116,7 +116,7 @@ public class CustomerController {
 
         customerService.modify(customerDTO);
         redirectAttributes.addFlashAttribute("result", "modified");
-        redirectAttributes.addAttribute("customerId", customerDTO.getCustomerId());
+        redirectAttributes.addAttribute("selectedCustomerId", customerDTO.getCustomerId());
 
         return "redirect:/mes/customer/list";
     }

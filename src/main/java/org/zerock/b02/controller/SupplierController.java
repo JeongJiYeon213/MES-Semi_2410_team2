@@ -96,13 +96,13 @@ public class SupplierController {
 
             String link = pageRequestDTO.getLink();
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            redirectAttributes.addAttribute("selectedCustomerId",supplierDTO.getSupplierId());
+            redirectAttributes.addAttribute("selectedSupplierId",supplierDTO.getSupplierId());
             return "redirect:/mes/supplier/list?"+link;
         }
 
         supplierService.modify(supplierDTO);
         redirectAttributes.addFlashAttribute("result", "modified");
-        redirectAttributes.addAttribute("supplierId", supplierDTO.getSupplierId());
+        redirectAttributes.addAttribute("selectedSupplierId", supplierDTO.getSupplierId());
 
         return "redirect:/mes/supplier/list";
     }

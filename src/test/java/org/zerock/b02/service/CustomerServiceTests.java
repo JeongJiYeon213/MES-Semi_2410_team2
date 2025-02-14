@@ -39,7 +39,8 @@ public class CustomerServiceTests {
     public void testModify(){
 
         CustomerDTO customerDTO = CustomerDTO.builder()
-                .customerName("updateName")
+                .customerId("a1")
+                .customerName("고객100")
                 .customerInfo("000000000")
                 .build();
 
