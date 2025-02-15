@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Board Register</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Outbound Register
+                </div>
+                <div class="card-body">
+                    <form action="/mes/outbound/register" method="post">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Outbound Code</span>
+                            <input type="text" name="outboundCode" class="form-control" readonly>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Product Code</span>
+                            <input type="text" id="productCode" name="productCode" class="form-control" required readonly>
+                            <button type="button" class="btn btn-outline-secondary" onclick="openProductPopup();">Search</button>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Supplier Id</span>
+                            <input type="text" id="supplierId" name="supplierId" class="form-control" required readonly>
+                            <button type="button" class="btn btn-outline-primary" onclick="openSupplierPopup();">Search</button>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Quantity</span>
+                            <input type="text" name="quantity" class="form-control" required placeholder="">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Outbound Date</span>
+                            <input type="datetime-local" name="outboundDate" class="form-control" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label>
+                            <span class="input-group-text">Status</span>
+                            </label>
+                            <select id="outboundStatus" name="outboundStatus">
+                                <option value="PENDING">PENDING</option>
+                                <option value="COMPLETED">COMPLETED</option>
+                                <option value="CANCELED">CANCELED</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Description</span>
+                            <input type="text" name="description" class="form-control" placeholder="Write here" required>
+                        </div>
+
+                        <div class="my-4">
+                            <div>
+                                <button type="button" class="btn btn-primary" onclick="location.href = '/mes/outbound/list';">List</button>
+                            </div>
+
+                            <div class="float-end">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+    const errors = [[${errors}]]
+    console.log(errors)
+
+    let errorMsg = ''
+
+    if(errors){
+      for (let i = 0; i < errors.length; i++) {
+        errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+      }
+      alert(errorMsg)
+    }
+
+    // product popup code 가져오기
+    function openProductPopup() {
+        let popup = open("/mes/product/searchPopup", "Product Search", "width=600,height=400");
+
+        // 팝업에서 데이터를 받아오는 이벤트 처리
+        addEventListener("message", function(event) {
+            if (event.origin !== location.origin) return;
+
+            const productData = event.data;
+            if (productData && productData.productCode) {
+                document.getElementById("productCode").value = productData.productCode; // 팝업에서 선택한 productCode를 input 필드에 채워줌
+            }
+        }, false);
+    }
+
+    // supplier popup id 가져오기
+    function openSupplierPopup() {
+        let popup = open("/mes/supplier/searchPopup", "Supplier Search", "width=600,height=400");
+
+        // 팝업에서 데이터를 받아오는 이벤트 처리
+        addEventListener("message", function(event) {
+            if (event.origin !== location.origin) return;
+
+            const supplierData = event.data;
+            if (supplierData && supplierData.supplierId) {
+                document.getElementById("supplierId").value = supplierData.supplierId; // 팝업에서 선택한 productCode를 input 필드에 채워줌
+            }
+        }, false);
+    }
+
+    // quantity 숫자만
+    document.querySelector('[name="quantity"]').addEventListener('input', function(e) {
+        const value = e.target.value;
+
+        // 숫자가 아닌 문자가 입력될 경우
+        if (/[^0-9]/.test(value)) {
+            // 알림 메시지 표시
+            alert("숫자만 입력 가능합니다.");
+            // 마지막 문자 제거
+            e.target.value = value.replace(/[^0-9]/g, '');
+        }
+    });
+
+</script>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Register</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h2>행 추가하기</h2>
+                    <button class="btn btn-primary mb-3" id="addRowBtn">행 추가</button>
+                    <div class="row mb-2">
+                        <div class="col-2">제품번호</div>
+                        <div class="col-2">거래처</div>
+                        <div class="col-2">수량</div>
+                        <div class="col-2">입고일</div>
+                        <div class="col-2">상태</div>
+                        <div class="col-2">비고</div>
+                    </div>
+                </div>
+                    <!-- 행을 추가할 영역 -->
+                <div class="card-body">
+                    <form id="registerForm" action="/mes/inbound/register" method="post">
+                    <div id="rowContainer">
+                        <div class="row mb-2">
+                        </div>
+                    </div>
+                    <div class="float-end">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+
+
+    // 버튼 클릭 시 새로운 행을 추가
+    document.getElementById('addRowBtn').addEventListener('click', function() {
+      var rowContainer = document.getElementById('rowContainer');
+
+      // 새로운 행을 추가
+      var newRow = document.createElement('div');
+      newRow.classList.add('row', 'mb-2');
+      newRow.innerHTML = `
+         <div class="col-2">
+            <input type="text" id="productCode" name="productCode" class="form-control" readonly>
+            <button type="button" class="btn btn-outline-primary" onclick="openProductPopup(this);">Search</button>
+        </div>
+        <div class="col-2">
+            <input type="text" id="supplierId" name="supplierId" class="form-control" required readonly>
+            <button type="button" class="btn btn-outline-secondary" onclick="openSupplierPopup(this);">Search</button>
+        </div>
+        <div class="col-2">
+        <input type="number" name="quantity" class="form-control" required placeholder="">
+        </div>
+        <div class="col-2"><input type="datetime-local" name="inboundDate" class="form-control" required></div>
+        <div class="col-2"><select id="inboundStatus" name="inboundStatus">
+                                <option value="PENDING">PENDING</option>
+                                <option value="COMPLETED">COMPLETED</option>
+                                <option value="CANCELED">CANCELED</option>
+                            </select>
+        </div>
+        <div class="col-2">
+            <input type="text" name="description" class="form-control" placeholder="Write here" required>
+        </div>
+      `;
+      rowContainer.appendChild(newRow);
+    });
+
+   // 'Register' 버튼 클릭 시 모든 행을 하나씩 전송
+    document.getElementById('registerForm').addEventListener('submit', function() {
+        event.preventDefault();
+        var rowContainer = document.getElementById('rowContainer');
+        var rows = rowContainer.querySelectorAll('.row');
+
+        // 모든 행에 대해 반복
+        rows.forEach(function(row, index) {
+            var form = document.createElement('form');
+            form.action = "/mes/inbound/register";
+            form.method = "post";  // POST 방식으로 전송
+
+            // 행의 입력값들을 form에 추가
+            var inputs = row.querySelectorAll('input, select');
+            inputs.forEach(function(input) {
+                var inputClone = input.cloneNode();
+                form.appendChild(inputClone);
+            });
+
+            // 각 행을 차례대로 서버로 전송
+            document.body.appendChild(form);
+            form.submit();
+        });
+    });
+
+    // product popup code 가져오기
+    function openProductPopup(button) {
+        let row = button.closest('.row');  // 클릭한 버튼이 포함된 행을 찾음
+        let productCodeField = row.querySelector('[name="productCode"]');
+        let popup = open("/mes/product/searchPopup", "Product Search", "width=600,height=400");
+
+        // 팝업에서 데이터를 받아오는 이벤트 처리
+        addEventListener("message", function(event) {
+            if (event.origin !== location.origin) return;
+
+            const productData = event.data;
+            if (productData && productData.productCode) {
+                productCodeField.value = productData.productCode;
+            }
+        }, { once: true });
+    }
+
+    // supplier popup id 가져오기
+    function openSupplierPopup(button) {
+        let row = button.closest('.row');  // 클릭한 버튼이 포함된 행을 찾음
+        let supplierIdField = row.querySelector('[name="supplierId"]');
+        let popup = open("/mes/supplier/searchPopup", "Supplier Search", "width=600,height=400");
+
+        // 팝업에서 데이터를 받아오는 이벤트 처리
+        addEventListener("message", function(event) {
+            if (event.origin !== location.origin) return;
+
+            const supplierData = event.data;
+            if (supplierData && supplierData.supplierId) {
+                supplierIdField.value = supplierData.supplierId;
+            }
+        }, { once: true });
+    }
+
+</script>
