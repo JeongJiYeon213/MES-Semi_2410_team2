@@ -43,10 +43,17 @@ public class InboundServiceImpl implements InboundService{
 
         String[] productCodes = inboundDTO.getProductCode().split(",");
         String[] supplierIds = inboundDTO.getSupplierId().split(",");
+        String[] quantities = inboundDTO.getQuantity().toString().split(",");
+        String[] inboundStatuses = inboundDTO.getInboundStatus().split(",");
+        String[] descriptions = inboundDTO.getDescription().split(",");
 
         for (int i = 0; i < productCodes.length; i++) {
             String productCode = productCodes[i].trim();
             String supplierId = supplierIds[i].trim();
+            String quantity = quantities[i].trim();
+            String inboundStatus = inboundStatuses[i].trim();
+            String description = descriptions[i].trim();
+
 
             Product product = productRepository.findByProductCode(productCode)
                     .orElseThrow(() -> new RuntimeException("Product not found with productCode: " + productCode));
@@ -63,12 +70,14 @@ public class InboundServiceImpl implements InboundService{
             Inbound inbound = modelMapper.map(inboundDTO, Inbound.class);
             inbound.setProduct(product);
             inbound.setSupplier(supplier);
+            inbound.setQuantity(Long.parseLong(quantity));
+            inbound.setInboundStatus(inboundStatus);
+            inbound.setDescription(description);
 
             inboundRepository.save(inbound);
         }
         return 1L;
     }
-
     // inboundCode 생성 로직
     private String generateNewInboundCode(Optional<Inbound> lastInbound) {
         String newInboundCode = "I001";  // 기본값
