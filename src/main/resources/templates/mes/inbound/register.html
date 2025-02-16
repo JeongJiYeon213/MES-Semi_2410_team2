@@ -81,31 +81,6 @@
       rowContainer.appendChild(newRow);
     });
 
-   // 'Register' 버튼 클릭 시 모든 행을 하나씩 전송
-    document.getElementById('registerForm').addEventListener('submit', function() {
-        event.preventDefault();
-        var rowContainer = document.getElementById('rowContainer');
-        var rows = rowContainer.querySelectorAll('.row');
-
-        // 모든 행에 대해 반복
-        rows.forEach(function(row, index) {
-            var form = document.createElement('form');
-            form.action = "/mes/inbound/register";
-            form.method = "post";  // POST 방식으로 전송
-
-            // 행의 입력값들을 form에 추가
-            var inputs = row.querySelectorAll('input, select');
-            inputs.forEach(function(input) {
-                var inputClone = input.cloneNode();
-                form.appendChild(inputClone);
-            });
-
-            // 각 행을 차례대로 서버로 전송
-            document.body.appendChild(form);
-            form.submit();
-        });
-    });
-
     // product popup code 가져오기
     function openProductPopup(button) {
         let row = button.closest('.row');  // 클릭한 버튼이 포함된 행을 찾음
