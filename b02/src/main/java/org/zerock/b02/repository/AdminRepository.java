@@ -6,12 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.zerock.b02.domain.Admin;
-import org.zerock.b02.repository.search.BoardSearch;
+import org.zerock.b02.repository.search.AdminSearch;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface AdminRepository extends JpaRepository<Admin, Long>, BoardSearch {
+public interface AdminRepository extends JpaRepository<Admin, Long>, AdminSearch {
 
     // JPA @Query Method -> JPQL
 

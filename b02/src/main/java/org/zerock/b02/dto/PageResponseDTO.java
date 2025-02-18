@@ -23,10 +23,10 @@ public class PageResponseDTO {
 
     private boolean next;
 
-    private List<BoardDTO> dtoList;
+    private List<AdminDTO> dtoList;
 
     @Builder
-    public PageResponseDTO(PageRequestDTO pageRequestDTO, List<BoardDTO> dtoList, int total) {
+    public PageResponseDTO(PageRequestDTO pageRequestDTO, List<AdminDTO> dtoList, int total) {
 
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();
