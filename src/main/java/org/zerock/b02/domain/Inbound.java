@@ -3,6 +3,7 @@ package org.zerock.b02.domain;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -29,15 +30,19 @@ public class Inbound extends BaseEntity {
     @JoinColumn(name = "supplierId", referencedColumnName = "supplierId", nullable = false)
     private Supplier supplier;
 
+    @Setter
     @Column(nullable = false)
     private Long quantity;
 
-    @Column(nullable = false)
+    @Setter
+    @Column(name = "inboundDate", nullable = false)
     private LocalDateTime inboundDate;
 
+    @Setter
     @Column(length = 500)
     private String description;
 
+    @Setter
     @Column(name = "status",nullable = false)
     private String inboundStatus;
 

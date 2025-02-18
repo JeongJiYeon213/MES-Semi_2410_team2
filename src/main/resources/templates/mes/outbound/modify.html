@@ -1,192 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
-    <title>Modify</title>
+    <meta charset="UTF-8">
+    <title>입고 관리</title>
 </head>
+
 <body>
-<div layout:fragment="content">
-    <div class="row mt-3">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    Outbound Modify
+<div th:fragment="selectedOutbound">
+    <div class="card">
+        <div class="card-header">
+            상세정보
+        </div>
+        <div class="card-body">
+            <form th:action="@{/mes/outbound/modify}" method="post" id="modifyForm">
+                <input type="hidden" name="outboundId" th:value="${selectedOutbound.outboundId}">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">OutboundCode</span>
+                    <input type="text" class="form-control" th:value="${selectedOutbound.outboundCode}" id="outboundCode" name="outboundCode" readonly>
                 </div>
-                <div class="card-body">
-                    <form th:action="@{/mes/outbound/modify}" method="post" id="f1">
 
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Outbound Id</span>
-                            <input type="text"
-                                   class="form-control"
-                                   th:value="${outbound.outboundId}"
-                                   id="outboundId"
-                                   name="outboundId"
-                                   readonly>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Outbound Code</span>
-                            <input type="text"
-                                   class="form-control"
-                                   th:value="${outbound.outboundCode}"
-                                   id="outboundCode"
-                                   name="outboundCode"
-                                   readonly>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Product Code</span>
-                            <input type="text"
-                                   class="form-control"
-                                   th:value="${outbound.productCode}"
-                                   id="productCode"
-                                   name="productCode" readonly>
-                            <button type="button" class="btn btn-outline-primary" onclick="openProductPopup();">Search</button>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Supplier Id</span>
-                            <input type="text"
-                                   class="form-control"
-                                   th:value="${outbound.supplierId}"
-                                   id="supplierId"
-                                   name="supplierId" readonly>
-                            <button type="button" class="btn btn-outline-secondary" onclick="openSupplierPopup();">Search</button>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Quantity</span>
-                            <input type="text"
-                                   class="form-control"
-                                   th:value="${outbound.quantity}"
-                                   id="quantity"
-                                   name="quantity">
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Outbound Date</span>
-                            <input type="datetime-local"
-                                   class="form-control"
-                                   id="outboundDate"
-                                   th:value="${#temporals.format(outbound.outboundDate, 'yyyy-MM-dd HH:mm:ss')}"
-                                   name="outboundDate"
-                                   >
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Status</span>
-                            <select id="outboundStatus" name="outboundStatus">
-                                <option value="PENDING">PENDING</option>
-                                <option value="COMPLETED">COMPLETED</option>
-                                <option value="CANCELED">CANCELED</option>
-                            </select>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Description</span>
-                            <input type="text"
-                                   class="form-control"
-                                   th:value="${outbound.description}"
-                                   name="description">
-                        </div>
-
-                        <div class="my-4">
-                            <div class="float-end">
-                                <button type="button" class="btn btn-primary listBtn">List</button>
-                                <button type="button" class="btn btn-secondary modBtn">Modify</button>
-                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">ProductCode</span>
+                    <input type="text" id="productCode" name="productCode" class="form-control" th:value="${selectedOutbound.productCode}" readonly>
+                    <button type="button" class="btn btn-outline-primary" onclick="openProductPopup();">Search</button>
                 </div>
-            </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Supplier Id</span>
+                    <input type="text" class="form-control" th:value="${selectedOutbound.supplierId}" id="supplierId" name="supplierId" readonly>
+                    <button type="button" class="btn btn-outline-secondary" onclick="openSupplierPopup();">Search</button>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Quantity</span>
+                    <input type="text" class="form-control" th:value="${selectedOutbound.quantity}" id="quantity" name="quantity">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">OutboundDate</span>
+                    <input type="datetime-local" name="outboundDate" class="form-control" id="outboundDate" th:value="${#temporals.format(selectedOutbound.outboundDate, 'yyyy-MM-dd HH:mm:ss')}"
+                    >
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Status</span>
+                    <select id="outboundStatus" name="outboundStatus">
+                        <option value="PENDING">PENDING</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                        <option value="CANCELED">CANCELED</option>
+                    </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description</span>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${selectedOutbound.description}"
+                           name="description">
+                </div>
+
+
+                <div class="my-4">
+                    <div class="float-end" th:with="link = ${pageRequestDTO.getLink()}">
+                        <a th:href="|@{/mes/outbound/list}?${link}|" class="text-decoration-none">
+                            <button type="button" class="btn btn-dark">목록</button>
+                        </a>
+                        <button type="submit" class="btn btn-dark">수정</button>
+                        <button type="button" class="btn btn-danger removeBtn">삭제</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 </body>
-<script layout:fragment="script" th:inline="javascript">
-
-    const errors = [[${errors}]]
-    console.log(errors)
-
-    let errorMsg = ''
-
-    if(errors){
-        for (let i = 0; i < errors.length; i++) {
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-        }
-        history.replaceState({}, null, null)
-        alert(errorMsg)
-    }
-
-    const link = [[${pageRequestDTO.getLink()}]]
-    const formObj = document.querySelector("#f1")
-
-    // 수정
-    document.querySelector(".modBtn").addEventListener("click", function(e){
-                 e.preventDefault()
-                 e.stopPropagation()
-                 formObj.action =`/mes/outbound/modify`
-                 formObj.method ="post"
-                 formObj.submit()
-             },false);
-    // 삭제
-    document.querySelector(".removeBtn").addEventListener("click", function(e){
-                 e.preventDefault()
-                 e.stopPropagation()
-
-                 const link = [[${pageRequestDTO.getLink()}]];
-
-              // 히든 인풋 필드 추가하여 링크 값을 포함시킴
-              const hiddenInput = document.createElement('input');
-              hiddenInput.type = 'hidden';
-              hiddenInput.name = 'link';
-              hiddenInput.value = link;
-              formObj.appendChild(hiddenInput);
-
-                 formObj.action =`/mes/outbound/remove`
-                 formObj.method ="post"
-                 formObj.submit()
-             },false);
-
-    // 리스트로 돌아가기
-    document.querySelector(".listBtn").addEventListener("click", function(e){
-                 e.preventDefault()
-                 e.stopPropagation()
-                 formObj.reset()
-                 self.location = `/mes/outbound/list?${link}`
-             },false);
-
-    // product popup code 가져오기
-    function openProductPopup() {
-        let popup = open("/mes/product/searchPopup", "Product Search", "width=600,height=400");
-
-        // 팝업에서 데이터를 받아오는 이벤트 처리
-        addEventListener("message", function(event) {
-            if (event.origin !== location.origin) return;
-
-            const productData = event.data;
-            if (productData && productData.productCode) {
-                document.getElementById("productCode").value = productData.productCode; // 팝업에서 선택한 productCode를 input 필드에 채워줌
-            }
-        }, false);
-    }
-
-    // supplier popup id 가져오기
-    function openSupplierPopup() {
-        let popup = open("/mes/supplier/searchPopup", "Supplier Search", "width=600,height=400");
-
-        // 팝업에서 데이터를 받아오는 이벤트 처리
-        addEventListener("message", function(event) {
-            if (event.origin !== location.origin) return;
-
-            const supplierData = event.data;
-            if (supplierData && supplierData.supplierId) {
-                document.getElementById("supplierId").value = supplierData.supplierId; // 팝업에서 선택한 productCode를 input 필드에 채워줌
-            }
-        }, false);
-    }
-</script>
 </html>

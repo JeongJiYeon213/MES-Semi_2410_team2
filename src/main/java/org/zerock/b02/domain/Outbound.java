@@ -30,15 +30,19 @@ public class Outbound extends BaseEntity {
     @JoinColumn(name = "supplierId", referencedColumnName = "supplierId", nullable = false)
     private Supplier supplier;
 
+    @Setter
     @Column(nullable = false)
     private Long quantity;
 
+    @Setter
     @Column(nullable = false)
     private LocalDateTime outboundDate;
 
+    @Setter
     @Column(length = 500)
     private String description;
 
+    @Setter
     @Column(name = "status",nullable = false)
     private String outboundStatus;
 

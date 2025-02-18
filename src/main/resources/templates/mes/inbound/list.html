@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/basic.html}">
 <div layout:fragment="content">
 
     <div class="row mt-3">
@@ -10,14 +8,14 @@
                 <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <select class="form-select" name="type">
-                            <option value="a" th:selected="${pageRequestDTO.type =='a'}" >Inbound Code</option>
+                        <select class="form-select" name="type" id="searchType">
+                            <option value="a" th:selected="${pageRequestDTO.type =='a'}">Inbound Code</option>
                             <option value="b" th:selected="${pageRequestDTO.type =='b'}">Product Code</option>
                             <option value="c" th:selected="${pageRequestDTO.type =='c'}">Supplier Id</option>
                             <option value="d" th:selected="${pageRequestDTO.type =='d'}">Status</option>
                         </select>
                     </div>
-                    <div>
+                    <div id="keywordContainer">
                         <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
                     </div>
                     <input type="datetime-local" name="from" class="form-control">
@@ -49,21 +47,20 @@
                             <th scope="col">거래처</th>
                             <th scope="col">수량</th>
                             <th scope="col">입고일</th>
-                            <th scope="col">비고</th>
                             <th scope="col">상태</th>
+                            <th scope="col">비고</th>
                         </tr>
                         </thead>
 
                         <tbody th:with="link = ${pageRequestDTO.getLink()}">
                         <tr th:each="inbound:${responseDTO.dtoList}">
-                            <td><a th:href="|@{/mes/inbound/list(selectedInboundId =${inbound.InboundId})}&${link}|"
-                                   style="text-decoration: none">[[${inbound.inboundCode}]]</a></td>
+                            <td><a th:href="|@{/mes/inbound/list(selectedInboundId =${inbound.InboundId})}&${link}|" style="text-decoration: none">[[${inbound.inboundCode}]]</a></td>
                             <td>[[${inbound.productCode}]]</td>
                             <td>[[${inbound.supplierId}]]</td>
                             <td>[[${inbound.quantity}]]</td>
                             <td>[[${#temporals.format(inbound.inboundDate, 'yyyy-MM-dd HH:mm')}]]</td>
-                            <td>[[${inbound.description}]]</td>
                             <td>[[${inbound.inboundStatus}]]</td>
+                            <td>[[${inbound.description}]]</td>
                         </tr>
                         </tbody>
                     </table>
@@ -127,25 +124,60 @@
 
   },false)
 
+   document.getElementById('searchType').addEventListener('change', function() {
+        updateKeywordField();
+    });
+
+    function updateKeywordField() {
+        const searchType = document.getElementById('searchType').value;
+        const keywordContainer = document.getElementById('keywordContainer');
+        if (searchType === 'd') {
+            keywordContainer.innerHTML = `
+                <select class="form-control" name="keyword" id="keyword">
+                    <option value="PENDING">PENDING</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="CANCELED">CANCELED</option>
+                </select>
+            `;
+        } else {
+            keywordContainer.innerHTML = `
+                <input type="text" class="form-control" name="keyword" id="keyword" th:value="${pageRequestDTO.keyword}">
+            `;
+        }
+    }
+
+    // 페이지 로드 시 초기화
+    document.addEventListener('DOMContentLoaded', function() {
+        updateKeywordField();
+    });
+
+
     // 페이지 이동처리
     document.querySelector(".pagination").addEventListener("click", function (e) {
-        e.preventDefault()
-        e.stopPropagation()
+        e.preventDefault();
+        e.stopPropagation();
 
-        const target = e.target
-
-        if(target.tagName !== 'A') {
-            return
+        const target = e.target;
+        if (target.tagName !== 'A') {
+            return;
         }
-        const num = target.getAttribute("data-num")
 
-        const formObj = document.querySelector("form")
+        const num = target.getAttribute("data-num");
 
-        formObj.innerHTML += `<input type='hidden' name='selectedInboundId' value='${selectedInboundId}'>`
-        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
+        // 현재 URL의 쿼리스트링 가져오기
+        const params = new URLSearchParams(window.location.search);
 
+        // 페이지 번호 업데이트
+        params.set("page", num);
 
-        formObj.submit();
+        // 현재 선택된 제품 ID 유지
+        const selectedInboundId = params.get("selectedInboundId");
+        if (selectedInboundId) {
+            params.set("selectedInboundId", selectedInboundId);
+        }
+
+        // 새로운 URL로 이동
+        window.location.href = `/mes/inbound/list?${params.toString()}`;
 
     },false)
     const link = [[${pageRequestDTO.getLink()}]]
@@ -162,14 +194,6 @@
                  formObj.action =`/mes/inbound/remove`
                  formObj.method ="post"
                  formObj.submit();
-             },false);
-
-    // 리스트로 돌아가기
-    document.querySelector(".listBtn").addEventListener("click", function(e){
-                 e.preventDefault()
-                 e.stopPropagation()
-                 formObj.reset()
-                 self.location = `/mes/inbound/list?${link}`
              },false);
 
     // product popup code 가져오기

@@ -30,14 +30,14 @@ public class InboundController {
                      Model model,
                      @RequestParam(value = "selectedInboundId", required = false) Long selectedInboundId,
                      @RequestParam(value = "registerMode", required = false) Boolean registerMode,
-                     @RequestParam(value = "modifyMode", required = false) Boolean modifyMode){
+                     @RequestParam(value = "modifyMode", required = false) Boolean modifyMode) {
 
-        PageResponseDTO<InboundDTO> responseDTO = inboundService.list(pageRequestDTO);
+        PageResponseDTO < InboundDTO > responseDTO = inboundService.list(pageRequestDTO);
 
         model.addAttribute("responseDTO", responseDTO);
         model.addAttribute("pageRequestDTO", pageRequestDTO);
 
-        if(selectedInboundId != null){
+        if (selectedInboundId != null) {
             InboundDTO selectedInbound = inboundService.readOne(selectedInboundId);
             model.addAttribute("selectedInbound", selectedInbound);
         }
@@ -47,17 +47,16 @@ public class InboundController {
     }
 
     @GetMapping("/inbound/register")
-    public void inboundRegisterGet(){
-    }
+    public void inboundRegisterGet() {}
 
 
     @PostMapping("/inbound/register")
     public String registerPost(@Valid InboundDTO inboundDTO,
                                BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes){
+                               RedirectAttributes redirectAttributes) {
         log.info("inbound Post register.........");
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             log.info("has errors.....");
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/mes/inbound/register";
@@ -69,9 +68,12 @@ public class InboundController {
         return "redirect:/mes/inbound/list";
     }
 
-    @GetMapping({"/inbound/read", "/inbound/modify"})
+    @GetMapping({
+            "/inbound/read",
+            "/inbound/modify"
+    })
     public String read(@RequestParam("selectedInboundId") Long selectedInboundId,
-                     PageRequestDTO pageRequestDTO, Model model){
+                       PageRequestDTO pageRequestDTO, Model model) {
         InboundDTO inboundDTO = inboundService.readOne(selectedInboundId);
         log.info(inboundDTO);
         model.addAttribute("selectedInbound", inboundDTO);
@@ -84,25 +86,25 @@ public class InboundController {
     public String modify(@Valid InboundDTO inboundDTO,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes,
-                         PageRequestDTO pageRequestDTO){
+                         PageRequestDTO pageRequestDTO) {
         log.info("inbound Post modify.........");
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             log.info("has errors.....");
             String link = pageRequestDTO.getLink();
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             redirectAttributes.addAttribute("inboundId", inboundDTO.getInboundId());
-            return "redirect:/mes/inbound/list?"+link;
+            return "redirect:/mes/inbound/list?" + link;
         }
 
         inboundService.modify(inboundDTO);
         redirectAttributes.addFlashAttribute("result", "modified");
-        redirectAttributes.addAttribute("selectedInboundId",inboundDTO.getInboundId());
+        redirectAttributes.addAttribute("selectedInboundId", inboundDTO.getInboundId());
         return "redirect:/mes/inbound/list";
     }
 
     @PostMapping("/inbound/remove")
-    public String remove(Long inboundId, RedirectAttributes redirectAttributes, PageRequestDTO pageRequestDTO){
+    public String remove(Long inboundId, RedirectAttributes redirectAttributes, PageRequestDTO pageRequestDTO) {
         log.info("remove post..." + inboundId);
         String link = pageRequestDTO.getLink();
         inboundService.remove(inboundId);

@@ -6,11 +6,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.zerock.b02.domain.Inbound;
 import org.zerock.b02.domain.Outbound;
 import org.zerock.b02.domain.Product;
+
 import org.zerock.b02.domain.Supplier;
-import org.zerock.b02.dto.InboundDTO;
 import org.zerock.b02.dto.OutboundDTO;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
@@ -18,6 +17,8 @@ import org.zerock.b02.repository.OutboundRepository;
 import org.zerock.b02.repository.ProductRepository;
 import org.zerock.b02.repository.SupplierRepository;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,22 +37,54 @@ public class OutboundServiceImpl implements OutboundService{
         Optional<Outbound> lastOutbound = outboundRepository.findTopByOrderByOutboundCodeDesc();
 
         String newOutboundCode = generateNewOutboundCode(lastOutbound);
+
         outboundDTO.setOutboundCode(newOutboundCode);
 
-        Product product = productRepository.findByProductCode(outboundDTO.getProductCode())
-                .orElseThrow(() -> new RuntimeException("Product not found with productCode: " + outboundDTO.getProductCode()));
+        String[] productCodes = outboundDTO.getProductCode().split(",");
+        String[] supplierIds = outboundDTO.getSupplierId().split(",");
+        String[] outboundStatuses = outboundDTO.getOutboundStatus().split(",");
+        String[] descriptions = outboundDTO.getDescription().split(",");
+        Long quantities = outboundDTO.getQuantity();
+        LocalDateTime outboundDates = outboundDTO.getOutboundDate();
+        // quantity 배열을 Long[]로 변환
 
-        Supplier supplier = supplierRepository.findBySupplierId(outboundDTO.getSupplierId())
-                .orElseThrow(() -> new RuntimeException("Supplier not found with supplierId: " + outboundDTO.getSupplierId()));
+        log.info("outboundStatuses: " + Arrays.toString(outboundStatuses));
+        log.info("descriptions: " + Arrays.toString(descriptions));
+        log.info("quantities: " + quantities);
+        log.info("outboundDates: " + outboundDates);
 
-        Outbound outbound = modelMapper.map(outboundDTO, Outbound.class);
-        outbound.setProduct(product);
-        outbound.setSupplier(supplier);
 
-        return outboundRepository.save(outbound).getOutboundId();
+        for (int i = 0; i < productCodes.length; i++) {
+            String productCode = productCodes[i].trim();
+            String supplierId = supplierIds[i].trim();
+            String outboundStatus = outboundStatuses[i].trim();
+            String description = descriptions[i].trim();
+
+            Product product = productRepository.findByProductCode(productCode)
+                    .orElseThrow(() -> new RuntimeException("Product not found with productCode: " + productCode));
+
+            Supplier supplier = supplierRepository.findBySupplierId(supplierId)
+                    .orElseThrow(() -> new RuntimeException("Supplier not found with supplierId: " + supplierId));
+
+            lastOutbound = outboundRepository.findTopByOrderByOutboundCodeDesc();
+
+            newOutboundCode = generateNewOutboundCode(lastOutbound);
+
+            outboundDTO.setOutboundCode(newOutboundCode);
+
+            Outbound outbound = modelMapper.map(outboundDTO, Outbound.class);
+            outbound.setProduct(product);
+            outbound.setSupplier(supplier);
+            outbound.setOutboundStatus(outboundStatus);
+            outbound.setDescription(description);
+            outbound.setQuantity(quantities);
+            outbound.setOutboundDate(outboundDates);
+
+            outboundRepository.save(outbound);
+        }
+        return 1L;
     }
 
-    // inboundCode 생성 로직
     private String generateNewOutboundCode(Optional<Outbound> lastOutbound) {
         String newOutboundCode = "O001";
 
@@ -103,15 +136,15 @@ public class OutboundServiceImpl implements OutboundService{
     }
 
     @Override
-    public void remove(Long inboundId){
-        outboundRepository.deleteById(inboundId);
+    public void remove(Long outboundId){
+        outboundRepository.deleteById(outboundId);
     }
 
     @Override
     public PageResponseDTO list(PageRequestDTO pageRequestDTO){
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
-        Pageable pageable = pageRequestDTO.getPageable("inboundId");
+        Pageable pageable = pageRequestDTO.getPageable("outboundId");
 
         Page<Outbound> result = outboundRepository.searchAll(types,keyword, pageable);
 

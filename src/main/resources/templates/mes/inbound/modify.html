@@ -64,7 +64,11 @@
 
                 <div class="input-group mb-3">
                     <span class="input-group-text">Status</span>
-                    <input type="text" name="inboundStatus" class="form-control" th:value="${selectedInbound.inboundStatus}">
+                    <select id="inboundStatus" name="inboundStatus">
+                        <option value="PENDING">PENDING</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                        <option value="CANCELED">CANCELED</option>
+                    </select>
                 </div>
 
                 <div class="input-group mb-3">

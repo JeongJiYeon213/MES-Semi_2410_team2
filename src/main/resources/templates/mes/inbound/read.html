@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>제품 등록</title>
 </head>
+
 <body>
 <div th:fragment="selectedInbound">
     <div class="card">
@@ -34,8 +36,7 @@
 
             <div class="input-group mb-3">
                 <span class="input-group-text">InboundDate</span>
-                <input type="datetime-local" class="form-control"
-                       th:value="${#temporals.format(selectedInbound.inboundDate, 'yyyy-MM-dd HH:mm:ss')}" readonly disabled>
+                <input type="datetime-local" class="form-control" th:value="${#temporals.format(selectedInbound.inboundDate, 'yyyy-MM-dd HH:mm:ss')}" readonly disabled>
             </div>
 
             <div class="input-group mb-3">

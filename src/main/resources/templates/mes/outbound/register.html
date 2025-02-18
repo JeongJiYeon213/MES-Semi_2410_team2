@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/basic.html}">
 
 <head>
-    <title>Board Register</title>
+    <title>Register</title>
 </head>
 
 <div layout:fragment="content">
@@ -12,61 +10,61 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    Outbound Register
+                    <h2>Register</h2>
+                    <button class="btn btn-primary mb-3" id="addRowBtn">행 추가</button>
+                    <button class="btn btn-danger mb-3" id="removeRowBtn">행 삭제</button>
+                    <div class="row mb-2">
+                        <div class="col-2">제품번호</div>
+                        <div class="col-2">거래처</div>
+                        <div class="col-2">수량</div>
+                        <div class="col-2">출고일</div>
+                        <div class="col-2">상태</div>
+                        <div class="col-2">비고</div>
+                    </div>
                 </div>
+                <!-- 행을 추가할 영역 -->
                 <div class="card-body">
-                    <form action="/mes/outbound/register" method="post">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Outbound Code</span>
-                            <input type="text" name="outboundCode" class="form-control" readonly>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Product Code</span>
-                            <input type="text" id="productCode" name="productCode" class="form-control" required readonly>
-                            <button type="button" class="btn btn-outline-secondary" onclick="openProductPopup();">Search</button>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Supplier Id</span>
-                            <input type="text" id="supplierId" name="supplierId" class="form-control" required readonly>
-                            <button type="button" class="btn btn-outline-primary" onclick="openSupplierPopup();">Search</button>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Quantity</span>
-                            <input type="text" name="quantity" class="form-control" required placeholder="">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Outbound Date</span>
-                            <input type="datetime-local" name="outboundDate" class="form-control" required>
-                        </div>
-                        <div class="input-group mb-3">
-                            <label>
-                            <span class="input-group-text">Status</span>
-                            </label>
-                            <select id="outboundStatus" name="outboundStatus">
-                                <option value="PENDING">PENDING</option>
-                                <option value="COMPLETED">COMPLETED</option>
-                                <option value="CANCELED">CANCELED</option>
-                            </select>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Description</span>
-                            <input type="text" name="description" class="form-control" placeholder="Write here" required>
-                        </div>
-
-                        <div class="my-4">
-                            <div>
-                                <button type="button" class="btn btn-primary" onclick="location.href = '/mes/outbound/list';">List</button>
+                    <form id="registerForm" action="/mes/outbound/register" method="post">
+                        <div id="rowContainer">
+                            <div class="row mb-2">
+                                <div class="col-2">
+                                    <input type="text" name="productCode" class="form-control" readonly>
+                                    <button type="button" class="btn btn-outline-primary" onclick="openProductPopup(this);">Search</button>
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" name="supplierId" class="form-control" required readonly>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="openSupplierPopup(this);">Search</button>
+                                </div>
+                                <div class="col-2">
+                                    <input type="number" name="quantities" value="0" class="form-control" readonly>
+                                </div>
+                                <div class="col-2">
+                                    <input type="datetime-local" name="outboundDates" value="datetime.now()" class="form-control" readonly>
+                                </div>
+                                <div class="col-2">
+                                    <select name="outboundStatus" class="form-select">
+                                        <option value="PENDING">PENDING</option>
+                                        <option value="COMPLETED">COMPLETED</option>
+                                        <option value="CANCELED">CANCELED</option>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" name="description" class="form-control" required>
+                                </div>
                             </div>
-
-                            <div class="float-end">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="reset" class="btn btn-secondary">Reset</button>
-                            </div>
+                        </div>
+                        <div class="float-end">
+                            <a th:href="|@{/mes/outbound/list}|" class="btn btn-list">
+                                <button type="button" class="btn btn-success">
+                                    List
+                                </button>
+                            </a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
@@ -74,21 +72,70 @@
 
 
 <script layout:fragment="script" th:inline="javascript">
-
-    const errors = [[${errors}]]
-    console.log(errors)
-
-    let errorMsg = ''
-
-    if(errors){
-      for (let i = 0; i < errors.length; i++) {
-        errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-      }
-      alert(errorMsg)
+    // 현재 날짜와 시간을 datetime-local 형식으로 설정하는 함수
+    function getCurrentDateTimeLocal() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
+    // 처음 로드 시 첫 번째 행의 날짜와 수량을 설정
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('input[name="outboundDates"]').value = getCurrentDateTimeLocal();
+        document.querySelector('input[name="quantities"]').value = 0;
+    });
+
+
+    // 버튼 클릭 시 새로운 행을 추가
+    document.getElementById('addRowBtn').addEventListener('click', function() {
+        var rowContainer = document.getElementById('rowContainer');
+
+        // 새로운 행을 추가
+        var newRow = document.createElement('div');
+        newRow.classList.add('row', 'mb-2');
+        newRow.innerHTML = `
+        <div class="col-2">
+           <input type="text" id="productCode" name="productCode" class="form-control" readonly>
+           <button type="button" class="btn btn-outline-primary" onclick="openProductPopup(this);">Search</button>
+       </div>
+       <div class="col-2">
+           <input type="text" id="supplierId" name="supplierId" class="form-control" required readonly>
+           <button type="button" class="btn btn-outline-secondary" onclick="openSupplierPopup(this);">Search</button>
+       </div>
+       <div class="col-2">
+       <input type="number" name="quantity" class="form-control" value="0" readonly>
+       </div>
+       <div class="col-2"><input type="datetime-local" name="outboundDate" value="${getCurrentDateTimeLocal()}" class="form-control" readonly></div>
+       <div class="col-2">
+           <select id="outboundStatus" name="outboundStatus">
+               <option value="PENDING">PENDING</option>
+               <option value="COMPLETED">COMPLETED</option>
+               <option value="CANCELED">CANCELED</option>
+           </select>
+       </div>
+       <div class="col-2">
+           <input type="text" name="description" class="form-control" placeholder="Write here" required>
+       </div>
+     `;
+        rowContainer.appendChild(newRow);
+    });
+
+    document.getElementById('removeRowBtn').addEventListener('click', function() {
+        var rowContainer = document.getElementById('rowContainer');
+        if (rowContainer.children.length > 0) {
+            rowContainer.removeChild(rowContainer.lastElementChild);
+        }
+    });
+
+
     // product popup code 가져오기
-    function openProductPopup() {
+    function openProductPopup(button) {
+        let row = button.closest('.row'); // 클릭한 버튼이 포함된 행을 찾음
+        let productCodeField = row.querySelector('[name="productCode"]');
         let popup = open("/mes/product/searchPopup", "Product Search", "width=600,height=400");
 
         // 팝업에서 데이터를 받아오는 이벤트 처리
@@ -97,13 +144,17 @@
 
             const productData = event.data;
             if (productData && productData.productCode) {
-                document.getElementById("productCode").value = productData.productCode; // 팝업에서 선택한 productCode를 input 필드에 채워줌
+                productCodeField.value = productData.productCode;
             }
-        }, false);
+        }, {
+            once: true
+        });
     }
 
     // supplier popup id 가져오기
-    function openSupplierPopup() {
+    function openSupplierPopup(button) {
+        let row = button.closest('.row'); // 클릭한 버튼이 포함된 행을 찾음
+        let supplierIdField = row.querySelector('[name="supplierId"]');
         let popup = open("/mes/supplier/searchPopup", "Supplier Search", "width=600,height=400");
 
         // 팝업에서 데이터를 받아오는 이벤트 처리
@@ -112,22 +163,18 @@
 
             const supplierData = event.data;
             if (supplierData && supplierData.supplierId) {
-                document.getElementById("supplierId").value = supplierData.supplierId; // 팝업에서 선택한 productCode를 input 필드에 채워줌
+                supplierIdField.value = supplierData.supplierId;
             }
-        }, false);
+        }, {
+            once: true
+        });
     }
 
-    // quantity 숫자만
-    document.querySelector('[name="quantity"]').addEventListener('input', function(e) {
-        const value = e.target.value;
-
-        // 숫자가 아닌 문자가 입력될 경우
-        if (/[^0-9]/.test(value)) {
-            // 알림 메시지 표시
-            alert("숫자만 입력 가능합니다.");
-            // 마지막 문자 제거
-            e.target.value = value.replace(/[^0-9]/g, '');
-        }
+    // 폼 제출 시 알림 표시
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        alert('수량과 출고일을 상세정보에서 수정하세요.');
+        this.submit();
     });
-
 </script>
+</html>

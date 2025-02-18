@@ -18,7 +18,7 @@ public class InboundSearchImpl implements InboundSearch {
     private final EntityManager entityManager;
 
     @Override
-    public Page<Inbound> searchAll(String[] types, String keyword, Pageable pageable) {
+    public Page < Inbound > searchAll(String[] types, String keyword, Pageable pageable) {
         // JPQL로 작성
         StringBuilder jpql = new StringBuilder("SELECT i FROM Inbound i WHERE i.inboundId > 0");
 
@@ -52,8 +52,8 @@ public class InboundSearchImpl implements InboundSearch {
         }
 
         // JPQL로 쿼리 생성
-        TypedQuery<Inbound> query = entityManager.createQuery(jpql.toString(), Inbound.class);
-        TypedQuery<Long> countQuery = entityManager.createQuery(
+        TypedQuery < Inbound > query = entityManager.createQuery(jpql.toString(), Inbound.class);
+        TypedQuery < Long > countQuery = entityManager.createQuery(
                 jpql.toString().replace("SELECT i", "SELECT COUNT(i)"), Long.class
         );
 
@@ -68,9 +68,9 @@ public class InboundSearchImpl implements InboundSearch {
         query.setMaxResults(pageable.getPageSize());
 
         // 결과 조회
-        List<Inbound> list = query.getResultList();
+        List < Inbound > list = query.getResultList();
         long count = countQuery.getSingleResult();
 
-        return new PageImpl<>(list, pageable, count);
+        return new PageImpl < > (list, pageable, count);
     }
 }

@@ -10,8 +10,6 @@ import org.zerock.b02.repository.search.InboundSearch;
 import java.util.Optional;
 
 @Repository
-@SpringBootApplication
-@EnableJpaAuditing
 public interface InboundRepository extends JpaRepository<Inbound, Long>, InboundSearch {
 
     Optional<Inbound> findTopByOrderByInboundCodeDesc();

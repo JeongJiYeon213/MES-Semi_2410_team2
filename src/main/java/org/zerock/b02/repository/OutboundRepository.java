@@ -10,8 +10,6 @@ import org.zerock.b02.repository.search.OutboundSearch;
 import java.util.Optional;
 
 @Repository
-@SpringBootApplication
-@EnableJpaAuditing
 public interface OutboundRepository extends JpaRepository<Outbound, Long>, OutboundSearch {
 
     Optional<Outbound> findTopByOrderByOutboundCodeDesc();

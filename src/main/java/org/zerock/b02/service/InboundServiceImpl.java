@@ -17,9 +17,8 @@ import org.zerock.b02.repository.InboundRepository;
 import org.zerock.b02.repository.ProductRepository;
 import org.zerock.b02.repository.SupplierRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,17 +42,23 @@ public class InboundServiceImpl implements InboundService{
 
         String[] productCodes = inboundDTO.getProductCode().split(",");
         String[] supplierIds = inboundDTO.getSupplierId().split(",");
-        String[] quantities = inboundDTO.getQuantity().toString().split(",");
         String[] inboundStatuses = inboundDTO.getInboundStatus().split(",");
         String[] descriptions = inboundDTO.getDescription().split(",");
+        Long quantities = inboundDTO.getQuantity();
+        LocalDateTime inboundDates = inboundDTO.getInboundDate();
+        // quantity 배열을 Long[]로 변환
+
+        log.info("inboundstatus: " + Arrays.toString(inboundStatuses));
+        log.info("descriptions: " + Arrays.toString(descriptions));
+        log.info("quantities: " + quantities);
+        log.info("inboundDates: " + inboundDates);
+
 
         for (int i = 0; i < productCodes.length; i++) {
             String productCode = productCodes[i].trim();
             String supplierId = supplierIds[i].trim();
-            String quantity = quantities[i].trim();
             String inboundStatus = inboundStatuses[i].trim();
             String description = descriptions[i].trim();
-
 
             Product product = productRepository.findByProductCode(productCode)
                     .orElseThrow(() -> new RuntimeException("Product not found with productCode: " + productCode));
@@ -70,9 +75,10 @@ public class InboundServiceImpl implements InboundService{
             Inbound inbound = modelMapper.map(inboundDTO, Inbound.class);
             inbound.setProduct(product);
             inbound.setSupplier(supplier);
-            inbound.setQuantity(Long.parseLong(quantity));
             inbound.setInboundStatus(inboundStatus);
             inbound.setDescription(description);
+            inbound.setQuantity(quantities);
+            inbound.setInboundDate(inboundDates);
 
             inboundRepository.save(inbound);
         }
@@ -84,8 +90,8 @@ public class InboundServiceImpl implements InboundService{
 
         if (lastInbound.isPresent()) {
             String lastInboundCode = lastInbound.get().getInboundCode();
-            int lastCodeNumber = Integer.parseInt(lastInboundCode.substring(1)); // "i001" -> 1
-            newInboundCode = "I" + String.format("%03d", lastCodeNumber + 1); // "i002", "i003", ...
+            int lastCodeNumber = Integer.parseInt(lastInboundCode.substring(1));
+            newInboundCode = "I" + String.format("%03d", lastCodeNumber + 1);
         }
 
         return newInboundCode;
@@ -148,17 +154,15 @@ public class InboundServiceImpl implements InboundService{
         List<InboundDTO> dtoList = result.getContent().stream().map(inbound -> {
             InboundDTO inboundDTO = modelMapper.map(inbound, InboundDTO.class);
 
-            // ✅ Product 엔티티에서 productCode 설정
             if (inbound.getProduct() != null) {
                 inboundDTO.setProductCode(inbound.getProduct().getProductCode());
             }
-            // ✅ Product 엔티티에서 supplierId 설정
             if (inbound.getSupplier() != null) {
                 inboundDTO.setSupplierId(inbound.getSupplier().getSupplierId());
             }
 
-        return inboundDTO;
-    }).collect(Collectors.toList());
+            return inboundDTO;
+        }).collect(Collectors.toList());
 
         return PageResponseDTO.<InboundDTO>builder()
                 .pageRequestDTO(pageRequestDTO)
