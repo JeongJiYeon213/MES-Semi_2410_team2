@@ -2,6 +2,7 @@ package org.zerock.b02.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.zerock.b02.domain.Customer;
@@ -10,7 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, String>, CustomerSearch {
@@ -32,5 +33,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Cus
                                                     @Param("to") LocalDateTime to,
                                                     @Param("customerId") String customerId,
                                                     Pageable pageable);
+
+   Optional<Customer> findTopByOrderByCustomerIdDesc();
 
 }

@@ -30,9 +30,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String register(CustomerDTO customerDTO) {
 
-        Customer customer = modelMapper.map(customerDTO, Customer.class);
-        String customerId = customerRepository.save(customer).getCustomerId();
-        return customerId;
+        Customer customer = customerDTO.toEntity();
+
+        customerRepository.save(customer);
+
+        return customer.getCustomerId();
     }
 
     @Override
@@ -51,13 +53,14 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> result = customerRepository.findById(customerDTO.getCustomerId());
         Customer customer = result.orElseThrow();
         customer.change(customerDTO.getCustomerId(),
-                customerDTO.getCustomerName(),
-                customerDTO.getCustomerInfo());
+                        customerDTO.getCustomerName(),
+                        customerDTO.getCustomerInfo());
         customerRepository.save(customer);
     }
 
     @Override
     public void remove(String customerId) {
+        log.info("remove: " + customerId);
         customerRepository.deleteById(customerId);
     }
 

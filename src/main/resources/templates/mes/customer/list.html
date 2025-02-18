@@ -59,7 +59,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">고객명</th>
                             <th scope="col">전화번호</th>
-                            <th scope="col">등록날짜</th>
+                            <th scope="col">등록일</th>
                         </tr>
                         </thead>
 
@@ -101,23 +101,23 @@
     <div class="float-start">
         <button class="btn btn-dark register" type="button"
                 onclick="location.href='/mes/customer/list?registerMode=true'">등록</button>
-
         <a href="/excel/customer/download" class="btn btn-success">엑셀다운로드</a>
     </div>
 
+    <!-- 페이징 -->
     <div class="float-end">
         <ul class="pagination flex-wrap">
             <li class="page-item" th:if="${responseDTO.prev}" style="cursor: pointer;">
-                <a th:class="page-link" th:data-num="${responseDTO.start - 1}"
+                <a class="page-link" th:data-num="${responseDTO.start - 1}"
                    style="background-color: black !important; color: white !important;">이전</a>
             </li>
             <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                 <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'" style="cursor: pointer;">
-                    <a th:class="page-link" th:data-num="${i}">[[${i}]]</a>
+                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                 </li>
             </th:block>
             <li class="page-item" th:if="${responseDTO.next}" style="cursor: pointer;">
-                <a th:class="page-link" th:data-num="${responseDTO.end + 1}"
+                <a class="page-link" th:data-num="${responseDTO.end + 1}"
                    style="background-color: black !important; color: white !important;">다음</a>
             </li>
         </ul>
@@ -125,30 +125,28 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
-    // Toggle the side navigation
-    window.addEventListener('DOMContentLoaded', event => {
-    const sidebarToggle = document.body.querySelector('#sidebarToggle');
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', event => {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+// 메뉴 토글
+window.addEventListener('DOMContentLoaded', event => {
+const sidebarToggle = document.body.querySelector('#sidebarToggle');
+if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', event => {
+        event.preventDefault();
+        document.body.classList.toggle('sb-sidenav-toggled');
+        localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
         });
-        }
-        });
+    }
+});
 
+document.addEventListener("DOMContentLoaded", function () {
+    // 초기화 버튼
     document.querySelector(".clearBtn").addEventListener("click", function (e){
        e.preventDefault()
        e.stopPropagation()
 
-       // 날짜 범위 초기화
-       document.querySelector("input[name='from']").value = "";
-       document.querySelector("input[name='to']").value = "";
-
        self.location ='/mes/customer/list'
     },false);
 
-
+    // 등록 버튼
     document.querySelector(".register").addEventListener("click", function(e){
         e.preventDefault();
         e.stopPropagation();
@@ -156,19 +154,41 @@
         self.location = '/mes/customer/list?registerMode=true';
     }, false);
 
-    document.querySelector(".pagination").addEventListener("click", function (e) {
+    // 삭제 버튼
+    document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("removeBtn")) {
         e.preventDefault();
-        e.stopPropagation();
-
-        const target = e.target;
-        if(target.tagName !== 'A') {
+        if (!confirm("정말 삭제하시겠습니까?")) {
             return;
         }
-        const num = target.getAttribute("data-num");
 
+        const customerId = e.target.getAttribute("data-customer-id");
+
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/mes/customer/remove";
+        form.style.display = "none";
+
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "customerId";
+        input.value = customerId;
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+        }
+    });
+
+
+    // 페이지 이동
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        if (e.target.tagName !== 'A') return;
+        e.preventDefault();
+
+        const num = e.target.getAttribute("data-num");
         const params = new URLSearchParams(window.location.search);
-
-        params.set("page", num)
+        params.set("page", num);
 
         const selectedCustomerId = params.get("selectedCustomerId");
         if (selectedCustomerId) {
@@ -177,4 +197,5 @@
 
         window.location.href = `/mes/customer/list?${params.toString()}`;
     });
+  });
 </script>

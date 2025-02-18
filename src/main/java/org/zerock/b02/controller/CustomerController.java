@@ -28,10 +28,8 @@ public class CustomerController {
                      Model model,
                      @RequestParam(value = "selectedCustomerId", required = false) String selectedCustomerId,
                      @RequestParam(defaultValue = "false") Boolean registerMode,
-                     @RequestParam(value = "modifyMode", required = false) Boolean modifyMode,
-                     @RequestParam(value = "customerId", required = false) String customerId) {
+                     @RequestParam(value = "modifyMode", required = false) Boolean modifyMode) {
 
-        // 날짜 범위가 있다면 pageRequestDTO에 설정
         if (pageRequestDTO.getFrom() != null) {
             pageRequestDTO.setFrom(pageRequestDTO.getFrom());
         }
@@ -39,17 +37,13 @@ public class CustomerController {
             pageRequestDTO.setTo(pageRequestDTO.getTo());
         }
 
-        // 필터링된 데이터 조회
         PageResponseDTO<CustomerDTO> responseDTO = customerService.list(pageRequestDTO);
-
         model.addAttribute("responseDTO", responseDTO);
         model.addAttribute("pageRequestDTO", pageRequestDTO);
 
-
-        // 고객명 목록을 드롭다운에 제공
         List<String> filteredCustomerIds = customerService.getFilteredCustomerIds();
-        model.addAttribute("filteredCustomers", filteredCustomerIds);
 
+        model.addAttribute("filteredCustomers", filteredCustomerIds);
 
         if(selectedCustomerId != null){
             CustomerDTO selectedCustomer = customerService.readOne(selectedCustomerId);
@@ -78,7 +72,6 @@ public class CustomerController {
             return "redirect:/mes/customer/list";
         }
 
-        log.info(customerDTO);
         String customerId = customerService.register(customerDTO);
         redirectAttributes.addFlashAttribute("result", customerId);
 

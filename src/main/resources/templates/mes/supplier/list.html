@@ -50,19 +50,19 @@
                             <th scope="col">ID</th>
                             <th scope="col">거래처명</th>
                             <th scope="col">전화번호</th>
-                            <th scope="col">등록날짜</th>
+                            <th scope="col">등록일</th>
                         </tr>
                         </thead>
 
                         <tbody th:with="link = ${pageRequestDTO.getLink()}">
-                        <tr th:each="dto:${responseDTO.dtoList}">
+                        <tr th:each="selectedSupplier:${responseDTO.dtoList}">
                             <td>
-                                <a th:href="|@{/mes/supplier/list(selectedSupplierId =${dto.SupplierId})}&${link}|"
-                                   style="text-decoration: none">[[${dto.supplierId}]]</a>
+                                <a th:href="|@{/mes/supplier/list(selectedSupplierId =${selectedSupplier.SupplierId})}&${link}|"
+                                   style="text-decoration: none">[[${selectedSupplier.supplierId}]]</a>
                             </td>
-                            <td>[[${dto.supplierName}]]</td>
-                            <td>[[${dto.supplierInfo}]]</td>
-                            <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>
+                            <td>[[${selectedSupplier.supplierName}]]</td>
+                            <td>[[${selectedSupplier.supplierInfo}]]</td>
+                            <td>[[${#temporals.format(selectedSupplier.regDate, 'yyyy-MM-dd')}]]</td>
                         </tr>
                         </tbody>
 
@@ -100,16 +100,16 @@
     <div class="float-end">
         <ul class="pagination flex-wrap">
             <li class="page-item" th:if="${responseDTO.prev}" style="cursor: pointer;">
-                <a th:class="page-link" th:data-num="${responseDTO.start - 1}"
+                <a class="page-link" th:data-num="${responseDTO.start - 1}"
                    style="background-color: black !important; color: white !important;">이전</a>
             </li>
             <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                 <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'" style="cursor: pointer;">
-                    <a th:class="page-link" th:data-num="${i}">[[${i}]]</a>
+                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                 </li>
             </th:block>
             <li class="page-item" th:if="${responseDTO.next}" style="cursor: pointer;">
-                <a th:class="page-link" th:data-num="${responseDTO.end + 1}"
+                <a class="page-link" th:data-num="${responseDTO.end + 1}"
                    style="background-color: black !important; color: white !important;">다음</a>
             </li>
         </ul>
@@ -117,18 +117,20 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
-    // Toggle the side navigation
-    window.addEventListener('DOMContentLoaded', event => {
-    const sidebarToggle = document.body.querySelector('#sidebarToggle');
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', event => {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+// 메뉴 토글
+window.addEventListener('DOMContentLoaded', event => {
+const sidebarToggle = document.body.querySelector('#sidebarToggle');
+if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', event => {
+        event.preventDefault();
+        document.body.classList.toggle('sb-sidenav-toggled');
+        localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
         });
-        }
-        });
+    }
+});
 
+document.addEventListener("DOMContentLoaded", function () {
+    // 초기화 버튼
     document.querySelector(".clearBtn").addEventListener("click", function (e){
        e.preventDefault()
        e.stopPropagation()
@@ -136,6 +138,7 @@
        self.location ='/mes/supplier/list'
     },false);
 
+    // 등록 버튼
     document.querySelector(".register").addEventListener("click", function(e){
         e.preventDefault();
         e.stopPropagation();
@@ -143,19 +146,40 @@
         self.location = '/mes/supplier/list?registerMode=true';
     }, false);
 
+    // 삭제 버튼
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("removeBtn")){
+            e.preventDefault();
+            if (!confirm("정말 삭제하시겠습니까?")){
+                return;
+            }
+
+            const supplierId = e.target.getAttribute("data-supplier-id");
+
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/mes/supplier/remove";
+            form.style.display = "none";
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "supplierId";
+            input.value = supplierId;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+            }
+        });
+
+    // 페이지 이동
     document.querySelector(".pagination").addEventListener("click", function (e) {
+        if (e.target.tagName !== 'A') return;
         e.preventDefault();
-        e.stopPropagation();
 
-        const target = e.target;
-        if(target.tagName !== 'A') {
-            return;
-        }
-        const num = target.getAttribute("data-num");
-
+        const num = e.target.getAttribute("data-num");
         const params = new URLSearchParams(window.location.search);
-
-        params.set("page", num)
+        params.set("page", num);
 
         const selectedSupplierId = params.get("selectedSupplierId");
         if (selectedSupplierId) {
@@ -164,4 +188,5 @@
 
         window.location.href = `/mes/supplier/list?${params.toString()}`;
     });
+ });
 </script>

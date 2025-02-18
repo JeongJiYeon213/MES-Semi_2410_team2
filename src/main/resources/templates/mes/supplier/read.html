@@ -22,6 +22,10 @@
                 <span class="input-group-text">전화번호</span>
                 <input type="text" class="form-control" th:value="${selectedSupplier.supplierInfo}" readonly disabled>
             </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">등록일</span>
+                <input type="text" class="form-control" th:value="${#temporals.format(selectedSupplier.regDate, 'yyyy-MM-dd')}" readonly disabled>
+            </div>
 
             <div class="my-4">
                 <div class="float-end" th:with="link = ${pageRequestDTO.getLink()}">

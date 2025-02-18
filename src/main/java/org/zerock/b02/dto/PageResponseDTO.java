@@ -9,18 +9,17 @@ import lombok.ToString;
 @Getter
 @ToString
 public class PageResponseDTO<E> {
-    // 페이징 내부 정보들
-    private int page; // 페이지 쪽
-    private int size; // 페이지 사이즈(dtoList의 size개수와 일부 같다)
 
-    // 페이징 화면에 보여줄 정보들
-    private int total; // 할일 전체개수
-    private int start; // 페이지 시작번호
-    private int end; // 페이지 끝번호
-    private boolean prev; // 이전페이지 존재 여부
-    private boolean next; // 다음페이지 존재 여부
+    private int page;
+    private int size;
 
-    // 실제 할일 목록 정보들
+    private int total;
+    private int start;
+    private int end;
+
+    private boolean prev;
+    private boolean next;
+
     private List<E> dtoList;
 
     @Builder(builderMethodName = "withAll")
@@ -32,6 +31,7 @@ public class PageResponseDTO<E> {
         if(total<=0){
             return;
         }
+
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
@@ -45,7 +45,6 @@ public class PageResponseDTO<E> {
         this.prev = this.start > 1;
         this.next =  total > this.end * this.size;
     }
-
 }
 
 

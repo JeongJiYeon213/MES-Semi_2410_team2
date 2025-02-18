@@ -3,7 +3,7 @@ package org.zerock.b02.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,6 +20,13 @@ public class Customer extends BaseEntity {
     private String customerName;
     @Column(length = 50, nullable = false)
     private String customerInfo;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.customerId == null) {
+            this.customerId = "CUST-" + UUID.randomUUID().toString();
+        }
+    }
 
     public void change(String customerId, String customerName, String customerInfo){
         this.customerId = customerId;

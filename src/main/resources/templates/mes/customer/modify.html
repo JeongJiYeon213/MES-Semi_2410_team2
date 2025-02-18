@@ -18,17 +18,24 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">고객명</span>
-                    <input type="text" class="form-control" name=CustomerName th:value="${selectedCustomer.customerName}">
+                    <input type="text" class="form-control" name=CustomerName
+                           th:value="${selectedCustomer.customerName}">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">전화번호</span>
-                    <input type="text" class="form-control" name=CustomerInfo th:value="${selectedCustomer.customerInfo}">
+                    <input type="text" class="form-control" name=CustomerInfo
+                           th:value="${selectedCustomer.customerInfo}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">등록일</span>
+                    <input type="text" class="form-control" th:value="${#temporals.format(selectedCustomer.regDate, 'yyyy-MM-dd')}" readonly disabled>
                 </div>
                 <div class="my-4">
                     <div class="float-end">
-                        <button type="button" class="btn btn-outline-dark listBtn">목록</button>
-                        <button type="submit" class="btn btn-outline-dark">수정</button>
-                        <button type="button" class="btn btn-outline-dark removeBtn">삭제</button>
+                        <button type="button" class="btn btn-secondary listBtn">목록</button>
+                        <button type="submit" class="btn btn-dark">수정</button>
+                        <button type="button" class="btn btn-danger removeBtn"
+                                th:attr="data-customer-id=${selectedCustomer.customerId}">삭제</button>
                     </div>
                 </div>
             </form>
