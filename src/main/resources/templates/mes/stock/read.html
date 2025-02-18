@@ -22,13 +22,25 @@
                 <input type="text" class="form-control" th:value="${selectedStock.currentStock}" readonly disabled>
             </div>
 
+            <div class="input-group mb-3">
+                <span class="input-group-text">재고 등록일</span>
+                <input type="text" class="form-control"
+                       th:value="${#temporals.format(selectedStock.regDate, 'yyyy-MM-dd HH:mm:ss')}" readonly disabled>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">수량 수정일</span>
+                <input type="text" class="form-control"
+                       th:value="${#temporals.format(selectedStock.modDate, 'yyyy-MM-dd HH:mm:ss')}" readonly disabled>
+            </div>
+
             <div class="my-4">
 
                 <div class="float-start" th:with="link = ${pageRequestDTO.getLink()}">
-                    <a th:href="@{/mes/inbound/list(registerMode=true)}" class="text-decoration-none">
+                    <a th:href="@{/mes/inbound/list(registerMode=true, selectedStockId=${selectedStock?.stockId})}" class="text-decoration-none">
                         <button type="button" class="btn btn-dark">입고</button>
                     </a>
-                    <a th:href="@{/mes/outbound/list(registerMode=true)}" class="text-decoration-none">
+                    <a th:href="@{/mes/outbound/list(registerMode=true, selectedStockId=${selectedStock?.stockId})}" class="text-decoration-none">
                         <button type="button" class="btn btn-secondary">출고</button>
                     </a>
                 </div>

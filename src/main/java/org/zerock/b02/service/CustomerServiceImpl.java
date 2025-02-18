@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,38 +64,62 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public PageResponseDTO<CustomerDTO> list(PageRequestDTO pageRequestDTO) {
 
-        // 날짜 범위 및 고객 필터링 정보를 가져옴
-        String customerId = pageRequestDTO.getCustomerId();
-
-        // 날짜 범위 및 고객 필터링 정보를 pageRequestDTO에 설정
-        if (customerId != null && !customerId.isEmpty()) {
-            pageRequestDTO.setCustomerId(customerId);
-        }
-
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
         Pageable pageable = pageRequestDTO.getPageable("customerId");
 
-        // 날짜 범위나 고객 ID가 주어졌을 경우, 필터링된 검색
-        if (customerId != null && !customerId.isEmpty()) {
-            Page<Customer> result = customerRepository.searchWithFilters(keyword, customerId, pageable);
-            List<CustomerDTO> dtoList = result.getContent().stream()
+        LocalDateTime from = pageRequestDTO.getFrom();
+        LocalDateTime to = pageRequestDTO.getTo();
+        String customerId = pageRequestDTO.getCustomerId();
+
+        // 날짜 범위와 customerId를 함께 필터링할 경우
+        if (from != null && to != null && customerId != null && !customerId.isEmpty()) {
+            Page<Customer> customers = customerRepository.findByRegDateBetweenAndCustomerId(from, to, customerId, pageable);
+
+            List<CustomerDTO> dtoList = customers.stream()
                     .map(customer -> modelMapper.map(customer, CustomerDTO.class))
                     .collect(Collectors.toList());
 
             return PageResponseDTO.<CustomerDTO>withAll()
                     .pageRequestDTO(pageRequestDTO)
                     .dtoList(dtoList)
-                    .total((int) result.getTotalElements())
+                    .total((int) customers.getTotalElements())
                     .build();
         }
 
-        // 기본 검색 (필터링 조건이 없을 경우)
+        // 날짜만 필터링 (customerId 없이)
+        if (from != null && to != null) {
+            Page<Customer> customers = customerRepository.findByRegDateBetween(from, to, pageable);
+            List<CustomerDTO> dtoList = customers.stream()
+                    .map(customer -> modelMapper.map(customer, CustomerDTO.class))
+                    .collect(Collectors.toList());
+
+            return PageResponseDTO.<CustomerDTO>withAll()
+                    .pageRequestDTO(pageRequestDTO)
+                    .dtoList(dtoList)
+                    .total((int) customers.getTotalElements())
+                    .build();
+        }
+
+        // customerId만 필터링
+        if (customerId != null && !customerId.isEmpty()) {
+            Page<Customer> customers = customerRepository.findByCustomerId(customerId, pageable);
+            List<CustomerDTO> dtoList = customers.stream()
+                    .map(customer -> modelMapper.map(customer, CustomerDTO.class))
+                    .collect(Collectors.toList());
+
+            return PageResponseDTO.<CustomerDTO>withAll()
+                    .pageRequestDTO(pageRequestDTO)
+                    .dtoList(dtoList)
+                    .total((int) customers.getTotalElements())
+                    .build();
+        }
+
+        // 기본 검색 조건
         Page<Customer> result = customerRepository.searchAll(types, keyword, pageable);
         List<CustomerDTO> dtoList = result.getContent().stream()
                 .map(customer -> modelMapper.map(customer, CustomerDTO.class))
                 .collect(Collectors.toList());
-
 
         return PageResponseDTO.<CustomerDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)

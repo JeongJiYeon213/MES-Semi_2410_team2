@@ -12,6 +12,8 @@ import org.zerock.b02.domain.Stock;
 import org.zerock.b02.dto.ProductDTO;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
+import org.zerock.b02.repository.InboundTestRepository;
+import org.zerock.b02.repository.OutboundTestRepository;
 import org.zerock.b02.repository.ProductRepository;
 import org.zerock.b02.repository.StockRepository;
 
@@ -27,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
 	private final ModelMapper modelMapper;
 	private final ProductRepository productRepository;
 	private final StockRepository stockRepository;
+	private final InboundTestRepository inboundTestRepository;
+	private final OutboundTestRepository outboundTestRepository;
 
 	@Override
 	@Transactional
@@ -76,6 +80,10 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void remove(Long productId) {
+		log.info("삭제: " + productId);
+		outboundTestRepository.deleteByStockId(productId);
+		inboundTestRepository.deleteByStockId(productId);
+		stockRepository.deleteByProductId(productId);
 		productRepository.deleteById(productId);
 	}
 

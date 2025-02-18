@@ -9,31 +9,26 @@
         <!-- 제품 목록 -->
         <div class="col-6">
             <div class="card">
-                <div class="card-header">
-                    제품관리
-                </div>
+                <div class="card-header">제품관리</div>
                 <div class="card-body">
+                    <!-- 검색 폼 -->
+                    <form method="get" action="/mes/product/list">
+                        <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                        <div class="input-group">
+                            <select class="form-select" name="type">
+                                <option value="n" th:selected="${pageRequestDTO.type == 'n'}">제품명</option>
+                                <option value="c" th:selected="${pageRequestDTO.type == 'c'}">제품코드</option>
+                            </select>
+                            <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                            <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
+                            <button class="btn btn-outline-secondary clearBtn" type="button">초기화</button>
+                        </div>
+                    </form>
+
+                    <br>
+
                     <table class="table">
                         <thead>
-                        <form>
-                            <div class="col">
-                                <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <select class="form-select" name="type">
-                                            <option value="n" th:selected="${pageRequestDTO.type == 'n'}">제품명</option>
-                                            <option value="c" th:selected="${pageRequestDTO.type == 'c'}">제품코드</option>
-                                        </select>
-                                    </div>
-                                    <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
-                                        <button class="btn btn-outline-secondary clearBtn" type="button">초기화</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <br>
                         <tr>
                             <th scope="col">제품코드</th>
                             <th scope="col">제품명</th>
@@ -55,10 +50,8 @@
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
-
         </div>
 
         <!-- 선택한 제품 상세 정보 -->
@@ -75,31 +68,29 @@
         <div class="col-6" th:if="${registerMode}">
             <div th:insert="~{mes/product/register :: register}"></div>
         </div>
-
     </div>
 
-    <!-- Paging UI -->
+    <!-- 하단 버튼 -->
     <br>
     <div class="float-start">
-        <button class="btn btn-dark register" type="button"
-                onclick="location.href='/mes/product/list?registerMode=true'">등록</button>
-
+        <button class="btn btn-dark register" type="button">등록</button>
         <a href="/excel/product/download" class="btn btn-success">엑셀다운로드</a>
     </div>
 
+    <!-- 페이징 -->
     <div class="float-end">
         <ul class="pagination flex-wrap">
             <li class="page-item" th:if="${responseDTO.prev}" style="cursor: pointer;">
-                <a th:class="page-link" th:data-num="${responseDTO.start - 1}"
+                <a class="page-link" th:data-num="${responseDTO.start - 1}"
                    style="background-color: black !important; color: white !important;">이전</a>
             </li>
             <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                 <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'" style="cursor: pointer;">
-                    <a th:class="page-link" th:data-num="${i}">[[${i}]]</a>
+                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                 </li>
             </th:block>
             <li class="page-item" th:if="${responseDTO.next}" style="cursor: pointer;">
-                <a th:class="page-link" th:data-num="${responseDTO.end + 1}"
+                <a class="page-link" th:data-num="${responseDTO.end + 1}"
                    style="background-color: black !important; color: white !important;">다음</a>
             </li>
         </ul>
@@ -108,42 +99,58 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
-    document.querySelector(".register").addEventListener("click", function(e){
-        e.preventDefault();
-        self.location = '/mes/product/list?registerMode=true';
-    }, false);
+    document.addEventListener("DOMContentLoaded", function () {
+        // 등록 버튼
+        document.querySelector(".register").addEventListener("click", function () {
+            window.location.href = '/mes/product/list?registerMode=true';
+        });
 
-    document.querySelector(".clearBtn").addEventListener("click", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        self.location = '/mes/product/list';
-    }, false);
+        // 검색 초기화 버튼
+        document.querySelector(".clearBtn").addEventListener("click", function () {
+            window.location.href = '/mes/product/list';
+        });
 
-    document.querySelector(".pagination").addEventListener("click", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        // 페이지 이동
+        document.querySelector(".pagination").addEventListener("click", function (e) {
+            if (e.target.tagName !== 'A') return;
+            e.preventDefault();
 
-        const target = e.target;
-        if (target.tagName !== 'A') {
-            return;
-        }
+            const num = e.target.getAttribute("data-num");
+            const params = new URLSearchParams(window.location.search);
+            params.set("page", num);
 
-        const num = target.getAttribute("data-num");
+            const selectedProductId = params.get("selectedProductId");
+            if (selectedProductId) {
+                params.set("selectedProductId", selectedProductId);
+            }
 
-        // 현재 URL의 쿼리스트링 가져오기
-        const params = new URLSearchParams(window.location.search);
+            window.location.href = `/mes/product/list?${params.toString()}`;
+        });
 
-        // 페이지 번호 업데이트
-        params.set("page", num);
+        // 삭제 버튼 이벤트 (동적으로 존재할 수도 있기 때문에 `document.addEventListener` 사용)
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("removeBtn")) {
+                e.preventDefault();
+                if (!confirm("정말 삭제하시겠습니까?")) {
+                    return;
+                }
 
-        // 현재 선택된 제품 ID 유지
-        const selectedProductId = params.get("selectedProductId");
-        if (selectedProductId) {
-            params.set("selectedProductId", selectedProductId);
-        }
+                const productId = document.querySelector("input[name='productId']").value;
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "/mes/product/remove";
+                form.style.display = "none";
 
-        // 새로운 URL로 이동
-        window.location.href = `/mes/product/list?${params.toString()}`;
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "productId";
+                input.value = productId;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
     });
 </script>
 

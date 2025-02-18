@@ -1,5 +1,7 @@
 package org.zerock.b02.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.zerock.b02.domain.Customer;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -34,9 +36,6 @@ public class CustomerRepositoryTests {
     @Test
     public void testFindById() {
 
-        List<Customer> customers = customerRepository.findByCustomerId("a1");
-
-        log.info(customers.toString());
     }
 
 

@@ -13,15 +13,19 @@
     <div class="card-body">
       <form th:action="@{/mes/outbound/register}" method="post">
 
-        <div class="input-group mb-3">
-          <span class="input-group-text">제품코드</span>
-          <select id="productCode" name="productCode" required>
-            <option value="">선택</option>
-            <option th:each="product : ${productList}"
-                    th:value="${product.productCode}"
-                    th:text="${product.productCode}">
-            </option>
-          </select>
+        <div th:in="${selectedStock != null}">
+          <input type="hidden" name="stockId" th:value="${selectedStock.stockId}">
+          <input type="hidden" name="productCode" th:value="${selectedStock.productCode}">
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">제품코드</span>
+            <input type="text" class="form-control" th:value="${selectedStock.productCode}" readonly>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text">현재재고</span>
+            <input type="text" class="form-control" th:value="${selectedStock.currentStock}" readonly>
+          </div>
         </div>
 
         <div class="input-group mb-3">

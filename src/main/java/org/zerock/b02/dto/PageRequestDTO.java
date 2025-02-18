@@ -32,6 +32,11 @@ public class PageRequestDTO {
     // 드롭다운 검색 기능 추가된 필드
     private String customerId;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime from;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime to;
+
     public String[] getTypes(){
         if(type == null || type.isEmpty()){
             return null;
@@ -60,6 +65,21 @@ public class PageRequestDTO {
                     e.printStackTrace();
                 }
             }
+
+            // 날짜 범위가 지정되었다면, 해당 범위도 URL에 포함
+            if(from != null) {
+                builder.append("&from=" + from.toString());
+            }
+            if(to != null) {
+                builder.append("&to=" + to.toString());
+            }
+
+            // customerId가 있을 경우에도 URL에 추가
+            if(customerId != null && !customerId.isEmpty()) {
+                builder.append("&customerId=" + customerId);
+            }
+
+            link = builder.toString();  // 최종 링크 저장
 
             link = builder.toString();
         }

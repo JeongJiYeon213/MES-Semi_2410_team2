@@ -139,6 +139,10 @@
        e.preventDefault()
        e.stopPropagation()
 
+       // 날짜 범위 초기화
+       document.querySelector("input[name='from']").value = "";
+       document.querySelector("input[name='to']").value = "";
+
        self.location ='/mes/customer/list'
     },false);
 

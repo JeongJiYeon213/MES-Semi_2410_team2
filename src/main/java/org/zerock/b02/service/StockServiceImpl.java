@@ -54,6 +54,8 @@ public class StockServiceImpl implements StockService {
 
 		StockDTO stockDTO = modelMapper.map(stock, StockDTO.class);
 		stockDTO.setProductCode(stock.getProduct().getProductCode());
+		stockDTO.setRegDate(stock.getRegDate());
+		stockDTO.setModDate(stock.getModDate());
 		return stockDTO;
 	}
 

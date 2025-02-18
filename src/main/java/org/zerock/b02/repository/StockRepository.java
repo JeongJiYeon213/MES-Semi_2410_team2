@@ -1,6 +1,7 @@
 package org.zerock.b02.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.zerock.b02.domain.Product;
 import org.zerock.b02.domain.Stock;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,8 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockSearch
 	boolean existsByProduct(Product product);
 
 	Optional<Stock> findByProductCode(String productCode);
+
+	@Modifying
+	@Query("DELETE FROM Stock s WHERE s.product.productId = :productId")
+	void deleteByProductId(@Param("productId") Long productId);
 }

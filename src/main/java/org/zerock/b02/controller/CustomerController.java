@@ -31,9 +31,12 @@ public class CustomerController {
                      @RequestParam(value = "modifyMode", required = false) Boolean modifyMode,
                      @RequestParam(value = "customerId", required = false) String customerId) {
 
-        // customerId가 있다면 pageRequestDTO에 설정
-        if (customerId != null && !customerId.isEmpty()) {
-            pageRequestDTO.setCustomerId(customerId);
+        // 날짜 범위가 있다면 pageRequestDTO에 설정
+        if (pageRequestDTO.getFrom() != null) {
+            pageRequestDTO.setFrom(pageRequestDTO.getFrom());
+        }
+        if (pageRequestDTO.getTo() != null) {
+            pageRequestDTO.setTo(pageRequestDTO.getTo());
         }
 
         // 필터링된 데이터 조회

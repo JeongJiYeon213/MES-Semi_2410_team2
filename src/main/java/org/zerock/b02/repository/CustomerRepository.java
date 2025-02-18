@@ -15,15 +15,22 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, String>, CustomerSearch {
 
+   // customerId로 검색 (페이징 포함)
    @Query("SELECT c FROM Customer c WHERE c.customerId = :customerId")
-   List<Customer> findByCustomerId(@Param("customerId") String CustomerId);
+   Page<Customer> findByCustomerId(@Param("customerId") String customerId,
+                                   Pageable pageable);
 
+   // 날짜 범위로 검색 (페이징 포함)
+   @Query("SELECT c FROM Customer c WHERE c.regDate BETWEEN :from AND :to")
+   Page<Customer> findByRegDateBetween(@Param("from") LocalDateTime from,
+                                       @Param("to") LocalDateTime to,
+                                       Pageable pageable);
 
-   // 드롭다운 검색 기능
-   @Query("SELECT c FROM Customer c " +
-           "WHERE (:keyword IS NULL OR c.customerId LIKE %:keyword%) " +
-           "AND (:customerId IS NULL OR c.customerId = :customerId)")
-   Page<Customer> searchWithFilters(@Param("keyword") String keyword,
-                                    @Param("customerId") String customerId,
-                                    Pageable pageable);
+   // 날짜 범위와 customerId로 검색 (페이징 포함)
+   @Query("SELECT c FROM Customer c WHERE c.regDate BETWEEN :from AND :to AND c.customerId = :customerId")
+   Page<Customer> findByRegDateBetweenAndCustomerId(@Param("from") LocalDateTime from,
+                                                    @Param("to") LocalDateTime to,
+                                                    @Param("customerId") String customerId,
+                                                    Pageable pageable);
+
 }

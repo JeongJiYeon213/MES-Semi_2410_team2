@@ -36,8 +36,9 @@
             <br>
             <tr>
               <th scope="col">제품코드</th>
-
               <th scope="col">현재 재고</th>
+
+
             </tr>
             </thead>
             <tbody th:with="link = ${pageRequestDTO.getLink()}">
@@ -46,8 +47,10 @@
                 <a th:href="|@{/mes/stock/list(selectedStockId=${dto.stockId})}&${link}|"
                    style="text-decoration: none">[[${dto.productCode}]]</a>
               </td>
-
               <td>[[${dto.currentStock}]]</td>
+
+
+
             </tr>
             </tbody>
           </table>
@@ -74,9 +77,7 @@
   <!-- Paging UI -->
   <br>
   <div class="float-start">
-    <a class="btn btn-dark register"
-       th:href="@{/mes/stock/list(registerMode=true)}">등록</a>
-      <a href="/excel/stock/download" class="btn btn-success">엑셀다운로드</a>
+    <a href="/excel/stock/download" class="btn btn-success">엑셀다운로드</a>
   </div>
 
   <div class="float-end">
@@ -105,21 +106,22 @@
   });
 
   document.querySelector(".pagination").addEventListener("click", function(e) {
-      e.preventDefault();
-      const target = e.target;
-      if (target.tagName !== 'A') return;
+    e.preventDefault();
+    const target = e.target;
+    if (target.tagName !== 'A') return;
 
-      const num = target.getAttribute("data-num");
-      const params = new URLSearchParams(window.location.search);
-      params.set("page", num);
+    const num = target.getAttribute("data-num");
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", num);
 
-      const selectedStockId = params.get("selectedStockId");
-      if (selectedStockId) {
-          params.set("selectedStockId", selectedStockId);
-      }
+    const selectedStockId = params.get("selectedStockId");
+    if (selectedStockId) {
+        params.set("selectedStockId", selectedStockId);
+    }
 
-      window.location.href = /mes/stock/list?${params.toString()};
-  });
+    window.location.href = `/mes/stock/list?${params.toString()}`;
+});
+
 </script>
 
 </html>

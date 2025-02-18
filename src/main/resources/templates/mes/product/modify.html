@@ -61,28 +61,7 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-            // 삭제 버튼 클릭 시 POST 요청 보내기
-            document.querySelector(".removeBtn").addEventListener("click", function() {
-                if (!confirm("정말 삭제하시겠습니까?")) {
-                    return;
-                }
 
-                // 폼 생성 후 제출 (POST 요청)
-                const form = document.createElement("form");
-                form.method = "post";
-                form.action = "/mes/product/remove";
-
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "productId";
-                input.value = document.querySelector("[name='productId']").value;
-
-                form.appendChild(input);
-                document.body.appendChild(form);
-                form.submit();
-            });
-        });
 </script>
 
 </body>

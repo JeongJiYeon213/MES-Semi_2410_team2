@@ -19,7 +19,6 @@ public class StockDTO {
 	@NotNull(message = "Current stock cannot be null")
 	private Long currentStock;
 
-
-
-
+	private LocalDateTime regDate;
+	private LocalDateTime modDate;
 }

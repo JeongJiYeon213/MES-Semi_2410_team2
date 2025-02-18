@@ -27,13 +27,15 @@ public class OutboundTestServiceImpl implements OutboundTestService {
 		Stock stock = stockRepository.findById(outboundTestDTO.getStockId())
 				.orElseThrow(() -> new IllegalArgumentException("Invalid stock ID"));
 
-		// 입고 처리
+		if (stock.getCurrentStock() < outboundTestDTO.getMinus()) {
+			throw new IllegalStateException("출고 수량이 재고보다 많습니다.");
+		}
+
 		OutboundTest outbound = OutboundTest.builder()
 				.stock(stock)
 				.minus(outboundTestDTO.getMinus())
 				.build();
 
-		// Stock의 currentStock 증가
 		stock.setCurrentStock(stock.getCurrentStock() - outboundTestDTO.getMinus());
 
 		outboundTestRepository.save(outbound);
@@ -41,4 +43,5 @@ public class OutboundTestServiceImpl implements OutboundTestService {
 
 		return outbound.getOutboundId();
 	}
+
 }
