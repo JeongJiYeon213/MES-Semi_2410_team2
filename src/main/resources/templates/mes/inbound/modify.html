@@ -42,7 +42,8 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">수량</span>
-                    <input type="text"
+                    <input type="number"
+                           min="0"
                            class="form-control"
                            th:value="${selectedInbound.quantity}"
                            id="quantity"
