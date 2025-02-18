@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -60,26 +59,35 @@ public class PageRequestDTO {
             }
             if(keyword != null) {
                 try {
-                    builder.append("&keyword=" + URLEncoder.encode(keyword,"UTF-8"));  // 한글처리를 위한 코드
+                    builder.append("&keyword=" + URLEncoder.encode(keyword,"UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
             }
 
-            // 날짜 범위가 지정되었다면, 해당 범위도 URL에 포함
-            if(from != null) {
-                builder.append("&from=" + from.toString());
-            }
-            if(to != null) {
-                builder.append("&to=" + to.toString());
-            }
-
-            // customerId가 있을 경우에도 URL에 추가
-            if(customerId != null && !customerId.isEmpty()) {
-                builder.append("&customerId=" + customerId);
+            if (customerId != null && !customerId.isEmpty()) {
+                try {
+                    builder.append("&customerId=" + URLEncoder.encode(customerId, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
 
-            link = builder.toString();  // 최종 링크 저장
+            if (from != null) {
+                try {
+                    builder.append("&from=" + URLEncoder.encode(from.toString(), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (to != null) {
+                try {
+                    builder.append("&to=" + URLEncoder.encode(to.toString(), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
 
             link = builder.toString();
         }
