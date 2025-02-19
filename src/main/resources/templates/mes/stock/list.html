@@ -100,26 +100,34 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
-  document.querySelector(".clearBtn").addEventListener("click", function(e){
-      e.preventDefault();
-      window.location.href = '/mes/stock/list';
-  });
 
-  document.querySelector(".pagination").addEventListener("click", function(e) {
-    e.preventDefault();
-    const target = e.target;
-    if (target.tagName !== 'A') return;
-
-    const num = target.getAttribute("data-num");
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", num);
-
-    const selectedStockId = params.get("selectedStockId");
-    if (selectedStockId) {
-        params.set("selectedStockId", selectedStockId);
+  /*<![CDATA[*/
+    // 세션이 없을 경우 로그인 페이지로 리디렉션
+    if (![[${session.adminId}]]) {
+        window.location.href = "/mes/login";
     }
+/*]]>*/
 
-    window.location.href = `/mes/stock/list?${params.toString()}`;
+ document.querySelector(".clearBtn").addEventListener("click", function(e){
+     e.preventDefault();
+     window.location.href = '/mes/stock/list';
+ });
+
+ document.querySelector(".pagination").addEventListener("click", function(e) {
+   e.preventDefault();
+   const target = e.target;
+   if (target.tagName !== 'A') return;
+
+   const num = target.getAttribute("data-num");
+   const params = new URLSearchParams(window.location.search);
+   params.set("page", num);
+
+   const selectedStockId = params.get("selectedStockId");
+   if (selectedStockId) {
+       params.set("selectedStockId", selectedStockId);
+   }
+
+   window.location.href = `/mes/stock/list?${params.toString()}`;
 });
 
 </script>
