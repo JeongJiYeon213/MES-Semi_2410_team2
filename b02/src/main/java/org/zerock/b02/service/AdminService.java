@@ -1,5 +1,6 @@
 package org.zerock.b02.service;
 
+import org.zerock.b02.domain.Admin;
 import org.zerock.b02.dto.AdminDTO;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
@@ -21,4 +22,5 @@ public interface AdminService {
     List<AdminDTO> getAllAdmins();
 
 
+    Admin login(Long adminId, int adminPassword);
 }

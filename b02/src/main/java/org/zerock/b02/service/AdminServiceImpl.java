@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private final ModelMapper modelMapper;
-    private final AdminRepository adminRepository; // ✅ 필드명 수정
+    private final AdminRepository adminRepository;
 
     @Override
     public Long register(AdminDTO adminDTO) {
@@ -96,4 +96,19 @@ public class AdminServiceImpl implements AdminService {
                 .map(product -> modelMapper.map(product, AdminDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Admin login(Long adminId, int adminPassword) {
+        Optional<Admin> optionalAdmin = adminRepository.findByAdminId(adminId);
+
+        if (optionalAdmin.isPresent()) {
+            Admin admin = optionalAdmin.get();
+            // 비밀번호가 일치하는지 확인
+            if (admin.getAdminPassword() == adminPassword) {
+                return admin; // 로그인 성공: Admin 객체 반환
+            }
+        }
+        return null; // 로그인 실패: null 반환
+    }
+
 }

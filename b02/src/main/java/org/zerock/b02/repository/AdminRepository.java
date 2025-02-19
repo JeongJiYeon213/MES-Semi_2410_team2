@@ -23,6 +23,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, AdminSearch
 
     Optional<Admin> findByAdminId(Long adminId);
 
+
 }
 
 
