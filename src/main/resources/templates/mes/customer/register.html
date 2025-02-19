@@ -23,10 +23,11 @@
                     <span class="input-group-text">전화번호</span>
                     <input type="text" class="form-control" name="customerInfo">
                 </div>
+
                 <div class="my-4">
                     <div class="float-end">
+                        <button type="button" onclick="location.href='/mes/customer/list'" class="btn btn-outline-dark">목록</button>
                         <button type="submit" class="btn btn-outline-dark">등록</button>
-                        <button type="reset" class="btn btn-outline-dark">취소</button>
                     </div>
                 </div>
             </form>
@@ -34,21 +35,4 @@
     </div>
 </div>
 </body>
-<script>
-    // JavaScript로 customerId를 자동 생성
-    document.addEventListener("DOMContentLoaded", function() {
-        // UUID를 생성하여 customerId 입력란에 자동으로 채워 넣음
-        var customerId = "CUST-" + generateUUID();
-        document.getElementById("customerId").value = customerId;
-    });
-
-    // UUID 생성 함수
-    function generateUUID() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0,
-                v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
-</script>
 </html>

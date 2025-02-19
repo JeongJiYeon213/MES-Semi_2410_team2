@@ -20,20 +20,5 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Cus
    @Query("SELECT c FROM Customer c WHERE c.customerId = :customerId")
    Page<Customer> findByCustomerId(@Param("customerId") String customerId,
                                    Pageable pageable);
-
-   // 날짜 범위로 검색 (페이징 포함)
-   @Query("SELECT c FROM Customer c WHERE c.regDate BETWEEN :from AND :to")
-   Page<Customer> findByRegDateBetween(@Param("from") LocalDateTime from,
-                                       @Param("to") LocalDateTime to,
-                                       Pageable pageable);
-
-   // 날짜 범위와 customerId로 검색 (페이징 포함)
-   @Query("SELECT c FROM Customer c WHERE c.regDate BETWEEN :from AND :to AND c.customerId = :customerId")
-   Page<Customer> findByRegDateBetweenAndCustomerId(@Param("from") LocalDateTime from,
-                                                    @Param("to") LocalDateTime to,
-                                                    @Param("customerId") String customerId,
-                                                    Pageable pageable);
-
-   Optional<Customer> findTopByOrderByCustomerIdDesc();
-
+   
 }

@@ -30,20 +30,10 @@ public class CustomerController {
                      @RequestParam(defaultValue = "false") Boolean registerMode,
                      @RequestParam(value = "modifyMode", required = false) Boolean modifyMode) {
 
-        if (pageRequestDTO.getFrom() != null) {
-            pageRequestDTO.setFrom(pageRequestDTO.getFrom());
-        }
-        if (pageRequestDTO.getTo() != null) {
-            pageRequestDTO.setTo(pageRequestDTO.getTo());
-        }
-
         PageResponseDTO<CustomerDTO> responseDTO = customerService.list(pageRequestDTO);
+
         model.addAttribute("responseDTO", responseDTO);
         model.addAttribute("pageRequestDTO", pageRequestDTO);
-
-        List<String> filteredCustomerIds = customerService.getFilteredCustomerIds();
-
-        model.addAttribute("filteredCustomers", filteredCustomerIds);
 
         if(selectedCustomerId != null){
             CustomerDTO selectedCustomer = customerService.readOne(selectedCustomerId);
@@ -69,7 +59,7 @@ public class CustomerController {
         if (bindingResult.hasErrors()) {
             log.info("has errors...");
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/mes/customer/list";
+            return "redirect:/mes/customer/register";
         }
 
         String customerId = customerService.register(customerDTO);

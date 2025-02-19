@@ -31,9 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
     public String register(CustomerDTO customerDTO) {
 
         Customer customer = customerDTO.toEntity();
-
         customerRepository.save(customer);
-
         return customer.getCustomerId();
     }
 
@@ -75,50 +73,6 @@ public class CustomerServiceImpl implements CustomerService {
         LocalDateTime to = pageRequestDTO.getTo();
         String customerId = pageRequestDTO.getCustomerId();
 
-        // 날짜 범위와 customerId를 함께 필터링할 경우
-        if (from != null && to != null && customerId != null && !customerId.isEmpty()) {
-            Page<Customer> customers = customerRepository.findByRegDateBetweenAndCustomerId(from, to, customerId, pageable);
-
-            List<CustomerDTO> dtoList = customers.stream()
-                    .map(customer -> modelMapper.map(customer, CustomerDTO.class))
-                    .collect(Collectors.toList());
-
-            return PageResponseDTO.<CustomerDTO>withAll()
-                    .pageRequestDTO(pageRequestDTO)
-                    .dtoList(dtoList)
-                    .total((int) customers.getTotalElements())
-                    .build();
-        }
-
-        // 날짜만 필터링 (customerId 없이)
-        if (from != null && to != null) {
-            Page<Customer> customers = customerRepository.findByRegDateBetween(from, to, pageable);
-            List<CustomerDTO> dtoList = customers.stream()
-                    .map(customer -> modelMapper.map(customer, CustomerDTO.class))
-                    .collect(Collectors.toList());
-
-            return PageResponseDTO.<CustomerDTO>withAll()
-                    .pageRequestDTO(pageRequestDTO)
-                    .dtoList(dtoList)
-                    .total((int) customers.getTotalElements())
-                    .build();
-        }
-
-        // customerId만 필터링
-        if (customerId != null && !customerId.isEmpty()) {
-            Page<Customer> customers = customerRepository.findByCustomerId(customerId, pageable);
-            List<CustomerDTO> dtoList = customers.stream()
-                    .map(customer -> modelMapper.map(customer, CustomerDTO.class))
-                    .collect(Collectors.toList());
-
-            return PageResponseDTO.<CustomerDTO>withAll()
-                    .pageRequestDTO(pageRequestDTO)
-                    .dtoList(dtoList)
-                    .total((int) customers.getTotalElements())
-                    .build();
-        }
-
-        // 기본 검색 조건
         Page<Customer> result = customerRepository.searchAll(types, keyword, pageable);
         List<CustomerDTO> dtoList = result.getContent().stream()
                 .map(customer -> modelMapper.map(customer, CustomerDTO.class))

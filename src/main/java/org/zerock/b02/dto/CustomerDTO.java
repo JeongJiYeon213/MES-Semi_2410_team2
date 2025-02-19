@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import org.zerock.b02.domain.Customer;
 
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -20,17 +18,13 @@ import java.time.LocalDateTime;
 public class CustomerDTO {
 
     @Id
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 10)
     private String customerId;
 
-    @NotEmpty
-    @Size(min = 1, max = 10)
-    @NotBlank(message = "고객명을 입력하세요.")
+    @NotEmpty(message = "고객명을 입력하세요.")
     private String customerName;
 
-    @NotEmpty
-    @Size(min = 1, max = 8)
-    @NotBlank(message = "전화번호를 입력하세요.")
+    @NotEmpty(message = "전화번호를 입력하세요.")
     private String customerInfo;
 
     private String customerSize;

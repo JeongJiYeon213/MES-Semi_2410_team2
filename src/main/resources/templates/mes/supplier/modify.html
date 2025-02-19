@@ -28,8 +28,10 @@
                     <input type="text" class="form-control" th:value="${#temporals.format(selectedSupplier.regDate, 'yyyy-MM-dd')}" readonly disabled>
                 </div>
                 <div class="my-4">
-                    <div class="float-end">
-                        <button type="button" class="btn btn-secondary listBtn">목록</button>
+                    <div class="float-end" th:with="link = ${pageRequestDTO.getLink()}">
+                        <a th:href="|@{/mes/supplier/list}?${link}|" class="text-decoration-none">
+                            <button type="button" class="btn btn-outline-dark">목록</button>
+                        </a>
                         <button type="submit" class="btn btn-dark">수정</button>
                         <button type="button" class="btn btn-danger removeBtn"
                                 th:attr="data-supplier-id=${selectedSupplier.supplierId}">삭제</button>

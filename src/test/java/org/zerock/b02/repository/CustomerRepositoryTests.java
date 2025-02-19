@@ -20,11 +20,10 @@ public class CustomerRepositoryTests {
 
     @Test
     public void testInsertCustomer() {
-        IntStream.rangeClosed(1, 10).forEach(i -> {
+        IntStream.rangeClosed(1, 20).forEach(i -> {
             Customer customer = Customer.builder()
-                    .customerId("a" + i)
                     .customerName("고객" + i)
-                    .customerInfo("0101111111" + i)
+                    .customerInfo("010" + i)
                     .build();
 
             Customer result = customerRepository.save(customer);

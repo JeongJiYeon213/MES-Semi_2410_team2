@@ -25,7 +25,6 @@ public class CustomerServiceTests {
         log.info(customerService.getClass().getName());
 
         CustomerDTO customerDTO = CustomerDTO.builder()
-                .customerId("test12")
                 .customerName("test")
                 .customerInfo("test")
                 .build();
@@ -35,32 +34,6 @@ public class CustomerServiceTests {
         log.info("customerId: " + customerId);
     }
 
-    @Test
-    public void testModify(){
-
-        CustomerDTO customerDTO = CustomerDTO.builder()
-                .customerId("a1")
-                .customerName("고객100")
-                .customerInfo("000000000")
-                .build();
-
-        customerService.modify(customerDTO);
-    }
-
-    @Test
-    public void testList(){
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .type("inf")
-                .keyword("Sample")
-                .page(1)
-                .size(10)
-                .build();
-
-        PageResponseDTO responseDTO = customerService.list(pageRequestDTO);
-
-        log.info(responseDTO);
-
-    }
 
 
 

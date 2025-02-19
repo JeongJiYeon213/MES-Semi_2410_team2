@@ -7,10 +7,10 @@
             거래처 등록
         </div>
         <div class="card-body">
-            <form action="/mes/supplier/register" method="post">
+            <form action="/mes/supplier/register"  method="post">
                 <div class="input-group mb-3">
                     <span class="input-group-text">ID</span>
-                    <input type="text" class="form-control" name="supplierId">
+                    <input type="text" class="form-control" name="supplierId" readonly value="COMPANY-" disabled>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">거래처명</span>
@@ -22,8 +22,8 @@
                 </div>
                 <div class="my-4">
                     <div class="float-end">
+                        <button type="reset" onclick="location.href='/mes/supplier/list'" class="btn btn-outline-dark">목록</button>
                         <button type="submit" class="btn btn-outline-dark">등록</button>
-                        <button type="reset" class="btn btn-outline-dark">취소</button>
                     </div>
                 </div>
             </form>

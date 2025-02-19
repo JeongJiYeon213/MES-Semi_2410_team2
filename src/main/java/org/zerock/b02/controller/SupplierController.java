@@ -44,12 +44,12 @@ public class SupplierController {
     }
 
     @GetMapping("/register")
-    public void registerGET(){
-
+    public void registerGET(Model model) {
+        model.addAttribute("supplierDTO", new SupplierDTO());
     }
 
     @PostMapping("/register")
-    public String registerPost(@Valid SupplierDTO supplierDTO,
+    public String registerPost(@ModelAttribute @Valid SupplierDTO supplierDTO,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
@@ -58,10 +58,9 @@ public class SupplierController {
         if (bindingResult.hasErrors()) {
             log.info("has errors...");
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/mes/supplier/list";
+            return "redirect:/mes/supplier/register";
         }
 
-        log.info(supplierDTO);
         String supplierId = supplierService.register(supplierDTO);
         redirectAttributes.addFlashAttribute("result", supplierId);
 

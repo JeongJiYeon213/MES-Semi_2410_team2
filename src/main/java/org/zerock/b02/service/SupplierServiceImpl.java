@@ -1,5 +1,6 @@
 package org.zerock.b02.service;
 
+import org.zerock.b02.domain.Customer;
 import org.zerock.b02.domain.Supplier;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
@@ -29,9 +30,9 @@ public class SupplierServiceImpl implements SupplierService{
     @Override
     public String register(SupplierDTO supplierDTO){
 
-        Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
-        String supplierId = supplierRepository.save(supplier).getSupplierId();
-        return supplierId;
+        Supplier supplier = supplierDTO.toEntity();
+        supplierRepository.save(supplier);
+        return supplier.getSupplierId();
     }
 
     @Override
@@ -71,8 +72,7 @@ public class SupplierServiceImpl implements SupplierService{
         Page<Supplier> result = supplierRepository.searchAll(types, keyword, pageable);
 
         List<SupplierDTO> dtoList = result.getContent().stream()
-                .map(supplier -> modelMapper
-                        .map(supplier, SupplierDTO.class))
+                .map(supplier -> modelMapper.map(supplier, SupplierDTO.class))
                 .collect(Collectors.toList());
 
         return PageResponseDTO.<SupplierDTO>withAll()
