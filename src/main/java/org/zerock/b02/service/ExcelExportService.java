@@ -1,11 +1,12 @@
 package org.zerock.b02.service;
 
+import org.zerock.b02.dto.CustomerDTO;
+import org.zerock.b02.dto.SupplierDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
-import org.zerock.b02.dto.AdminDTO;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,10 +41,9 @@ public class ExcelExportService {
         headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
         headerCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        // 헤더를 "admin" 타입에 맞게 설정
-        String[] headers = type.equals("admin") ?
-                new String[]{"수정날짜", "등록날짜", "사원번호", "사원이름", "비밀번호", "전화번호", "직급"} :
-                new String[]{};  // 다른 경우는 빈 배열로 처리
+        String[] headers = type.equals("customer") ?
+                new String[]{"ID","고객명","전화번호","둥록날짜","수정날짜"} :
+                new String[]{"ID"};
 
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
@@ -67,28 +67,26 @@ public class ExcelExportService {
             Row row = sheet.createRow(rowIdx);
             CellStyle rowStyle = (rowIdx % 2 == 0) ? evenRowStyle : oddRowStyle;
 
-            // AdminDTO만 처리하도록 변경
-            if (obj instanceof AdminDTO) {
-                AdminDTO admin = (AdminDTO) obj;
-                row.createCell(0).setCellValue(admin.getModDate().format(formatter));
-                row.createCell(1).setCellValue(admin.getRegDate().format(formatter));
-                row.createCell(2).setCellValue(admin.getAdminId());
-                row.createCell(3).setCellValue(admin.getAdminName());
-                row.createCell(4).setCellValue(admin.getAdminPassword());
-                row.createCell(5).setCellValue(admin.getPhoneNum());
-                row.createCell(6).setCellValue(admin.getPosition());
-            } else {
-                throw new IllegalArgumentException("Unsupported type: " + obj.getClass().getName());
+            if (obj instanceof CustomerDTO) {
+                CustomerDTO customer = (CustomerDTO) obj;
+                row.createCell(0).setCellValue(customer.getCustomerId());
+                row.createCell(1).setCellValue(customer.getCustomerName());
+                row.createCell(2).setCellValue(customer.getCustomerInfo());
+                row.createCell(3).setCellValue(customer.getRegDate().format(formatter));
+            } else if (obj instanceof SupplierDTO) {
+                SupplierDTO supplier = (SupplierDTO) obj;
+                row.createCell(0).setCellValue(supplier.getSupplierId());
+                row.createCell(1).setCellValue(supplier.getSupplierName());
+                row.createCell(2).setCellValue(supplier.getSupplierInfo());
+                row.createCell(3).setCellValue(supplier.getRegDate().format(formatter));
             }
 
-            // 스타일 적용
             for (int i = 0; i < sheet.getRow(rowIdx).getLastCellNum(); i++) {
                 sheet.getRow(rowIdx).getCell(i).setCellStyle(rowStyle);
             }
             rowIdx++;
         }
 
-        // 자동 크기 조정
         for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
             sheet.autoSizeColumn(i);
             int currentWidth = sheet.getColumnWidth(i);

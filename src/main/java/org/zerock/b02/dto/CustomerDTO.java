@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.zerock.b02.domain.Supplier;
+import org.zerock.b02.domain.Customer;
 
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
@@ -15,27 +15,28 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SupplierDTO {
+public class CustomerDTO {
 
     @Id
     @Size(min = 1, max = 10)
-    private String supplierId;
+    private String customerId;
 
     @NotEmpty(message = "고객명을 입력하세요.")
-    private String supplierName;
+    private String customerName;
 
     @NotEmpty(message = "전화번호를 입력하세요.")
-    private String supplierInfo;
+    private String customerInfo;
 
-    private String supplierSize;
+    private String customerSize;
 
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 
-    public Supplier toEntity() {
-        return Supplier.builder()
-                .supplierName(this.supplierName)
-                .supplierInfo(this.supplierInfo)
+    public Customer toEntity() {
+        return Customer.builder()
+                .customerName(this.customerName)
+                .customerInfo(this.customerInfo)
                 .build();
     }
+
 }

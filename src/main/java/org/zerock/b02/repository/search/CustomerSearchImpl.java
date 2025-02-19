@@ -1,6 +1,6 @@
 package org.zerock.b02.repository.search;
 
-import org.zerock.b02.domain.Supplier;
+import org.zerock.b02.domain.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,13 +13,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SupplierSearchImpl implements SupplierSearch {
+public class CustomerSearchImpl implements CustomerSearch {
     private final EntityManager entityManager;
 
     @Override
-    public Page<Supplier> searchAll(String[] types, String keyword, Pageable pageable) {
+    public Page<Customer> searchAll(String[] types, String keyword, Pageable pageable) {
         // JPQL로 작성
-        StringBuilder jpql = new StringBuilder("SELECT b FROM Supplier b WHERE b.supplierId IS NOT NULL");
+        StringBuilder jpql = new StringBuilder("SELECT c FROM Customer c WHERE c.customerId IS NOT NULL");
 
         // 동적 검색 조건 추가
         if ((types != null && types.length > 0) && keyword != null) {
@@ -29,13 +29,13 @@ public class SupplierSearchImpl implements SupplierSearch {
                 String type = types[i];
                 switch (type) {
                     case "i":
-                        jpql.append("b.supplierId LIKE :keyword");
+                        jpql.append("c.customerId LIKE :keyword");
                         break;
                     case "n":
-                        jpql.append("b.supplierName LIKE :keyword");
+                        jpql.append("c.customerName LIKE :keyword");
                         break;
                     case "f":
-                        jpql.append("b.supplierInfo LIKE :keyword");
+                        jpql.append("c.customerInfo LIKE :keyword");
                         break;
                 }
 
@@ -46,13 +46,13 @@ public class SupplierSearchImpl implements SupplierSearch {
             }
             jpql.append(")");
         }
-
-        jpql.append(" ORDER BY b.supplierId ASC");
+        // 내림차순 정렬
+        jpql.append(" ORDER BY c.customerId ASC");
 
         // JPQL로 쿼리 생성
-        TypedQuery<Supplier> query = entityManager.createQuery(jpql.toString(), Supplier.class);
+        TypedQuery<Customer> query = entityManager.createQuery(jpql.toString(), Customer.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(
-                jpql.toString().replace("SELECT b", "SELECT COUNT(b)"), Long.class
+                jpql.toString().replace("SELECT c", "SELECT COUNT(c)"), Long.class
         );
 
         // 파라미터 바인딩
@@ -66,7 +66,7 @@ public class SupplierSearchImpl implements SupplierSearch {
         query.setMaxResults(pageable.getPageSize());
 
         // 결과 조회
-        List<Supplier> list = query.getResultList();
+        List<Customer> list = query.getResultList();
         long count = countQuery.getSingleResult();
 
         return new PageImpl<>(list, pageable, count);

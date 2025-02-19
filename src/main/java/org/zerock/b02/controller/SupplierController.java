@@ -1,20 +1,18 @@
 package org.zerock.b02.controller;
 
+import org.springframework.web.bind.annotation.*;
+import org.zerock.b02.dto.PageRequestDTO;
+import org.zerock.b02.dto.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.b02.dto.PageRequestDTO;
-import org.zerock.b02.dto.PageResponseDTO;
-import org.zerock.b02.dto.ProductDTO;
 import org.zerock.b02.dto.SupplierDTO;
 import org.zerock.b02.service.SupplierService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/mes/supplier")
@@ -46,12 +44,12 @@ public class SupplierController {
     }
 
     @GetMapping("/register")
-    public void registerGET(){
-
+    public void registerGET(Model model) {
+        model.addAttribute("supplierDTO", new SupplierDTO());
     }
 
     @PostMapping("/register")
-    public String registerPost(@Valid SupplierDTO supplierDTO,
+    public String registerPost(@ModelAttribute @Valid SupplierDTO supplierDTO,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
@@ -60,10 +58,9 @@ public class SupplierController {
         if (bindingResult.hasErrors()) {
             log.info("has errors...");
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/mes/supplier/list";
+            return "redirect:/mes/supplier/register";
         }
 
-        log.info(supplierDTO);
         String supplierId = supplierService.register(supplierDTO);
         redirectAttributes.addFlashAttribute("result", supplierId);
 
@@ -98,13 +95,13 @@ public class SupplierController {
 
             String link = pageRequestDTO.getLink();
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            redirectAttributes.addAttribute("selectedCustomerId",supplierDTO.getSupplierId());
-            return "redirect:/mes/supplier/modify?"+link;
+            redirectAttributes.addAttribute("selectedSupplierId",supplierDTO.getSupplierId());
+            return "redirect:/mes/supplier/list?"+link;
         }
 
         supplierService.modify(supplierDTO);
         redirectAttributes.addFlashAttribute("result", "modified");
-        redirectAttributes.addAttribute("supplierId", supplierDTO.getSupplierId());
+        redirectAttributes.addAttribute("selectedSupplierId", supplierDTO.getSupplierId());
 
         return "redirect:/mes/supplier/list";
     }
@@ -120,11 +117,4 @@ public class SupplierController {
         return "redirect:/mes/supplier/list";
     }
 
-
-    @GetMapping("/searchPopup")
-    public String showSupplierSearchPopup(Model model) {
-        List<SupplierDTO> supplierList = supplierService.getAllSuppliers();
-        model.addAttribute("supplierList", supplierList);
-        return "/mes/supplier/searchPopup";
-    }
 }
