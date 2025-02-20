@@ -11,7 +11,7 @@
                         <select class="form-select" name="type" id="searchType">
                             <option value="a" th:selected="${pageRequestDTO.type =='a'}">출고번호</option>
                             <option value="b" th:selected="${pageRequestDTO.type =='b'}">제품번호</option>
-                            <option value="c" th:selected="${pageRequestDTO.type =='c'}">거래처</option>
+                            <option value="c" th:selected="${pageRequestDTO.type =='c'}">고객</option>
                             <option value="d" th:selected="${pageRequestDTO.type =='d'}">상태</option>
                         </select>
                     </div>
@@ -42,7 +42,7 @@
                         <tr>
                             <th scope="col">출고번호</th>
                             <th scope="col">제품번호</th>
-                            <th scope="col">거래처</th>
+                            <th scope="col">고객</th>
                             <th scope="col">수량</th>
                             <th scope="col">출고일</th>
                             <th scope="col">상태</th>
@@ -53,7 +53,7 @@
                         <tr th:each="outbound:${responseDTO.dtoList}">
                             <td><a th:href="|@{/mes/outbound/list(selectedOutboundId =${outbound.OutboundId})}&${link}|" style="text-decoration: none">[[${outbound.outboundCode}]]</a></td>
                             <td>[[${outbound.productCode}]]</td>
-                            <td>[[${outbound.supplierId}]]</td>
+                            <td>[[${outbound.customerId}]]</td>
                             <td>[[${outbound.quantity}]]</td>
                             <td>[[${#temporals.format(outbound.outboundDate, 'yyyy-MM-dd HH:mm')}]]</td>
                             <td>[[${outbound.outboundStatus}]]</td>
@@ -210,17 +210,17 @@
        }, false);
    }
 
-   // supplier popup id 가져오기
-   function openSupplierPopup() {
-       let popup = open("/mes/supplier/searchPopup", "Supplier Search", "width=600,height=400");
+   // customer popup id 가져오기
+   function openCustomerPopup() {
+       let popup = open("/mes/customer/searchPopup", "Customer Search", "width=600,height=400");
 
        // 팝업에서 데이터를 받아오는 이벤트 처리
        addEventListener("message", function(event) {
            if (event.origin !== location.origin) return;
 
-           const supplierData = event.data;
-           if (supplierData && supplierData.supplierId) {
-               document.getElementById("supplierId").value = supplierData.supplierId; // 팝업에서 선택한 productCode를 input 필드에 채워줌
+           const customerData = event.data;
+           if (customerData && customerData.customerId) {
+               document.getElementById("customerId").value = customerData.customerId;
            }
        }, false);
    }
