@@ -116,77 +116,67 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
-// 메뉴 토글
-window.addEventListener('DOMContentLoaded', event => {
-const sidebarToggle = document.body.querySelector('#sidebarToggle');
-if (sidebarToggle) {
-    sidebarToggle.addEventListener('click', event => {
-        event.preventDefault();
-        document.body.classList.toggle('sb-sidenav-toggled');
-        localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // 초기화 버튼
+        document.querySelector(".clearBtn").addEventListener("click", function (e){
+           e.preventDefault()
+           e.stopPropagation()
+
+           self.location ='/mes/customer/list'
+        },false);
+
+        // 등록 버튼
+        document.querySelector(".register").addEventListener("click", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            self.location = '/mes/customer/list?registerMode=true';
+        }, false);
+
+        // 삭제 버튼
+        document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("removeBtn")) {
+            e.preventDefault();
+            if (!confirm("정말 삭제하시겠습니까?")) {
+                return;
+            }
+
+            const customerId = e.target.getAttribute("data-customer-id");
+
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/mes/customer/remove";
+            form.style.display = "none";
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "customerId";
+            input.value = customerId;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+            }
         });
-    }
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-    // 초기화 버튼
-    document.querySelector(".clearBtn").addEventListener("click", function (e){
-       e.preventDefault()
-       e.stopPropagation()
 
-       self.location ='/mes/customer/list'
-    },false);
+        // 페이지 이동
+        document.querySelector(".pagination").addEventListener("click", function (e) {
+            if (e.target.tagName !== 'A') return;
+            e.preventDefault();
 
-    // 등록 버튼
-    document.querySelector(".register").addEventListener("click", function(e){
-        e.preventDefault();
-        e.stopPropagation();
+            const num = e.target.getAttribute("data-num");
+            const params = new URLSearchParams(window.location.search);
+            params.set("page", num);
 
-        self.location = '/mes/customer/list?registerMode=true';
-    }, false);
+            const selectedCustomerId = params.get("selectedCustomerId");
+            if (selectedCustomerId) {
+                params.set("selectedCustomerId", selectedCustomerId);
+            }
 
-    // 삭제 버튼
-    document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("removeBtn")) {
-        e.preventDefault();
-        if (!confirm("정말 삭제하시겠습니까?")) {
-            return;
-        }
-
-        const customerId = e.target.getAttribute("data-customer-id");
-
-        const form = document.createElement("form");
-        form.method = "POST";
-        form.action = "/mes/customer/remove";
-        form.style.display = "none";
-
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "customerId";
-        input.value = customerId;
-
-        form.appendChild(input);
-        document.body.appendChild(form);
-        form.submit();
-        }
+            window.location.href = `/mes/customer/list?${params.toString()}`;
+        });
     });
-
-
-    // 페이지 이동
-    document.querySelector(".pagination").addEventListener("click", function (e) {
-        if (e.target.tagName !== 'A') return;
-        e.preventDefault();
-
-        const num = e.target.getAttribute("data-num");
-        const params = new URLSearchParams(window.location.search);
-        params.set("page", num);
-
-        const selectedCustomerId = params.get("selectedCustomerId");
-        if (selectedCustomerId) {
-            params.set("selectedCustomerId", selectedCustomerId);
-        }
-
-        window.location.href = `/mes/customer/list?${params.toString()}`;
-    });
-  });
 </script>
