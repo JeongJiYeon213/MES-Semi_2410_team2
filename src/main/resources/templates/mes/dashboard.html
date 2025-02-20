@@ -9,20 +9,23 @@
     <title>Simple Sidebar - Start Bootstrap Template</title>
     <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
-          <style>
+    <style>
         #page-content-wrapper {
         background-image: url('/image/jogang.png');
         background-size: cover;      /* 배경 이미지를 화면 크기에 맞게 확대 */
         background-position: center; /* 배경 이미지가 중앙에 위치하도록 설정 */
         background-repeat: no-repeat; /* 배경 이미지 반복을 방지 */
         min-height: 100vh;           /* 화면 전체 높이로 설정 */
-        }</style>
+        }
+    </style>
 </head>
 <body>
 <div class="d-flex" id="wrapper">
     <!-- Sidebar-->
     <div class="border-end bg-white" id="sidebar-wrapper">
         <div class="sidebar-heading border-bottom bg-light"><a href="/mes/dashboard">MES</a></div>
+        <div class="namebar">&nbsp;&nbsp;&nbsp;<span th:text="${session.adminName}"></span>님 /
+            <span th:text="${session.position}"></span></div>
         <div class="list-group list-group-flush">
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/mes/inbound/list">입고관리</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/mes/outbound/list">출고관리</a>
@@ -39,15 +42,12 @@
                 <a class="navbar-brand" href="/mes/supplier/list">거래처</a>
                 <a class="navbar-brand" href="/mes/customer/list" >고객</a>
                 <a class="navbar-brand" href="/mes/adminpage">관리자</a>
-                <!-- 로그인된 사용자가 있으면 이름 표시 -->
-                <span th:if="${admin != null}" class="navbar-text" th:text="'반갑습니다, ' + ${admin.adminName} + '님!'"></span>
                 <!-- 로그아웃 버튼 -->
                 <form class="d-flex" action="/mes/logout">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">로그아웃</button>
                 </form>
             </div>
         </nav>
-
         <!-- 페이지 내용-->
         <div class="container-fluid">
             <!-- 세션 확인 및 로그인 상태 체크 -->
@@ -64,7 +64,6 @@
                     <div class="col">
                         <button id="generateLottoBtn" class="btn btn-primary">로또 번호 추첨</button>
                         <div id="lottoResults"></div>
-                        <div id="lottoResultMessage"></div>
                     </div>
                     <div class="col">
                         <button id="generateFortuneBtn" class="btn btn-secondary">오늘의 운세</button>
@@ -160,8 +159,6 @@
     document.getElementById('generateLottoBtn').addEventListener('click', function() {
         const lottoResultsDiv = document.getElementById('lottoResults');
         lottoResultsDiv.innerHTML = generateMultipleLottoGames();
-        const lottoResultMessage = `<h5>당첨 번호: ${drawnLotto.join(', ')}</h5>`;
-        document.getElementById('lottoResultMessage').innerHTML = lottoResultMessage;
     });
 
     // 오늘의 운세 버튼 클릭 시 운세 표시
