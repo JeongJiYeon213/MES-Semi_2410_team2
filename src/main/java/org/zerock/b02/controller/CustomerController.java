@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.zerock.b02.dto.CustomerDTO;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
+import org.zerock.b02.dto.SupplierDTO;
 import org.zerock.b02.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -116,5 +117,12 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("result", "removed");
 
         return "redirect:/mes/customer/list";
+    }
+
+    @GetMapping("/searchPopup")
+    public String showCustomerSearchPopup(Model model) {
+        List<CustomerDTO> customerList = customerService.getAllCustomers();
+        model.addAttribute("customerList", customerList);
+        return "/mes/customer/searchPopup";
     }
 }
