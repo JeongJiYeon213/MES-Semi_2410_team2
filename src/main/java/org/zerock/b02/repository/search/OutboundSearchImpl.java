@@ -58,6 +58,7 @@ public class OutboundSearchImpl implements OutboundSearch {
             }
             jpql.append(")");
         }
+        jpql.append(" ORDER BY outboundId DESC");
 
         // JPQL로 쿼리 생성
         TypedQuery<Outbound> query = entityManager.createQuery(jpql.toString(), Outbound.class);
