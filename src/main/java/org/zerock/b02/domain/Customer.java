@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Customer extends BaseEntity {
+public class Customer extends BaseEntity implements Serializable {
 
     @Id
     @Column(length = 50, nullable = false)
