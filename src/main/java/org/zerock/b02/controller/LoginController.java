@@ -34,6 +34,8 @@ public class LoginController {
         Admin admin = adminService.login(adminId, adminPassword);
 
         if (admin != null) {
+            session.setAttribute("adminName", admin.getAdminName());
+            session.setAttribute("position", admin.getPosition());
             model.addAttribute("admin", admin); // 세션에 admin 객체 저장
             session.setAttribute("adminId", adminId);
             return "redirect:/mes/dashboard"; // 로그인 성공 시 대시보드로 리다이렉트
