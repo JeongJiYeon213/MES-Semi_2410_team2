@@ -15,7 +15,7 @@
                     <button class="btn btn-danger mb-3" id="removeRowBtn">행 삭제</button>
                     <div class="row mb-2">
                         <div class="col-2">제품번호</div>
-                        <div class="col-2">거래처</div>
+                        <div class="col-2">고객</div>
                         <div class="col-2">수량</div>
                         <div class="col-2">출고일</div>
                         <div class="col-2">상태</div>
@@ -32,8 +32,8 @@
                                     <button type="button" class="btn btn-outline-primary" style="white-space: nowrap; width: 60px;" onclick="openProductPopup(this);">검색</button>
                                 </div>
                                 <div class="col-2 d-flex">
-                                    <input type="text" name="supplierId" class="form-control" required readonly>
-                                    <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap; width: 60px;" onclick="openSupplierPopup(this);">검색</button>
+                                    <input type="text" name="customerId" class="form-control" required readonly>
+                                    <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap; width: 60px;" onclick="openCustomerPopup(this);">검색</button>
                                 </div>
                                 <div class="col-2">
                                     <input type="number" name="quantity" value="0" class="form-control" readonly>
@@ -75,15 +75,15 @@
     document.getElementById('registerForm').addEventListener('submit', function(event) {
      event.preventDefault();
 
-     // 모든 행을 검사하여 productCode와 supplierId가 비어있는지 확인
+     // 모든 행을 검사하여 productCode와 customerId 비어있는지 확인
      var rows = document.querySelectorAll('#rowContainer .row');
      var valid = true;
      rows.forEach(function(row) {
          var productCode = row.querySelector('[name="productCode"]').value;
-         var supplierId = row.querySelector('[name="supplierId"]').value;
-         if (!productCode || !supplierId) {
+         var customerId = row.querySelector('[name="customerId"]').value;
+         if (!productCode || !customerId) {
              valid = false;
-             alert('제품번호와 거래처는 필수 항목입니다.');
+             alert('제품번호와 고객는 필수 항목입니다.');
              return;
          }
      });
@@ -154,11 +154,11 @@ document.getElementById('addRowBtn').addEventListener('click', function() {
     newRow.innerHTML = `
     <div class="col-2 d-flex">
        <input type="text" id="productCode" name="productCode" class="form-control" readonly>
-       <button type="button" class="btn btn-outline-primary" style="white-space: nowrap; width: 60px;" onclick="openProductPopup(this);">검색</button>
+       <button type="button" class="btn btn-outline-primary" style="white-space: nowrap; width: 60px; onclick="openProductPopup(this);">검색</button>
    </div>
    <div class="col-2 d-flex">
-       <input type="text" id="supplierId" name="supplierId" class="form-control" required readonly>
-       <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap; width: 60px;" onclick="openSupplierPopup(this);">검색</button>
+       <input type="text" id="customerId" name="customerId" class="form-control" required readonly>
+       <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap; width: 60px; onclick="openCutomerPopup(this);">검색</button>
    </div>
    <div class="col-2">
    <input type="number" name="quantity" class="form-control" value="0" readonly>
@@ -205,19 +205,18 @@ function openProductPopup(button) {
     });
 }
 
-// supplier popup id 가져오기
-function openSupplierPopup(button) {
+function openCustomerPopup(button) {
     let row = button.closest('.row'); // 클릭한 버튼이 포함된 행을 찾음
-    let supplierIdField = row.querySelector('[name="supplierId"]');
-    let popup = open("/mes/supplier/searchPopup", "Supplier Search", "width=600,height=400");
+    let customerIdField = row.querySelector('[name="customerId"]');
+    let popup = open("/mes/customer/searchPopup", "Customer Search", "width=600,height=400");
 
     // 팝업에서 데이터를 받아오는 이벤트 처리
     addEventListener("message", function(event) {
         if (event.origin !== location.origin) return;
 
-        const supplierData = event.data;
-        if (supplierData && supplierData.supplierId) {
-            supplierIdField.value = supplierData.supplierId;
+        const customerData = event.data;
+        if (customerData && customerData.customerId) {
+            customerIdField.value = customerData.customerId;
         }
     }, {
         once: true
