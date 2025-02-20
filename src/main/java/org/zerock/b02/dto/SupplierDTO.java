@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.zerock.b02.domain.Customer;
 import org.zerock.b02.domain.Supplier;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -28,7 +32,6 @@ public class SupplierDTO {
     private String supplierInfo;
 
     private String supplierSize;
-
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 
