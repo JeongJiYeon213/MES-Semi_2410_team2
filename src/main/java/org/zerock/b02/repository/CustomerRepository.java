@@ -17,8 +17,10 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, String>, CustomerSearch {
 
    // customerId로 검색 (페이징 포함)
-   @Query("SELECT c FROM Customer c WHERE c.customerId = :customerId")
-   Page<Customer> findByCustomerId(@Param("customerId") String customerId,
-                                   Pageable pageable);
+   // @Query("SELECT c FROM Customer c WHERE c.customerId = :customerId")
+   // Page<Customer> findByCustomerId(@Param("customerId") String customerId,
+   //                                 Pageable pageable);
+
+      Optional<Customer> findByCustomerId(String customerName);
    
 }
