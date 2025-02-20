@@ -47,7 +47,7 @@ public class CustomerSearchImpl implements CustomerSearch {
             jpql.append(")");
         }
         // 내림차순 정렬
-        jpql.append(" ORDER BY c.customerId ASC");
+        jpql.append(" ORDER BY c.customerName ASC");
 
         // JPQL로 쿼리 생성
         TypedQuery<Customer> query = entityManager.createQuery(jpql.toString(), Customer.class);
