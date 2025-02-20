@@ -45,7 +45,7 @@ public class LoginController {
 
     // 로그아웃 처리
     @GetMapping("/logout")
-    public String logout(Model model, HttpSession session {
+    public String logout(Model model, HttpSession session) {
         session.invalidate();// 세션에서 admin 제거
         return "redirect:/mes/login"; // 로그아웃 후 로그인 페이지로 리다이렉트
     }
