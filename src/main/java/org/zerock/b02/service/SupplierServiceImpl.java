@@ -1,15 +1,17 @@
 package org.zerock.b02.service;
 
-import org.zerock.b02.domain.Customer;
-import org.zerock.b02.domain.Supplier;
-import org.zerock.b02.dto.PageRequestDTO;
-import org.zerock.b02.dto.PageResponseDTO;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.zerock.b02.domain.Customer;
+import org.zerock.b02.domain.Supplier;
+import org.zerock.b02.dto.PageRequestDTO;
+import org.zerock.b02.dto.PageResponseDTO;
+import org.zerock.b02.dto.ProductDTO;
 import org.zerock.b02.dto.SupplierDTO;
 import org.zerock.b02.repository.SupplierRepository;
 
@@ -58,12 +60,11 @@ public class SupplierServiceImpl implements SupplierService{
 
     @Override
     public void remove(String supplierId){
-        log.info("remove: " + supplierId);
         supplierRepository.deleteById(supplierId);
     }
 
     @Override
-    public PageResponseDTO<SupplierDTO> list(PageRequestDTO pageRequestDTO){
+    public PageResponseDTO list(PageRequestDTO pageRequestDTO){
 
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
@@ -72,7 +73,8 @@ public class SupplierServiceImpl implements SupplierService{
         Page<Supplier> result = supplierRepository.searchAll(types, keyword, pageable);
 
         List<SupplierDTO> dtoList = result.getContent().stream()
-                .map(supplier -> modelMapper.map(supplier, SupplierDTO.class))
+                .map(supplier -> modelMapper
+                        .map(supplier, SupplierDTO.class))
                 .collect(Collectors.toList());
 
         return PageResponseDTO.<SupplierDTO>builder()
@@ -93,3 +95,4 @@ public class SupplierServiceImpl implements SupplierService{
                 .collect(Collectors.toList());
     }
 }
+
