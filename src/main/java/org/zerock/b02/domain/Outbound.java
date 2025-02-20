@@ -27,8 +27,8 @@ public class Outbound extends BaseEntity {
 
     @Setter
     @ManyToOne
-    @JoinColumn(name = "supplierId", referencedColumnName = "supplierId", nullable = false)
-    private Supplier supplier;
+    @JoinColumn(name = "customerId", referencedColumnName = "customerId", nullable = false)
+    private Customer customer;
 
     @Setter
     @Column(nullable = false)
@@ -49,14 +49,14 @@ public class Outbound extends BaseEntity {
     // 수정시 변경할것들
     public void change(Product product,
                        String outboundCode,
-                       Supplier supplier,
+                       Customer customer,
                        Long quantity,
                        LocalDateTime outboundDate,
                        String description,
                        String outboundStatus){
         this.outboundCode = outboundCode;
         this.product = product;
-        this.supplier = supplier;
+        this.customer = customer;
         this.quantity = quantity;
         this.outboundDate = outboundDate;
         this.description = description;
