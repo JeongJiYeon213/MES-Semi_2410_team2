@@ -47,7 +47,7 @@ public class SupplierSearchImpl implements SupplierSearch {
             jpql.append(")");
         }
 
-        jpql.append(" ORDER BY b.supplierId ASC");
+        jpql.append(" ORDER BY b.supplierName ASC");
 
         // JPQL로 쿼리 생성
         TypedQuery<Supplier> query = entityManager.createQuery(jpql.toString(), Supplier.class);
