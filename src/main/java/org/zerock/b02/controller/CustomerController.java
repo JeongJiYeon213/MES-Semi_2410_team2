@@ -11,9 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/mes/customer")
@@ -52,6 +50,8 @@ public class CustomerController {
     @PostMapping("/register")
     public String registerPost(@Valid CustomerDTO customerDTO,
                                BindingResult bindingResult,
+                               PageRequestDTO pageRequestDTO,
+                               Model model,
                                RedirectAttributes redirectAttributes) {
 
         log.info("customer POST register...");
@@ -63,9 +63,10 @@ public class CustomerController {
         }
 
         String customerId = customerService.register(customerDTO);
-        redirectAttributes.addFlashAttribute("result", customerId);
 
-        return "redirect:/mes/customer/list";
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
+
+        return "redirect:/mes/customer/list?selectedCustomerId="+customerId;
     }
 
     @GetMapping({"/read", "/modify"})
@@ -79,7 +80,7 @@ public class CustomerController {
         model.addAttribute("selectedCustomer", customerDTO);
         model.addAttribute("pageRequestDTO", pageRequestDTO);
 
-        return "mes/customer/modify";
+        return "mes/customer/read";
     }
 
     @PostMapping("/modify")
