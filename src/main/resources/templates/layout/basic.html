@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Advanced_2410_team2</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -31,8 +31,9 @@
             <div class="container-fluid">
                 <a class="navbar-brand" id="sidebarToggle">메뉴</a>
                 <a class="navbar-brand" href="/mes/supplier/list" >거래처</a>
+                <a class="navbar-brand" href="/mes/customer/list" >고객</a>
                 <a class="navbar-brand" href="/mes/adminpage" >관리자</a>
-                <form class="d-flex" action="/mes/logout">
+                <form class="d-flex" action="/mes/logout" method="get">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">로그아웃</button>
                 </form>
             </div>
@@ -184,5 +185,14 @@
 <script th:src="@{/js/scripts.js}"></script>
 
 <th:block layout:fragment="script"></th:block>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+                if (![[${session.adminId}]]) {
+                    window.location.href = "/mes/login"; // 세션에 admin이 없으면 로그인 페이지로 리다이렉트
+                }
+                /*]]>*/
+
+</script>
 </body>
 </html>

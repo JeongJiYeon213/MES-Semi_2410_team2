@@ -23,4 +23,8 @@ public interface InboundRepository extends JpaRepository<Inbound, Long>, Inbound
 
     // to 이전의 날짜로 조회
     Page<Inbound> findByInboundDateBefore(LocalDateTime to, Pageable pageable);
+
+    void deleteByProductCode(String productCode);
+
+
 }

@@ -27,13 +27,13 @@
                     <form id="registerForm" action="/mes/inbound/register" method="post">
                         <div id="rowContainer">
                             <div class="row mb-2">
-                                <div class="col-2">
+                                <div class="col-2 d-flex">
                                     <input type="text" name="productCode" class="form-control" readonly>
-                                    <button type="button" class="btn btn-outline-primary" onclick="openProductPopup(this);">검색</button>
+                                    <button type="button" class="btn btn-outline-primary" style="white-space: nowrap; width: 60px;" onclick="openProductPopup(this);">검색</button>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 d-flex">
                                     <input type="text" name="supplierId" class="form-control" required readonly>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="openSupplierPopup(this);">검색</button>
+                                    <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap; width: 60px;" onclick="openSupplierPopup(this);">검색</button>
                                 </div>
                                 <div class="col-2">
                                     <input type="number" name="quantity" value="0" class="form-control" readonly>
@@ -107,7 +107,7 @@
         var newRow = document.createElement('div');
         newRow.classList.add('row', 'mb-2');
         newRow.innerHTML = `
-        <div class="col-2">
+        <div class="col-2 d-flex">
            <input type="text" id="productCode" name="productCode" class="form-control" readonly>
            <button type="button" class="btn btn-outline-primary" onclick="openProductPopup(this);">검색</button>
        </div>
@@ -120,7 +120,7 @@
        </div>
        <div class="col-2"><input type="datetime-local" name="inboundDate" value="${getCurrentDateTimeLocal()}" class="form-control" readonly></div>
        <div class="col-2">
-           <select id="inboundStatus" name="inboundStatus">
+           <select id="inboundStatus" name="inboundStatus" class="form-control">
                <option value="PENDING">PENDING</option>
                <option value="COMPLETED">COMPLETED</option>
                <option value="CANCELED">CANCELED</option>

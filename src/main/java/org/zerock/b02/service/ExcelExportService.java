@@ -46,13 +46,15 @@ public class ExcelExportService {
         } else if (type.equals("stock")) {
             headers = new String[]{"제품코드", "현재수량", "재고등록일", "최종수정일"};
         } else if (type.equals("admin")) {
-            headers = new String[]{"사원번호", "사원이름", "비밀번호", "전화번호", "직급", "수정날짜", "등록날짜"};
+            headers = new String[]{"사원번호", "사원이름", "비밀번호", "전화번호", "직급", "등록일", "수정일"};
         } else if (type.equals("inbound")) {
             headers = new String[]{"입고번호", "제품번호", "거래처", "수량", "입고일", "상태", "기타"};
         } else if (type.equals("outbound")) {
             headers = new String[]{"출고번호", "제품번호", "거래처", "수량", "출고일", "상태", "기타"};
         } else if (type.equals("supplier")) {
             headers = new String[]{"ID", "거래처명", "전화번호", "등록일"};
+        } else if (type.equals("customer")) {
+            headers = new String[]{"ID", "고객명", "전화번호", "등록일"};
         } else {
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
@@ -110,8 +112,13 @@ public class ExcelExportService {
                     row.createCell(2).setCellValue(admin.getAdminPassword());
                     row.createCell(3).setCellValue(admin.getPhoneNum());
                     row.createCell(4).setCellValue(admin.getPosition());
-                    row.createCell(5).setCellValue(admin.getModDate().format(formatter));
-                    row.createCell(6).setCellValue(admin.getRegDate().format(formatter));
+                    row.createCell(5).setCellValue(
+                            admin.getRegDate() != null ? admin.getRegDate().format(formatter) : ""
+                    );
+                    row.createCell(6).setCellValue(
+                            admin.getModDate() != null ? admin.getModDate().format(formatter) : ""
+                    );
+
                     break;
                 }
 
@@ -150,6 +157,16 @@ public class ExcelExportService {
                     row.createCell(1).setCellValue(supplier.getSupplierName());
                     row.createCell(2).setCellValue(supplier.getSupplierInfo());
                     row.createCell(3).setCellValue(supplier.getRegDate().format(formatter));
+                    break;
+                }
+
+                /*headers = new String[]{"ID", "고객명", "전화번호", "등록일"};*/
+                case "org.zerock.b02.dto.CustomerDTO": { // 패키지명을 실제 환경에 맞게 변경
+                    CustomerDTO customer = (CustomerDTO) obj;
+                    row.createCell(0).setCellValue(customer.getCustomerId());
+                    row.createCell(1).setCellValue(customer.getCustomerName());
+                    row.createCell(2).setCellValue(customer.getCustomerInfo());
+                    row.createCell(3).setCellValue(customer.getRegDate().format(formatter));
                     break;
                 }
 

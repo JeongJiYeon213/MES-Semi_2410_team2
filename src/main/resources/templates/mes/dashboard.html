@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Advanced_2410_team2</title>
     <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
@@ -18,8 +18,8 @@
         <div class="list-group list-group-flush">
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/mes/inbound/list">입고관리</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/mes/outbound/list">출고관리</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">재고관리</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">제품관리</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/mes/stock/list">재고관리</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/mes/product/list">제품관리</a>
         </div>
     </div>
 
@@ -28,8 +28,9 @@
         <nav class="navbar navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" id="sidebarToggle">메뉴</a>
-                <a class="navbar-brand" href="#">거래처</a>
-                <a class="navbar-brand" href="/mes/adminpage">관리자</a>
+                <a class="navbar-brand" href="/mes/supplier/list" >거래처</a>
+                <a class="navbar-brand" href="/mes/customer/list" >고객</a>
+                <a class="navbar-brand" href="/mes/adminpage" >관리자</a>
                 <!-- 로그인된 사용자가 있으면 이름 표시 -->
                 <span th:if="${admin != null}" class="navbar-text" th:text="'반갑습니다, ' + ${admin.adminName} + '님!'"></span>
                 <!-- 로그아웃 버튼 -->

@@ -77,6 +77,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void remove(Long productId) {
 		log.info("삭제: " + productId);
+
 		stockRepository.deleteByProductId(productId);
 		productRepository.deleteById(productId);
 	}

@@ -29,6 +29,7 @@ public class ExcelDownloadController {
     private final InboundService inboundService;
     private final OutboundService outboundService;
     private final SupplierService supplierService;
+    private final CustomerService customerService;
 
 
     private final ExcelExportService excelExportService;
@@ -112,6 +113,20 @@ public class ExcelDownloadController {
 
         String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
         String fileName = "supplier_" + currentDate + ".xlsx";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(excelData);
+    }
+
+    @GetMapping("/customer/download")
+    public ResponseEntity<byte[]> downloadExcelCustomer() throws IOException {
+        List<CustomerDTO> customerDTOList = customerService.getAllCustomers();
+        byte[] excelData = excelExportService.generateExcel("customer", customerDTOList);
+
+        String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        String fileName = "customer_" + currentDate + ".xlsx";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
