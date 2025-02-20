@@ -186,6 +186,13 @@
 <!-- Core theme JS-->
 <script th:src="@{/js/scripts.js}"></script>
 
-<th:block layout:fragment="script"></th:block>
+<th:block layout:fragment="script">
+          /*<![CDATA[*/
+    // 세션이 없을 경우 로그인 페이지로 리디렉션
+    if (![[${session.adminId}]]) {
+    window.location.href = "/mes/login";
+    }
+    /*]]>*/
+</th:block>
 </body>
 </html>
