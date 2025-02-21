@@ -50,9 +50,6 @@
                     <a th:href="|@{/mes/stock/list}?${link}|" class="text-decoration-none">
                         <button type="button" class="btn btn-dark">목록</button>
                     </a>
-                    <a th:href="|@{/mes/stock/list(selectedStockId=${selectedStock.stockId}, modifyMode=true)}&${pageRequestDTO.getLink()}|" class="text-decoration-none">
-                        <button type="button" class="btn btn-secondary">수정/삭제</button>
-                    </a>
                 </div>
             </div>
 

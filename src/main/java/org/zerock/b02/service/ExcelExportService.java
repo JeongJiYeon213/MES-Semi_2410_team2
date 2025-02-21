@@ -6,14 +6,18 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.zerock.b02.domain.Inbound;
+import org.zerock.b02.domain.Outbound;
 import org.zerock.b02.domain.Product;
 import org.zerock.b02.dto.*;
+import org.zerock.b02.repository.InboundRepository;
+import org.zerock.b02.repository.OutboundRepository;
 import org.zerock.b02.repository.ProductRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Log4j2
@@ -21,6 +25,8 @@ import java.util.List;
 public class ExcelExportService {
 
     private final ProductRepository productRepository;
+    private final InboundRepository inboundRepository;
+    private final OutboundRepository outboundRepository;
 
     public <E> byte[] generateExcel(String type, List<E> data) throws IOException {
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -53,9 +59,9 @@ public class ExcelExportService {
         } else if (type.equals("admin")) {
             headers = new String[]{"사원번호", "사원이름", "비밀번호", "전화번호", "직급", "등록일", "수정일"};
         } else if (type.equals("inbound")) {
-            headers = new String[]{"입고번호", "제품번호", "거래처", "수량", "입고일", "상태", "기타"};
+            headers = new String[]{"입고번호", "제품번호", "거래처명", "수량", "입고일", "상태", "기타"};
         } else if (type.equals("outbound")) {
-            headers = new String[]{"출고번호", "제품번호", "거래처", "수량", "출고일", "상태", "기타"};
+            headers = new String[]{"출고번호", "제품번호", "고객명", "수량", "출고일", "상태", "기타"};
         } else if (type.equals("supplier")) {
             headers = new String[]{"ID", "거래처명", "전화번호", "등록일"};
         } else if (type.equals("customer")) {
@@ -130,30 +136,40 @@ public class ExcelExportService {
                 /*{"입고번호", "제품번호", "거래처", "수량", "입고일", "상태", "기타"};*/
 
                 case "org.zerock.b02.dto.InboundDTO": {
+                    InboundDTO inboundDTO = (InboundDTO) obj;
+                    Long inboundId = inboundDTO.getInboundId();
+                    Optional<Inbound> inboundResult = inboundRepository.findById(inboundId);
+                    Inbound inbound = inboundResult.orElseThrow(() -> new RuntimeException("Inbound not found"));
+                    inboundDTO.setProductCode(inbound.getProduct().getProductCode());
+                    inboundDTO.setSupplierId(inbound.getSupplier().getSupplierId());
 
-                    InboundDTO inbound = (InboundDTO) obj;
-
-                    row.createCell(0).setCellValue(inbound.getInboundCode());
-                    row.createCell(1).setCellValue(inbound.getProductCode());
-                    row.createCell(2).setCellValue(inbound.getSupplierId());
-                    row.createCell(3).setCellValue(inbound.getQuantity());
-                    row.createCell(4).setCellValue(inbound.getInboundDate());
-                    row.createCell(5).setCellValue(inbound.getInboundStatus());
-                    row.createCell(6).setCellValue(inbound.getDescription());
+                    row.createCell(0).setCellValue(inboundDTO.getInboundCode());
+                    row.createCell(1).setCellValue(inboundDTO.getProductCode());
+                    row.createCell(2).setCellValue(inboundDTO.getSupplierId());
+                    row.createCell(3).setCellValue(inboundDTO.getQuantity());
+                    row.createCell(4).setCellValue(inboundDTO.getInboundDate());
+                    row.createCell(5).setCellValue(inboundDTO.getInboundStatus());
+                    row.createCell(6).setCellValue(inboundDTO.getDescription());
                     break;
                 }
 
                 /*headers = new String[]{"출고번호", "제품번호", "거래처", "수량", "출고일", "상태", "기타"};*/
 
                 case "org.zerock.b02.dto.OutboundDTO": { // 패키지명을 실제 환경에 맞게 변경
-                    OutboundDTO outbound = (OutboundDTO) obj;
-                    row.createCell(0).setCellValue(outbound.getOutboundCode());
-                    row.createCell(1).setCellValue(outbound.getProductCode());
-                    row.createCell(2).setCellValue(outbound.getCustomerId());
-                    row.createCell(3).setCellValue(outbound.getQuantity());
-                    row.createCell(4).setCellValue(outbound.getOutboundDate().format(formatter));
-                    row.createCell(5).setCellValue(outbound.getOutboundStatus());
-                    row.createCell(6).setCellValue(outbound.getDescription());
+                    OutboundDTO outboundDTO = (OutboundDTO) obj;
+                    Long outboundId = outboundDTO.getOutboundId();
+                    Optional<Outbound> outboundResult = outboundRepository.findById(outboundId);
+                    Outbound outbound = outboundResult.orElseThrow(() -> new RuntimeException("Outbound not found"));
+                    outboundDTO.setProductCode(outbound.getProduct().getProductCode());
+                    outboundDTO.setCustomerId(outbound.getCustomer().getCustomerId());
+
+                    row.createCell(0).setCellValue(outboundDTO.getOutboundCode());
+                    row.createCell(1).setCellValue(outboundDTO.getProductCode());
+                    row.createCell(2).setCellValue(outboundDTO.getCustomerId());
+                    row.createCell(3).setCellValue(outboundDTO.getQuantity());
+                    row.createCell(4).setCellValue(outboundDTO.getOutboundDate().format(formatter));
+                    row.createCell(5).setCellValue(outboundDTO.getOutboundStatus());
+                    row.createCell(6).setCellValue(outboundDTO.getDescription());
                     break;
                 }
 

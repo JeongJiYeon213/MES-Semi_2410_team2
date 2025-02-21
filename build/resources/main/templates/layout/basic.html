@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Advanced_2410_team2</title>
+    <title>Advanced_2410_Team2</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -17,6 +17,8 @@
     <!-- Sidebar-->
     <div class="border-end bg-white" id="sidebar-wrapper">
         <div class="sidebar-heading border-bottom bg-light"><a href="/mes/dashboard">MES</a></div>
+        <div class="namebar">&nbsp;&nbsp;&nbsp;<span th:text="${session.adminName}"></span>님 /
+            <span th:text="${session.position}"></span></div>
         <div class="list-group list-group-flush">
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/mes/inbound/list">입고관리</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/mes/outbound/list">출고관리</a>
@@ -30,10 +32,10 @@
         <nav class="navbar navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" id="sidebarToggle">메뉴</a>
-                <a class="navbar-brand" href="/mes/supplier/list" >거래처</a>
+                <a class="navbar-brand" href="/mes/supplier/list">거래처</a>
                 <a class="navbar-brand" href="/mes/customer/list" >고객</a>
                 <a class="navbar-brand" href="/mes/adminpage" >관리자</a>
-                <form class="d-flex" action="/mes/logout" method="get">
+                <form class="d-flex" action="/mes/logout">
                     <button class="btn btn-sm btn-outline-secondary" type="submit">로그아웃</button>
                 </form>
             </div>
@@ -184,15 +186,13 @@
 <!-- Core theme JS-->
 <script th:src="@{/js/scripts.js}"></script>
 
-<th:block layout:fragment="script"></th:block>
-
-<script th:inline="javascript">
+<th:block layout:fragment="script">
     /*<![CDATA[*/
-                if (![[${session.adminId}]]) {
-                    window.location.href = "/mes/login"; // 세션에 admin이 없으면 로그인 페이지로 리다이렉트
-                }
-                /*]]>*/
-
-</script>
+    // 세션이 없을 경우 로그인 페이지로 리디렉션
+    if (![[${session.adminId}]]) {
+    window.location.href = "/mes/login";
+    }
+    /*]]>*/
+</th:block>
 </body>
 </html>

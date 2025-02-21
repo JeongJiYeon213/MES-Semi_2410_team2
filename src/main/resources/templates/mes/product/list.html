@@ -103,59 +103,67 @@
 
 
 <script layout:fragment="script" th:inline="javascript">
-    document.addEventListener("DOMContentLoaded", function () {
-        // 등록 버튼
-        document.querySelector(".register").addEventListener("click", function () {
-            window.location.href = '/mes/product/list?registerMode=true';
-        });
 
-        // 검색 초기화 버튼
-        document.querySelector(".clearBtn").addEventListener("click", function () {
-            window.location.href = '/mes/product/list';
-        });
+    /*<![CDATA[*/
+   // 세션이 없을 경우 로그인 페이지로 리디렉션
+   if (![[${session.adminId}]]) {
+       window.location.href = "/mes/login";
+   }
+/*]]>*/
 
-        // 페이지 이동
-        document.querySelector(".pagination").addEventListener("click", function (e) {
-            if (e.target.tagName !== 'A') return;
-            e.preventDefault();
+   document.addEventListener("DOMContentLoaded", function () {
+       // 등록 버튼
+       document.querySelector(".register").addEventListener("click", function () {
+           window.location.href = '/mes/product/list?registerMode=true';
+       });
 
-            const num = e.target.getAttribute("data-num");
-            const params = new URLSearchParams(window.location.search);
-            params.set("page", num);
+       // 검색 초기화 버튼
+       document.querySelector(".clearBtn").addEventListener("click", function () {
+           window.location.href = '/mes/product/list';
+       });
 
-            const selectedProductId = params.get("selectedProductId");
-            if (selectedProductId) {
-                params.set("selectedProductId", selectedProductId);
-            }
+       // 페이지 이동
+       document.querySelector(".pagination").addEventListener("click", function (e) {
+           if (e.target.tagName !== 'A') return;
+           e.preventDefault();
 
-            window.location.href = `/mes/product/list?${params.toString()}`;
-        });
+           const num = e.target.getAttribute("data-num");
+           const params = new URLSearchParams(window.location.search);
+           params.set("page", num);
 
-        // 삭제 버튼 이벤트 (동적으로 존재할 수도 있기 때문에 `document.addEventListener` 사용)
-        document.addEventListener("click", function (e) {
-            if (e.target.classList.contains("removeBtn")) {
-                e.preventDefault();
-                if (!confirm("정말 삭제하시겠습니까?")) {
-                    return;
-                }
+           const selectedProductId = params.get("selectedProductId");
+           if (selectedProductId) {
+               params.set("selectedProductId", selectedProductId);
+           }
 
-                const productId = document.querySelector("input[name='productId']").value;
-                const form = document.createElement("form");
-                form.method = "POST";
-                form.action = "/mes/product/remove";
-                form.style.display = "none";
+           window.location.href = `/mes/product/list?${params.toString()}`;
+       });
 
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "productId";
-                input.value = productId;
+       // 삭제 버튼 이벤트 (동적으로 존재할 수도 있기 때문에 `document.addEventListener` 사용)
+       document.addEventListener("click", function (e) {
+           if (e.target.classList.contains("removeBtn")) {
+               e.preventDefault();
+               if (!confirm("정말 삭제하시겠습니까?")) {
+                   return;
+               }
 
-                form.appendChild(input);
-                document.body.appendChild(form);
-                form.submit();
-            }
-        });
-    });
+               const productId = document.querySelector("input[name='productId']").value;
+               const form = document.createElement("form");
+               form.method = "POST";
+               form.action = "/mes/product/remove";
+               form.style.display = "none";
+
+               const input = document.createElement("input");
+               input.type = "hidden";
+               input.name = "productId";
+               input.value = productId;
+
+               form.appendChild(input);
+               document.body.appendChild(form);
+               form.submit();
+           }
+       });
+   });
 </script>
 
 </html>

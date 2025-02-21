@@ -20,7 +20,6 @@ import javax.validation.Valid;
 @RequestMapping("/mes")
 public class AdminController {
 
-
     private final AdminService adminService;
     @GetMapping("/adminpage")
     public void adminGet(PageRequestDTO pageRequestDTO, Model model,
