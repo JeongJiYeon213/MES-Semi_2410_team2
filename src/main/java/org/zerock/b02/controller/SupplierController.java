@@ -7,10 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.b02.dto.PageRequestDTO;
-import org.zerock.b02.dto.PageResponseDTO;
-import org.zerock.b02.dto.ProductDTO;
-import org.zerock.b02.dto.SupplierDTO;
+import org.zerock.b02.dto.*;
 import org.zerock.b02.service.SupplierService;
 
 import javax.validation.Valid;
@@ -122,14 +119,10 @@ public class SupplierController {
         return "redirect:/mes/supplier/list";
     }
 
-    @PostMapping("/remove")
-    public String remove(@RequestParam String supplierId,
-                         RedirectAttributes redirectAttributes){
-
-        log.info("romove post.." + supplierId);
-        supplierService.remove(supplierId);
-        redirectAttributes.addFlashAttribute("result", "removed");
-
-        return "redirect:/mes/supplier/list";
+    @GetMapping("/searchPopup")
+    public String showCustomerSearchPopup(Model model) {
+        List<SupplierDTO> supplierList = supplierService.getAllSuppliers();
+        model.addAttribute("supplierList", supplierList);
+        return "/mes/supplier/searchPopup";
     }
 }
