@@ -122,11 +122,14 @@ public class SupplierController {
         return "redirect:/mes/supplier/list";
     }
 
+    @PostMapping("/remove")
+    public String remove(@RequestParam String supplierId,
+                         RedirectAttributes redirectAttributes){
 
-    @GetMapping("/searchPopup")
-    public String showSupplierSearchPopup(Model model) {
-        List<SupplierDTO> supplierList = supplierService.getAllSuppliers();
-        model.addAttribute("supplierList", supplierList);
-        return "/mes/supplier/searchPopup";
+        log.info("romove post.." + supplierId);
+        supplierService.remove(supplierId);
+        redirectAttributes.addFlashAttribute("result", "removed");
+
+        return "redirect:/mes/supplier/list";
     }
 }
