@@ -4855,7 +4855,7 @@ textarea.form-control-lg {
 .page-link {
   position: relative;
   display: block;
-  color: #0d6efd;
+  color: #000000;
   text-decoration: none;
   background-color: #fff;
   border: 1px solid #dee2e6;
@@ -4868,7 +4868,7 @@ textarea.form-control-lg {
 }
 .page-link:hover {
   z-index: 2;
-  color: #0a58ca;
+  color: #000000;
   background-color: #e9ecef;
   border-color: #dee2e6;
 }
@@ -4885,9 +4885,9 @@ textarea.form-control-lg {
 }
 .page-item.active .page-link {
   z-index: 3;
-  color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #212529;
+  color: white;
+  border-color: #212529;
 }
 .page-item.disabled .page-link {
   color: #6c757d;
@@ -4903,6 +4903,7 @@ textarea.form-control-lg {
 .page-item:first-child .page-link {
   border-top-left-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
+
 }
 .page-item:last-child .page-link {
   border-top-right-radius: 0.25rem;
@@ -4916,10 +4917,14 @@ textarea.form-control-lg {
 .pagination-lg .page-item:first-child .page-link {
   border-top-left-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem;
+
+
 }
 .pagination-lg .page-item:last-child .page-link {
   border-top-right-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
+
+
 }
 
 .pagination-sm .page-link {
@@ -4929,10 +4934,14 @@ textarea.form-control-lg {
 .pagination-sm .page-item:first-child .page-link {
   border-top-left-radius: 0.2rem;
   border-bottom-left-radius: 0.2rem;
+
+
 }
 .pagination-sm .page-item:last-child .page-link {
   border-top-right-radius: 0.2rem;
   border-bottom-right-radius: 0.2rem;
+
+
 }
 
 .badge {

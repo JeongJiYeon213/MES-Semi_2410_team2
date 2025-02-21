@@ -58,6 +58,7 @@ public class InboundSearchImpl implements InboundSearch {
             }
             jpql.append(")");
         }
+        jpql.append(" ORDER BY inboundId DESC");
 
         // JPQL로 쿼리 생성
         TypedQuery<Inbound> query = entityManager.createQuery(jpql.toString(), Inbound.class);

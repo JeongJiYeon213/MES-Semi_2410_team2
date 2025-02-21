@@ -71,7 +71,7 @@ public class CustomerController {
 
     @GetMapping({"/read", "/modify"})
     public String read(@RequestParam("selectedCustomerId") String selectedCustomerId,
-                     PageRequestDTO pageRequestDTO, Model model){
+                       PageRequestDTO pageRequestDTO, Model model){
 
         CustomerDTO customerDTO = customerService.readOne(selectedCustomerId);
 
@@ -117,5 +117,11 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("result", "removed");
 
         return "redirect:/mes/customer/list";
+    }
+    @GetMapping("/searchPopup")
+    public String showCustomerSearchPopup(Model model) {
+        List<CustomerDTO> customerList = customerService.getAllCustomers();
+        model.addAttribute("customerList", customerList);
+        return "/mes/customer/searchPopup";
     }
 }

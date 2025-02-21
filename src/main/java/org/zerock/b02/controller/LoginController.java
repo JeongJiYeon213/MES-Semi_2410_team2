@@ -34,6 +34,8 @@ public class LoginController {
         Admin admin = adminService.login(adminId, adminPassword);
 
         if (admin != null) {
+            session.setAttribute("adminName", admin.getAdminName());
+            session.setAttribute("position", admin.getPosition());
             model.addAttribute("admin", admin); // 세션에 admin 객체 저장
             session.setAttribute("adminId", adminId);
             return "redirect:/mes/dashboard"; // 로그인 성공 시 대시보드로 리다이렉트
@@ -44,9 +46,9 @@ public class LoginController {
     }
 
     // 로그아웃 처리
-    /*@GetMapping("/logout")
-    public String logout(Model model) {
-        model.asMap().remove("admin"); // 세션에서 admin 제거
+    @GetMapping("/logout")
+    public String logout(Model model, HttpSession session) {
+        session.invalidate();// 세션에서 admin 제거
         return "redirect:/mes/login"; // 로그아웃 후 로그인 페이지로 리다이렉트
-    }*/
+    }
 }

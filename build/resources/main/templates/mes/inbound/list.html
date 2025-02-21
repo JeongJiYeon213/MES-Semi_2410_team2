@@ -76,11 +76,9 @@
     <div class="col-6" th:if="${registerMode}">
         <div th:insert="~{mes/inbound/register :: register}"></div>
     </div>
-
-
     <div class="float-start">
         <button type="button" class="btn btn-primary" onclick="location.href = '/mes/inbound/register';">등록</button>
-        <a href="/excel/inbound/download" class="btn btn-success">엑셀다운로드</a>
+        <a href="/excel/product/download" class="btn btn-success">엑셀다운로드</a>
     </div>
     <div class="float-end">
         <div>

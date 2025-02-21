@@ -44,7 +44,7 @@ public class OutboundSearchImpl implements OutboundSearch {
                         jpql.append("o.product.productCode LIKE :keyword");
                         break;
                     case "c":
-                        jpql.append("o.supplier.supplierId LIKE :keyword");
+                        jpql.append("o.customer.customerId LIKE :keyword");
                         break;
                     case "d":
                         jpql.append("o.inboundStatus LIKE :keyword");
@@ -58,6 +58,7 @@ public class OutboundSearchImpl implements OutboundSearch {
             }
             jpql.append(")");
         }
+        jpql.append(" ORDER BY outboundId DESC");
 
         // JPQL로 쿼리 생성
         TypedQuery<Outbound> query = entityManager.createQuery(jpql.toString(), Outbound.class);

@@ -85,8 +85,7 @@
     <div class="float-end">
         <ul class="pagination flex-wrap">
             <li class="page-item" th:if="${responseDTO.prev}" style="cursor: pointer;">
-                <a class="page-link" th:data-num="${responseDTO.start - 1}"
-                   style="background-color: black !important; color: white !important;">이전</a>
+                <a class="page-link" th:data-num="${responseDTO.start - 1}">이전</a>
             </li>
             <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                 <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'" style="cursor: pointer;">
@@ -94,8 +93,7 @@
                 </li>
             </th:block>
             <li class="page-item" th:if="${responseDTO.next}" style="cursor: pointer;">
-                <a class="page-link" th:data-num="${responseDTO.end + 1}"
-                   style="background-color: black !important; color: white !important;">다음</a>
+                <a class="page-link" th:data-num="${responseDTO.end + 1}">다음</a>
             </li>
         </ul>
     </div>

@@ -13,7 +13,7 @@ public class OutboundDTO {
     @Setter
     private String outboundCode;
     private String productCode;
-    private String supplierId;
+    private String customerId;
     private Long quantity;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")

@@ -1,11 +1,12 @@
 package org.zerock.b02.domain;
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.zerock.b02.repository.CustomerRepository;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Customer extends BaseEntity {
+public class Customer extends BaseEntity implements Serializable {
 
     @Id
     @Column(length = 50, nullable = false)

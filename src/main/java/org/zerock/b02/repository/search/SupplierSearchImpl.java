@@ -1,11 +1,11 @@
 package org.zerock.b02.repository.search;
 
+import org.zerock.b02.domain.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.zerock.b02.domain.Supplier;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -47,7 +47,7 @@ public class SupplierSearchImpl implements SupplierSearch {
             jpql.append(")");
         }
 
-        jpql.append(" ORDER BY b.supplierId ASC");
+        jpql.append(" ORDER BY b.supplierName ASC");
 
         // JPQL로 쿼리 생성
         TypedQuery<Supplier> query = entityManager.createQuery(jpql.toString(), Supplier.class);
