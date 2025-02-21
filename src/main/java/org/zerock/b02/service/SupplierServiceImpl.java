@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.zerock.b02.domain.Supplier;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
-import org.zerock.b02.dto.ProductDTO;
 import org.zerock.b02.dto.SupplierDTO;
 import org.zerock.b02.repository.SupplierRepository;
 

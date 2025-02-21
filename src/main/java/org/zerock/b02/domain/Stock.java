@@ -1,7 +1,6 @@
 package org.zerock.b02.domain;
 
 import lombok.*;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "product") // Lazy Loading에서 무한 루프 방지
+@ToString(exclude = "product")
 public class Stock extends BaseEntity {
 
 	@Id
@@ -24,10 +23,6 @@ public class Stock extends BaseEntity {
 
 	@Column(nullable = false)
 	private Long currentStock;
-
-	/*@Formula("(SELECT p.product_code FROM product p WHERE p.product_id = product_id)")*/
-
-
 
 	@Column(nullable = false)
 	private String productCode;

@@ -15,12 +15,9 @@ public interface OutboundRepository extends JpaRepository<Outbound, Long>, Outbo
 
     Optional<Outbound> findTopByOrderByOutboundCodeDesc();
 
-    // from과 to 사이의 날짜로 조회
     Page<Outbound> findByOutboundDateBetween(LocalDateTime from, LocalDateTime to, Pageable pageable);
 
-    // from 이후의 날짜로 조회
     Page<Outbound> findByOutboundDateAfter(LocalDateTime from, Pageable pageable);
 
-    // to 이전의 날짜로 조회
     Page<Outbound> findByOutboundDateBefore(LocalDateTime to, Pageable pageable);
 }

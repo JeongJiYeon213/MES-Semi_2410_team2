@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
-import org.zerock.b02.dto.ProductDTO;
 import org.zerock.b02.dto.SupplierDTO;
 import org.zerock.b02.service.SupplierService;
 

@@ -3,7 +3,6 @@ package org.zerock.b02.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,7 +17,6 @@ public class Admin extends BaseEntity{
 
     @Column(length = 50, nullable = false)
     private String adminName;
-
 
     private Long adminId;
 

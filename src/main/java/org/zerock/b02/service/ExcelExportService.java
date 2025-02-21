@@ -7,7 +7,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.zerock.b02.domain.Inbound;
 import org.zerock.b02.domain.Outbound;
-import org.zerock.b02.domain.Product;
 import org.zerock.b02.dto.*;
 import org.zerock.b02.repository.InboundRepository;
 import org.zerock.b02.repository.OutboundRepository;
@@ -95,7 +94,7 @@ public class ExcelExportService {
             CellStyle rowStyle = (rowIdx % 2 == 0) ? evenRowStyle : oddRowStyle;
 
             switch (obj.getClass().getName()) {
-                case "org.zerock.b02.dto.ProductDTO": { // 패키지명을 실제 환경에 맞게 변경
+                case "org.zerock.b02.dto.ProductDTO": {
                     ProductDTO product = (ProductDTO) obj;
                     row.createCell(0).setCellValue(product.getProductCode());
                     row.createCell(1).setCellValue(product.getProductName());
@@ -107,7 +106,7 @@ public class ExcelExportService {
                     break;
                 }
 
-                case "org.zerock.b02.dto.StockDTO": { // 패키지명을 실제 환경에 맞게 변경
+                case "org.zerock.b02.dto.StockDTO": {
                     StockDTO stock = (StockDTO) obj;
                     row.createCell(0).setCellValue(stock.getProductCode());
                     row.createCell(1).setCellValue(stock.getCurrentStock());
@@ -116,7 +115,7 @@ public class ExcelExportService {
                     break;
                 }
 
-                case "org.zerock.b02.dto.AdminDTO": { // 패키지명을 실제 환경에 맞게 변경
+                case "org.zerock.b02.dto.AdminDTO": {
                     AdminDTO admin = (AdminDTO) obj;
                     row.createCell(0).setCellValue(admin.getAdminId());
                     row.createCell(1).setCellValue(admin.getAdminName());
@@ -133,8 +132,6 @@ public class ExcelExportService {
                     break;
                 }
 
-                /*{"입고번호", "제품번호", "거래처", "수량", "입고일", "상태", "기타"};*/
-
                 case "org.zerock.b02.dto.InboundDTO": {
                     InboundDTO inboundDTO = (InboundDTO) obj;
                     Long inboundId = inboundDTO.getInboundId();
@@ -147,15 +144,13 @@ public class ExcelExportService {
                     row.createCell(1).setCellValue(inboundDTO.getProductCode());
                     row.createCell(2).setCellValue(inboundDTO.getSupplierId());
                     row.createCell(3).setCellValue(inboundDTO.getQuantity());
-                    row.createCell(4).setCellValue(inboundDTO.getInboundDate());
+                    row.createCell(4).setCellValue(inboundDTO.getInboundDate().format(formatter));
                     row.createCell(5).setCellValue(inboundDTO.getInboundStatus());
                     row.createCell(6).setCellValue(inboundDTO.getDescription());
                     break;
                 }
 
-                /*headers = new String[]{"출고번호", "제품번호", "거래처", "수량", "출고일", "상태", "기타"};*/
-
-                case "org.zerock.b02.dto.OutboundDTO": { // 패키지명을 실제 환경에 맞게 변경
+                case "org.zerock.b02.dto.OutboundDTO": {
                     OutboundDTO outboundDTO = (OutboundDTO) obj;
                     Long outboundId = outboundDTO.getOutboundId();
                     Optional<Outbound> outboundResult = outboundRepository.findById(outboundId);
@@ -173,8 +168,7 @@ public class ExcelExportService {
                     break;
                 }
 
-                /*headers = new String[]{"ID", "거래처명", "전화번호", "등록일"};*/
-                case "org.zerock.b02.dto.SupplierDTO": { // 패키지명을 실제 환경에 맞게 변경
+                case "org.zerock.b02.dto.SupplierDTO": {
                     SupplierDTO supplier = (SupplierDTO) obj;
                     row.createCell(0).setCellValue(supplier.getSupplierId());
                     row.createCell(1).setCellValue(supplier.getSupplierName());
@@ -183,8 +177,7 @@ public class ExcelExportService {
                     break;
                 }
 
-                /*headers = new String[]{"ID", "고객명", "전화번호", "등록일"};*/
-                case "org.zerock.b02.dto.CustomerDTO": { // 패키지명을 실제 환경에 맞게 변경
+                case "org.zerock.b02.dto.CustomerDTO": {
                     CustomerDTO customer = (CustomerDTO) obj;
                     row.createCell(0).setCellValue(customer.getCustomerId());
                     row.createCell(1).setCellValue(customer.getCustomerName());
@@ -203,7 +196,6 @@ public class ExcelExportService {
             }
             rowIdx++;
         }
-
 
         for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
             sheet.autoSizeColumn(i);

@@ -19,7 +19,6 @@ public class OutboundSearchImpl implements OutboundSearch {
 
     @Override
     public Page<Outbound> searchAll(String[] types, String keyword, Pageable pageable, LocalDateTime from, LocalDateTime to) {
-        // JPQL로 작성
         StringBuilder jpql = new StringBuilder("SELECT o FROM Outbound o WHERE o.outboundId > 0");
 
         if (from != null && to != null) {
@@ -30,7 +29,6 @@ public class OutboundSearchImpl implements OutboundSearch {
             jpql.append(" AND o.outboundDate <= :to");
         }
 
-        // 동적 검색 조건 추가
         if ((types != null && types.length > 0) && keyword != null) {
             jpql.append(" AND (");
 
@@ -51,7 +49,6 @@ public class OutboundSearchImpl implements OutboundSearch {
                         break;
                 }
 
-                // 각 조건 사이에 "OR" 추가
                 if (o < types.length - 1) {
                     jpql.append(" OR ");
                 }
@@ -60,13 +57,11 @@ public class OutboundSearchImpl implements OutboundSearch {
         }
         jpql.append(" ORDER BY outboundId DESC");
 
-        // JPQL로 쿼리 생성
         TypedQuery<Outbound> query = entityManager.createQuery(jpql.toString(), Outbound.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(
                 jpql.toString().replace("SELECT o", "SELECT COUNT(o)"), Long.class
         );
 
-        // 파라미터 바인딩
         if ((types != null && types.length > 0) && keyword != null) {
             query.setParameter("keyword", "%" + keyword + "%");
             countQuery.setParameter("keyword", "%" + keyword + "%");
@@ -80,12 +75,9 @@ public class OutboundSearchImpl implements OutboundSearch {
             countQuery.setParameter("to", to);
         }
 
-
-        // 페이징 처리
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
-        // 결과 조회
         List<Outbound> list = query.getResultList();
         long count = countQuery.getSingleResult();
 

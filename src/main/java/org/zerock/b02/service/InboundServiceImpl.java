@@ -32,12 +32,11 @@ public class InboundServiceImpl implements InboundService{
 
     @Override
     public Long register(InboundDTO inboundDTO){
-        // 마지막 등록된 inboundCode 가져오기
+
         Optional<Inbound> lastInbound = inboundRepository.findTopByOrderByInboundCodeDesc();
 
         String newInboundCode = generateNewInboundCode(lastInbound);
 
-        // inboundDTO에 자동 생성된 inboundCode 설정
         inboundDTO.setInboundCode(newInboundCode);
 
         String[] productCodes = inboundDTO.getProductCode().split(",");
@@ -46,13 +45,11 @@ public class InboundServiceImpl implements InboundService{
         String[] descriptions = inboundDTO.getDescription().split(",");
         Long quantities = inboundDTO.getQuantity();
         LocalDateTime inboundDates = inboundDTO.getInboundDate();
-        // quantity 배열을 Long[]로 변환
 
         log.info("inboundstatus: " + Arrays.toString(inboundStatuses));
         log.info("descriptions: " + Arrays.toString(descriptions));
         log.info("quantities: " + quantities);
         log.info("inboundDates: " + inboundDates);
-
 
         for (int i = 0; i < productCodes.length; i++) {
             String productCode = productCodes[i].trim();
@@ -84,7 +81,7 @@ public class InboundServiceImpl implements InboundService{
         }
         return 1L;
     }
-    // inboundCode 생성 로직
+
     private String generateNewInboundCode(Optional<Inbound> lastInbound) {
         String newInboundCode = "I001";  // 기본값
 
@@ -101,10 +98,9 @@ public class InboundServiceImpl implements InboundService{
     public InboundDTO readOne(Long inboundId){
         Optional<Inbound> result = inboundRepository.findById(inboundId);
         Inbound inbound = result.orElseThrow(() -> new RuntimeException("Inbound not found"));
-        // DTO로 변환
+
         InboundDTO inboundDTO = modelMapper.map(inbound, InboundDTO.class);
 
-        // Product 엔티티에서 productCode 직접 가져오기
         if (inbound.getProduct() != null) {
             inboundDTO.setProductCode(inbound.getProduct().getProductCode());
         }
@@ -142,7 +138,6 @@ public class InboundServiceImpl implements InboundService{
 
     @Override
     public PageResponseDTO list(PageRequestDTO pageRequestDTO){
-        // 브라우저에서 요청한 파라미터 값 세팅
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
         Pageable pageable = pageRequestDTO.getPageable("inboundId");
@@ -150,10 +145,8 @@ public class InboundServiceImpl implements InboundService{
         LocalDateTime from = pageRequestDTO.getFrom();
         LocalDateTime to = pageRequestDTO.getTo();
 
-        // 브라우저에서 받은 파라미터로 board테이블 sql 작성 page<board> 객체로 전달
         Page<Inbound> result = inboundRepository.searchAll(types, keyword, pageable, from, to);
 
-        // modelMapper를 통해서 entitu -> dto로 변환
         List<InboundDTO> dtoList = result.getContent().stream().map(inbound -> {
             InboundDTO inboundDTO = modelMapper.map(inbound, InboundDTO.class);
 
@@ -176,7 +169,7 @@ public class InboundServiceImpl implements InboundService{
 
     @Override
     public List<InboundDTO> getAllInbound() {
-        List<Inbound> inbounds = inboundRepository.findAll();  // 전체 데이터 가져오기
+        List<Inbound> inbounds = inboundRepository.findAll();
 
         log.info("data" + inbounds.size());
 

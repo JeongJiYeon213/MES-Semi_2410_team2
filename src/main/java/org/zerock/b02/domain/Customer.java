@@ -1,12 +1,12 @@
 package org.zerock.b02.domain;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.zerock.b02.repository.CustomerRepository;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import java.io.Serializable;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity

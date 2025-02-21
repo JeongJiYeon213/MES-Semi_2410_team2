@@ -46,8 +46,9 @@ public class OutboundController {
     }
 
     @GetMapping("/outbound/register")
-    public void outboundRegisterGet() {}
+    public void outboundRegisterGet() {
 
+    }
 
     @PostMapping("/outbound/register")
     public String registerPost(@Valid OutboundDTO outboundDTO,

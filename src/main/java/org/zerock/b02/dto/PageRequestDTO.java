@@ -19,16 +19,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PageRequestDTO {
     @Builder.Default
-    private int page = 1;   // 보여줄 page
+    private int page = 1;
     @Builder.Default
-    private int size = 10;  // 보여줄 page size
+    private int size = 10;
 
-    private String link; // page size 같이
+    private String link;
 
-    // 검색/필터링 요청 속성들
-    private String type;   // 검색종류(a, b, c. d)
-    private String keyword;   // 검색할 문자들
-    // 검색할 날짜
+    private String type;
+    private String keyword;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime from;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")

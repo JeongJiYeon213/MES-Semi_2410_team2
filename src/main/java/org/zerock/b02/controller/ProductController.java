@@ -32,7 +32,6 @@ public class ProductController {
 		model.addAttribute("responseDTO", responseDTO);
 		model.addAttribute("pageRequestDTO", pageRequestDTO);
 
-		// 선택한 제품의 상세 정보를 추가
 		if (selectedProductId != null) {
 			ProductDTO selectedProduct = productService.readOne(selectedProductId);
 			model.addAttribute("selectedProduct", selectedProduct);

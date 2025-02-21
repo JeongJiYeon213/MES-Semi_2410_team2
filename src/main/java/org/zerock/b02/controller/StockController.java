@@ -67,8 +67,6 @@ public class StockController {
 
 		log.info(stockDTO);
 
-
-
 		return "redirect:/mes/stock/list";
 	}
 

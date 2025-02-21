@@ -17,20 +17,16 @@ public class LoginController {
 
     private final AdminService adminService;
 
-    // 로그인 페이지로 이동
     @GetMapping("/login")
     public String loginPage() {
-        return "login"; // 로그인 HTML 페이지 (login.html)
+        return "login";
     }
 
-    // 로그인 처리
     @PostMapping("/login")
     public String login(@RequestParam("adminId") Long adminId,
                         @RequestParam("adminPassword") int adminPassword,
                         HttpSession session,
                         Model model) {
-
-        // AdminService를 사용하여 아이디와 비밀번호로 인증
         Admin admin = adminService.login(adminId, adminPassword);
 
         if (admin != null) {
@@ -41,14 +37,13 @@ public class LoginController {
             return "redirect:/mes/dashboard"; // 로그인 성공 시 대시보드로 리다이렉트
         } else {
             model.addAttribute("error", "아이디나 비밀번호가 잘못되었습니다.");
-            return "login"; // 로그인 실패 시 로그인 페이지로 다시 돌아가기
+            return "login";
         }
     }
 
-    // 로그아웃 처리
     @GetMapping("/logout")
     public String logout(Model model, HttpSession session) {
-        session.invalidate();// 세션에서 admin 제거
-        return "redirect:/mes/login"; // 로그아웃 후 로그인 페이지로 리다이렉트
+        session.invalidate();
+        return "redirect:/mes/login";
     }
 }

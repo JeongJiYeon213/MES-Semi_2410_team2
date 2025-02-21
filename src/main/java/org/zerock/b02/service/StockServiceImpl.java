@@ -6,13 +6,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.zerock.b02.domain.Product;
 import org.zerock.b02.domain.Stock;
-import org.zerock.b02.dto.StockDTO;
 import org.zerock.b02.dto.PageRequestDTO;
 import org.zerock.b02.dto.PageResponseDTO;
+import org.zerock.b02.dto.StockDTO;
 import org.zerock.b02.repository.ProductRepository;
 import org.zerock.b02.repository.StockRepository;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,6 @@ public class StockServiceImpl implements StockService {
 	private final ModelMapper modelMapper;
 	private final StockRepository stockRepository;
 	private final ProductRepository productRepository;
-
 
 
 	@Override
@@ -79,7 +78,7 @@ public class StockServiceImpl implements StockService {
 
 	@Override
 	public List<StockDTO> getAllStocks() {
-		List<Stock> stocks = stockRepository.findAll();  // 전체 데이터 가져오기
+		List<Stock> stocks = stockRepository.findAll();
 
 		log.info("data" + stocks.size());
 

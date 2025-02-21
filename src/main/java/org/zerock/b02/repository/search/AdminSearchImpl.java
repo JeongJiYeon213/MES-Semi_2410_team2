@@ -19,13 +19,11 @@ import java.util.List;
 public class AdminSearchImpl implements AdminSearch {
     private final EntityManager entityManager;
 
-    // JPQL
+
     @Override
     public Page<Admin> searchAll(String[] types, String keyword, Pageable pageable) {
-        // JPQL로 작성
         StringBuilder jpql = new StringBuilder("SELECT b FROM Admin b WHERE b.bno > 0");
 
-        // 동적 검색 조건 추가
         if (types != null && types.length > 0 && keyword != null) {
             jpql.append(" AND (");
 
@@ -35,10 +33,8 @@ public class AdminSearchImpl implements AdminSearch {
                     case "t":
                         jpql.append("b.adminName LIKE :keyword");
                         break;
-                    // 추가적인 type 조건이 있을 경우 처리
                 }
 
-                // 각 조건 사이에 "OR" 추가
                 if (i < types.length - 1) {
                     jpql.append(" OR ");
                 }
@@ -48,24 +44,19 @@ public class AdminSearchImpl implements AdminSearch {
 
         jpql.append(" ORDER BY bno ASC");
 
-
-        // JPQL로 쿼리 생성
         TypedQuery<Admin> query = entityManager.createQuery(jpql.toString(), Admin.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(
                 jpql.toString().replace("SELECT b", "SELECT COUNT(b)"), Long.class
         );
 
-        // 파라미터 바인딩
         if ((types != null && types.length > 0) && keyword != null) {
             query.setParameter("keyword", "%" + keyword + "%");
             countQuery.setParameter("keyword", "%" + keyword + "%");
         }
 
-        // 페이징 처리
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
-        // 결과 조회
         List<Admin> list = query.getResultList();
         long count = countQuery.getSingleResult();
 

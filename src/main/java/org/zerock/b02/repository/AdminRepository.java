@@ -12,9 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AdminRepository extends JpaRepository<Admin, Long>, AdminSearch {
-
-    // JPA @Query Method -> JPQL
-
     @Query("select b from Admin b where b.adminName in :adminNames")
     List<Admin> findByAdminNames(@Param("adminNames") List<String> adminNames);
 
@@ -22,8 +19,6 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, AdminSearch
     Page<Admin> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     Optional<Admin> findByAdminId(Long adminId);
-
-
 }
 
 

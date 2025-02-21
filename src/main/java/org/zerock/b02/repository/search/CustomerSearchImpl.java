@@ -18,10 +18,8 @@ public class CustomerSearchImpl implements CustomerSearch {
 
     @Override
     public Page<Customer> searchAll(String[] types, String keyword, Pageable pageable) {
-        // JPQL로 작성
         StringBuilder jpql = new StringBuilder("SELECT c FROM Customer c WHERE c.customerId IS NOT NULL");
 
-        // 동적 검색 조건 추가
         if ((types != null && types.length > 0) && keyword != null) {
             jpql.append(" AND (");
 
@@ -39,33 +37,27 @@ public class CustomerSearchImpl implements CustomerSearch {
                         break;
                 }
 
-                // 각 조건 사이에 "OR" 추가
                 if (i < types.length - 1) {
                     jpql.append(" OR ");
                 }
             }
             jpql.append(")");
         }
-        // 내림차순 정렬
         jpql.append(" ORDER BY c.customerName ASC");
 
-        // JPQL로 쿼리 생성
         TypedQuery<Customer> query = entityManager.createQuery(jpql.toString(), Customer.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(
                 jpql.toString().replace("SELECT c", "SELECT COUNT(c)"), Long.class
         );
 
-        // 파라미터 바인딩
         if ((types != null && types.length > 0) && keyword != null) {
             query.setParameter("keyword", "%" + keyword + "%");
             countQuery.setParameter("keyword", "%" + keyword + "%");
         }
 
-        // 페이징 처리
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
-        // 결과 조회
         List<Customer> list = query.getResultList();
         long count = countQuery.getSingleResult();
 

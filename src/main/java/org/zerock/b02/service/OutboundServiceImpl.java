@@ -45,7 +45,6 @@ public class OutboundServiceImpl implements OutboundService{
         String[] descriptions = outboundDTO.getDescription().split(",");
         Long quantities = outboundDTO.getQuantity();
         LocalDateTime outboundDates = outboundDTO.getOutboundDate();
-        // quantity 배열을 Long[]로 변환
 
         log.info("outboundStatuses: " + Arrays.toString(outboundStatuses));
         log.info("descriptions: " + Arrays.toString(descriptions));
@@ -91,7 +90,6 @@ public class OutboundServiceImpl implements OutboundService{
             int lastCodeNumber = Integer.parseInt(lastOutboundCode.substring(1)); // "i001" -> 1
             newOutboundCode = "O" + String.format("%03d", lastCodeNumber + 1); // "i002", "i003", ...
         }
-
         return newOutboundCode;
     }
 
@@ -152,7 +150,6 @@ public class OutboundServiceImpl implements OutboundService{
         List<OutboundDTO> dtoList = result.getContent().stream().map(outbound -> {
             OutboundDTO outboundDTO = modelMapper.map(outbound, OutboundDTO.class);
 
-            // Product 엔티티에서 productCode 설정
             if (outbound.getProduct() != null) {
                 outboundDTO.setProductCode(outbound.getProduct().getProductCode());
             }
@@ -172,7 +169,7 @@ public class OutboundServiceImpl implements OutboundService{
 
     @Override
     public List<OutboundDTO> getAllOutbound() {
-        List<Outbound> outbounds = outboundRepository.findAll();  // 전체 데이터 가져오기
+        List<Outbound> outbounds = outboundRepository.findAll();
 
         log.info("data" + outbounds.size());
 

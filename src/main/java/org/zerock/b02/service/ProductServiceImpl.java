@@ -31,26 +31,21 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	@Transactional
 	public Long register(ProductDTO productDTO) {
-		// 제품 등록
 		Product product = modelMapper.map(productDTO, Product.class);
 		productRepository.save(product);
 
-		// 재고 등록
 		boolean stockExists = stockRepository.existsByProduct(product);
 
-		// 재고가 없으면 currentStock = 0 으로 등록
 		if (!stockExists) {
 			Stock stock = Stock.builder()
 					.product(product)
 					.currentStock(0L) // 기본 수량 0
-					.productCode(product.getProductCode()) // Stock 테이블에 productCode 저장
+					.productCode(product.getProductCode())
 					.build();
 			stockRepository.save(stock);
 		}
-
 		return product.getProductId();
 	}
-
 
 	@Override
 	public ProductDTO readOne(Long productId) {
@@ -58,7 +53,6 @@ public class ProductServiceImpl implements ProductService {
 		Product product = result.orElseThrow();
 		ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
 		return productDTO;
-
 	}
 
 	@Override
@@ -103,7 +97,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductDTO> getAllProducts() {
-		List<Product> products = productRepository.findAll();  // 전체 데이터 가져오기
+		List<Product> products = productRepository.findAll();
 
 		log.info("data" + products.size());
 

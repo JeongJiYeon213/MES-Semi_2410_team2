@@ -16,6 +16,5 @@ public class DashboardController {
 
     @GetMapping("/dashboard")
     public void dashboard(Model model, PageRequestDTO pageRequestDTO){
-
     }
 }

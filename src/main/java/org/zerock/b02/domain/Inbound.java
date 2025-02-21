@@ -1,9 +1,9 @@
 package org.zerock.b02.domain;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -46,7 +46,6 @@ public class Inbound extends BaseEntity {
     @Column(name = "status",nullable = false)
     private String inboundStatus;
 
-    // 수정시 변경할것들
     public void change(Product product,
                        String inboundCode,
                        Supplier supplier,

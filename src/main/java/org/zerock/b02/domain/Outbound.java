@@ -46,7 +46,6 @@ public class Outbound extends BaseEntity {
     @Column(name = "status",nullable = false)
     private String outboundStatus;
 
-    // 수정시 변경할것들
     public void change(Product product,
                        String outboundCode,
                        Customer customer,

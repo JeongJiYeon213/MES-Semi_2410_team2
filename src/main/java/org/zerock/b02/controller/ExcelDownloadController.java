@@ -30,11 +30,7 @@ public class ExcelDownloadController {
     private final OutboundService outboundService;
     private final SupplierService supplierService;
     private final CustomerService customerService;
-
-
     private final ExcelExportService excelExportService;
-
-
 
     @GetMapping("/product/download")
     public ResponseEntity<byte[]> downloadExcelProduct() throws IOException {
@@ -133,8 +129,4 @@ public class ExcelDownloadController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(excelData);
     }
-
-
-
-
 }

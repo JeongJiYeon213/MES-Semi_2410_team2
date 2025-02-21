@@ -19,7 +19,6 @@ public class InboundSearchImpl implements InboundSearch {
 
     @Override
     public Page<Inbound> searchAll(String[] types, String keyword, Pageable pageable, LocalDateTime from, LocalDateTime to) {
-        // JPQL로 작성
         StringBuilder jpql = new StringBuilder("SELECT i FROM Inbound i WHERE i.inboundId > 0");
 
         if (from != null && to != null) {
@@ -30,7 +29,6 @@ public class InboundSearchImpl implements InboundSearch {
             jpql.append(" AND i.inboundDate <= :to");
         }
 
-        // 동적 검색 조건 추가
         if ((types != null && types.length > 0) && keyword != null) {
             jpql.append(" AND (");
 
@@ -51,7 +49,6 @@ public class InboundSearchImpl implements InboundSearch {
                         break;
                 }
 
-                // 각 조건 사이에 "OR" 추가
                 if (i < types.length - 1) {
                     jpql.append(" OR ");
                 }
@@ -60,13 +57,11 @@ public class InboundSearchImpl implements InboundSearch {
         }
         jpql.append(" ORDER BY inboundId DESC");
 
-        // JPQL로 쿼리 생성
         TypedQuery<Inbound> query = entityManager.createQuery(jpql.toString(), Inbound.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(
                 jpql.toString().replace("SELECT i", "SELECT COUNT(i)"), Long.class
         );
 
-        // 파라미터 바인딩
         if ((types != null && types.length > 0) && keyword != null) {
             query.setParameter("keyword", "%" + keyword + "%");
             countQuery.setParameter("keyword", "%" + keyword + "%");
@@ -80,11 +75,9 @@ public class InboundSearchImpl implements InboundSearch {
             countQuery.setParameter("to", to);
         }
 
-        // 페이징 처리
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
-        // 결과 조회
         List<Inbound> list = query.getResultList();
         long count = countQuery.getSingleResult();
 

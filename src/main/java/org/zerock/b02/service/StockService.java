@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface StockService {
 
-
 	StockDTO readOne(Long stockId);
 
 	void modify(StockDTO stockDTO);

@@ -47,7 +47,9 @@ public class InboundController {
     }
 
     @GetMapping("/inbound/register")
-    public void inboundRegisterGet() {}
+    public void inboundRegisterGet() {
+
+    }
 
 
     @PostMapping("/inbound/register")
@@ -110,7 +112,6 @@ public class InboundController {
         inboundService.remove(inboundId);
         redirectAttributes.addFlashAttribute("result", "removed");
         redirectAttributes.addFlashAttribute("link", link);
-
 
         return "redirect:/mes/inbound/list";
     }

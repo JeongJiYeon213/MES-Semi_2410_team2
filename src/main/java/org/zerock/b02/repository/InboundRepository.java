@@ -16,19 +16,12 @@ public interface InboundRepository extends JpaRepository<Inbound, Long>, Inbound
 
     Optional<Inbound> findTopByOrderByInboundCodeDesc();
 
-    // from과 to 사이의 날짜로 조회
     Page<Inbound> findByInboundDateBetween(LocalDateTime from, LocalDateTime to, Pageable pageable);
 
-    // from 이후의 날짜로 조회
     Page<Inbound> findByInboundDateAfter(LocalDateTime from, Pageable pageable);
 
-    // to 이전의 날짜로 조회
     Page<Inbound> findByInboundDateBefore(LocalDateTime to, Pageable pageable);
 
     @Query("SELECT i FROM Inbound i JOIN FETCH i.product WHERE i.inboundId = :inboundId")
     Optional<Inbound> findByInboundIdWithProduct(Long inboundId);
-
-
-
-
 }

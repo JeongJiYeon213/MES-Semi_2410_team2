@@ -18,10 +18,8 @@ public class SupplierSearchImpl implements SupplierSearch {
 
     @Override
     public Page<Supplier> searchAll(String[] types, String keyword, Pageable pageable) {
-        // JPQL로 작성
         StringBuilder jpql = new StringBuilder("SELECT b FROM Supplier b WHERE b.supplierId IS NOT NULL");
 
-        // 동적 검색 조건 추가
         if ((types != null && types.length > 0) && keyword != null) {
             jpql.append(" AND (");
 
@@ -39,7 +37,6 @@ public class SupplierSearchImpl implements SupplierSearch {
                         break;
                 }
 
-                // 각 조건 사이에 "OR" 추가
                 if (i < types.length - 1) {
                     jpql.append(" OR ");
                 }
@@ -49,23 +46,19 @@ public class SupplierSearchImpl implements SupplierSearch {
 
         jpql.append(" ORDER BY b.supplierName ASC");
 
-        // JPQL로 쿼리 생성
         TypedQuery<Supplier> query = entityManager.createQuery(jpql.toString(), Supplier.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(
                 jpql.toString().replace("SELECT b", "SELECT COUNT(b)"), Long.class
         );
 
-        // 파라미터 바인딩
         if ((types != null && types.length > 0) && keyword != null) {
             query.setParameter("keyword", "%" + keyword + "%");
             countQuery.setParameter("keyword", "%" + keyword + "%");
         }
 
-        // 페이징 처리
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
-        // 결과 조회
         List<Supplier> list = query.getResultList();
         long count = countQuery.getSingleResult();
 

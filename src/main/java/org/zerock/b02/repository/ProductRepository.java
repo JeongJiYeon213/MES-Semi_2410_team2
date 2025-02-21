@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, ProductSearch {
-
-
 	@Query("SELECT p FROM Product p WHERE p.productName = :productName")
 	List<Product> findByProductName(@Param("productName") String productName);
 
@@ -24,5 +22,4 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 	Page<Product> findKeyword(@Param("keyword") String keyword, Pageable pageable);
 
 	Optional<Product> findByProductCode(String productCode);
-
 }
