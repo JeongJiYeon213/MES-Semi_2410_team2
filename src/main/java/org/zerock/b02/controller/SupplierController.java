@@ -121,15 +121,4 @@ public class SupplierController {
 
         return "redirect:/mes/supplier/list";
     }
-
-    @PostMapping("/remove")
-    public String remove(@RequestParam String supplierId,
-                         RedirectAttributes redirectAttributes){
-
-        log.info("romove post.." + supplierId);
-        supplierService.remove(supplierId);
-        redirectAttributes.addFlashAttribute("result", "removed");
-
-        return "redirect:/mes/supplier/list";
-    }
 }
