@@ -3,6 +3,7 @@ package org.zerock.b02.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.zerock.b02.domain.Inbound;
 import org.zerock.b02.repository.search.InboundSearch;
@@ -23,6 +24,9 @@ public interface InboundRepository extends JpaRepository<Inbound, Long>, Inbound
 
     // to 이전의 날짜로 조회
     Page<Inbound> findByInboundDateBefore(LocalDateTime to, Pageable pageable);
+
+    @Query("SELECT i FROM Inbound i JOIN FETCH i.product WHERE i.inboundId = :inboundId")
+    Optional<Inbound> findByInboundIdWithProduct(Long inboundId);
 
 
 

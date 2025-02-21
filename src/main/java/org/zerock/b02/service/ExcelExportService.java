@@ -5,7 +5,10 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.zerock.b02.domain.Inbound;
+import org.zerock.b02.domain.Product;
 import org.zerock.b02.dto.*;
+import org.zerock.b02.repository.ProductRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,6 +19,8 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class ExcelExportService {
+
+    private final ProductRepository productRepository;
 
     public <E> byte[] generateExcel(String type, List<E> data) throws IOException {
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -124,13 +129,15 @@ public class ExcelExportService {
 
                 /*{"입고번호", "제품번호", "거래처", "수량", "입고일", "상태", "기타"};*/
 
-                case "org.zerock.b02.dto.InboundDTO": { // 패키지명을 실제 환경에 맞게 변경
+                case "org.zerock.b02.dto.InboundDTO": {
+
                     InboundDTO inbound = (InboundDTO) obj;
+
                     row.createCell(0).setCellValue(inbound.getInboundCode());
                     row.createCell(1).setCellValue(inbound.getProductCode());
                     row.createCell(2).setCellValue(inbound.getSupplierId());
                     row.createCell(3).setCellValue(inbound.getQuantity());
-                    row.createCell(4).setCellValue(inbound.getRegDate().format(formatter));
+                    row.createCell(4).setCellValue(inbound.getInboundDate());
                     row.createCell(5).setCellValue(inbound.getInboundStatus());
                     row.createCell(6).setCellValue(inbound.getDescription());
                     break;
@@ -142,7 +149,7 @@ public class ExcelExportService {
                     OutboundDTO outbound = (OutboundDTO) obj;
                     row.createCell(0).setCellValue(outbound.getOutboundCode());
                     row.createCell(1).setCellValue(outbound.getProductCode());
-                    row.createCell(2).setCellValue(outbound.getSupplierId());
+                    row.createCell(2).setCellValue(outbound.getCustomerId());
                     row.createCell(3).setCellValue(outbound.getQuantity());
                     row.createCell(4).setCellValue(outbound.getOutboundDate().format(formatter));
                     row.createCell(5).setCellValue(outbound.getOutboundStatus());

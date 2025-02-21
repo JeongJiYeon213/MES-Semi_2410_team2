@@ -18,8 +18,6 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockSearch
 	@Query("SELECT s FROM Stock s WHERE s.product.productName = :productName")
 	List<Stock> findByProductName(@Param("productName") String productName);
 
-
-
 	@Query("SELECT s FROM Stock s WHERE s.product.productName LIKE CONCAT('%', :keyword, '%')")
 	Page<Stock> findKeyword(@Param("keyword") String keyword, Pageable pageable);
 
